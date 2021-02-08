@@ -22,7 +22,7 @@ public class IP3 extends Application {
     
     @Override
     public void start(Stage primaryStage) throws SQLException, IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/Pages/Home/homeScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/LoginRegister/LoginRegister.fxml"));
 
         Scene scene = new Scene(root);
 

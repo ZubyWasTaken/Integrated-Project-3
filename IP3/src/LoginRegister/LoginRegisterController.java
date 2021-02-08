@@ -1,0 +1,229 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package LoginRegister;
+
+import com.jfoenix.controls.JFXButton;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
+
+/**
+ *
+ * @author erino
+ */
+public class LoginRegisterController implements Initializable{
+      
+
+    @FXML
+    private AnchorPane layer2;
+    @FXML
+    private JFXButton signin;
+    @FXML
+    private Label lab1;
+    @FXML
+    private Label lab2;
+    @FXML
+    private Label l3;
+    @FXML
+    private Label s1;
+    @FXML
+    private Label s2;
+    @FXML
+    private Label s3;
+    @FXML
+    private JFXButton signup;
+    @FXML
+    private Label a2;
+    @FXML
+    private Label b2;
+  
+    @FXML
+    private JFXButton btnsignup;
+    @FXML
+    private JFXButton btnsignin;
+    @FXML
+    private TextField regusername;
+    @FXML
+    private TextField regpassword;
+   
+    @FXML
+    private TextField n1;
+    @FXML
+    private TextField n2;
+ 
+    @FXML
+    private AnchorPane layer1;
+    
+    
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        s1.setVisible(false);
+        s2.setVisible(false);
+        s3.setVisible(false);
+        signup.setVisible(false);
+     
+        b2.setVisible(false);
+        btnsignin.setVisible(false);
+        n1.setVisible(false);
+        n2.setVisible(false);
+       
+        regusername.setVisible(true);
+        regpassword.setVisible(true);
+   
+    }    
+
+    @FXML
+    private void btn(MouseEvent event) {
+        TranslateTransition slide = new TranslateTransition();
+        slide.setDuration(Duration.seconds(0.4));
+        slide.setNode(layer2);
+        
+        slide.setToX(491);
+        slide.play();
+        
+        layer1.setTranslateX(-309);
+        btnsignin.setVisible(true);
+       
+        b2.setVisible(true);
+        
+        s1.setVisible(true);
+        s2.setVisible(true);
+        s3.setVisible(true);
+        signup.setVisible(true);
+        lab1.setVisible(false);
+        lab2.setVisible(false);
+        l3.setVisible(false);
+        signin.setVisible(false);
+      
+        a2.setVisible(false);
+        btnsignup.setVisible(false);
+        n1.setVisible(true);
+        n2.setVisible(true);
+        regusername.setVisible(false);
+        regpassword.setVisible(false);
+      
+        
+        slide.setOnFinished((e->{
+        
+        
+        }));
+    }
+
+    @FXML
+    private void btn2(MouseEvent event) {
+        TranslateTransition slide = new TranslateTransition();
+        slide.setDuration(Duration.seconds(0.4));
+        slide.setNode(layer2);
+        
+        slide.setToX(0);
+        slide.play();
+        
+        layer1.setTranslateX(0);
+        btnsignin.setVisible(false);
+       
+        b2.setVisible(false);
+        
+        s1.setVisible(false);
+        s2.setVisible(false);
+        s3.setVisible(false);
+        signup.setVisible(false);
+        lab1.setVisible(true);
+        lab2.setVisible(true);
+        l3.setVisible(true);
+        signin.setVisible(true);
+        
+        a2.setVisible(true);
+        btnsignup.setVisible(true);
+        n1.setVisible(false);
+        n2.setVisible(false);
+       
+        regusername.setVisible(true);
+        regpassword.setVisible(true);
+
+        
+        slide.setOnFinished((e->{
+        
+        
+        }));
+    }
+
+    @FXML
+    private void btnsignup(MouseEvent event) {
+    }
+
+    @FXML
+    private void sign(MouseEvent event) {
+        
+    }
+
+    @FXML
+    private void click(ActionEvent event) {
+        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
+            String tilte = "Sign In";
+            String message = n1.getText();
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+        
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage(message);
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+        }
+        if(!"erin".equals(n1.getText())){
+            String tilte = "Sign In";
+            String message = "Error Username "+"'"+n1.getText()+"'"+" Wrong";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+        
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage(message);
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+        }
+        if (!"password".equals(n2.getText())){
+            String tilte = "Sign In";
+            String message = "Error Password " + "Wrong";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+        
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage(message);
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+        }
+        if (!"erin".equals(n1.getText())&&!"password".equals(n2.getText())){
+            String tilte = "Sign In";
+            String message = "Error Username "+"'"+n1.getText()+"'"+", and Password " +"Wrong";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+        
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage(message);
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+        }
+    }
+    }
+
+
+   
+    

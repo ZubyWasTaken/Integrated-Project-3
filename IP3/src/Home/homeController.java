@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Pages.Home;
+package Home;
 
-import Pages.Login.Login;
+import LoginRegister.LoginRegisterController;
 import ip3.SwitchWindow;
 import ip3.User;
 import java.net.URL;
@@ -41,7 +41,6 @@ public class homeController implements Initializable {
         User currentUser = new User(user);
         
         
-            SwitchWindow.switchWindow((Stage) loginButton.getScene().getWindow(), new Login(currentUser));
       
     }
 
