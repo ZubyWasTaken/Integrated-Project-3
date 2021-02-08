@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Pages.Login;
+package Home;
 
 import ip3.User;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,15 +13,14 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Patrick
+ * @author Zuby
  */
-public class Login extends Application {
+public class Home {
 
     User currentUser;
 
-    @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
 
         Scene scene = new Scene(root);
 
@@ -32,7 +30,7 @@ public class Login extends Application {
         stage.centerOnScreen();
     }
 
-    public Login(User user) {
+    public Home(User user) {
         currentUser = user;
     }
 }

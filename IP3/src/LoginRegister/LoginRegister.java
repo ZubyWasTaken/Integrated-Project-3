@@ -3,34 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Pages.Home;
+package LoginRegister;
 
-import ip3.User;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
  *
- * @author Zuby
+ * @author Patrick
  */
-public class Home {
-
-    User currentUser;
-
+public class LoginRegister extends Application {
+    
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
-
+      
+        Parent root = FXMLLoader.load(getClass().getResource("LoginRegister.fxml"));
+        
         Scene scene = new Scene(root);
-
+        
         stage.setScene(scene);
         stage.setTitle("Login");
-        stage.show();
+        stage.show();        
         stage.centerOnScreen();
     }
-
-    public Home(User user) {
-        currentUser = user;
+    
+    public LoginRegister(){
+        
     }
 }
