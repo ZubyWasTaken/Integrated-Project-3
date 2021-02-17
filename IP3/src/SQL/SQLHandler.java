@@ -70,5 +70,26 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
+    //------------------------------------//
+    // GET A SPECIFIC USER FROM USERS TABLE //
+    //------------------------------------//
+    public ArrayList searchUsersTable(String searchQuery) throws SQLException {
+
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE Username = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getString("UserID")));
+            output.add((rs.getString("Firstname")));
+            output.add((rs.getString("Surname")));
+            output.add((rs.getString("Username")));
+            output.add((rs.getString("Password")));
+            output.add((rs.getString("isAdmin")));
+            output.add((rs.getString("UserScore")));
+        }
+        return output;
+    }
 
 }
