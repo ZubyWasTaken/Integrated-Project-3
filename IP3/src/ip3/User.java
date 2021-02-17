@@ -4,9 +4,10 @@ import SQL.SQLHandler;
 import static java.lang.Integer.parseInt;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  *
@@ -19,15 +20,9 @@ public class User {
     private final String surname;
     private final String username;
     private final String password;
-    private final String dob;
+    private final String dateOfBirth;
     private final String email;
     private static final SQLHandler sql = new SQLHandler();
-
-    private String convertDateToString(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String strDate = dateFormat.format(date);
-        return strDate;
-    }
 
     public User(String user) throws SQLException {
         ArrayList<String> userInfo = sql.searchUsersTable(user);
@@ -36,8 +31,18 @@ public class User {
         password = userInfo.get(2);
         firstname = userInfo.get(3);
         surname = userInfo.get(4);
-        dob = convertDateToString(userInfo.get(5));
+        dateOfBirth = userInfo.get(5);
         email = userInfo.get(6);
+    }
+
+    public static void createUser(String userid, String username, String password, String firstname, String surname, String dateOfBirth, String email) throws SQLException, ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+
+        Date date = (Date) formatter.parse(dateOfBirth);
+        //unsure of the format it'll parse it to.
+
+        sql.createUser(username, password, firstname, surname, date, email);
+
     }
 
     public int getUserID() {
@@ -59,4 +64,7 @@ public class User {
     public String getPassword() {
         return this.password;
     }
+
+    //getters for dob and email
+    //setters for everything
 }

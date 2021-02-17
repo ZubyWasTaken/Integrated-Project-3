@@ -9,6 +9,8 @@ import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import ip3.Hash;
 import ip3.Shaker;
+import ip3.SwitchWindow;
+import ip3.User;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
@@ -89,7 +92,7 @@ public class LoginRegisterController implements Initializable {
         regpassword.setVisible(true);
 
     }
-    
+
     public void loginFailed() {
         Shaker shaker = new Shaker(signin);
         shaker.shake();
@@ -97,31 +100,37 @@ public class LoginRegisterController implements Initializable {
         loginUsername.requestFocus();
     }
 
-    @FXML
-    private void login(MouseEvent event) {
+    public void login(String user) throws SQLException {
 
-//        String username = loginUsername.getText().trim();
-//        String password = loginPassword.getText().trim();
-//
-//        if (username.isEmpty() || password.isEmpty()) {
-//            loginUsername.getStyleClass().add("wrong");
-//            //animation here
-//            return;
-//        }
-//
-//        Hash h = new Hash();
-//        SQLHandler sql = new SQLHandler();
-//        ArrayList<String> user = sql.searchUsersTable(username);
-//
-//        if (user.size() < 6) {
-//            loginFailed();
-//            //animation here
-//            
-//        } else if (!h.verifyHash(password, user.get(4))) {
-//            loginFailed();
-//        } else {
-//            login(username);
-//        }
+//        SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new UserHome(currentUser));
+//        new UserHome should be for the homepage, rename as you need 
+    }
+
+    @FXML
+    private void login(MouseEvent event) throws SQLException {
+
+        String username = loginUsername.getText().trim();
+        String password = loginPassword.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            loginUsername.getStyleClass().add("wrong");
+            //animation here
+            return;
+        }
+
+        Hash h = new Hash();
+        SQLHandler sql = new SQLHandler();
+        ArrayList<String> user = sql.searchUsersTable(username);
+
+        if (user.size() < 6) {
+            loginFailed();
+            //animation here
+
+        } else if (!h.verifyHash(password, user.get(4))) {
+            loginFailed();
+        } else {
+            login(username);
+        }
 
 //        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
 //            String tilte = "Sign In";

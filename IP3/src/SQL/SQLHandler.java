@@ -12,13 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 /**
@@ -57,7 +51,7 @@ public class SQLHandler {
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
-    public void createUser(int id, String username, String password, String firstname, String surname, Date dob , String email) throws SQLException {
+    public void createUser( String username, String password, String firstname, String surname, Date dob , String email) throws SQLException {
 
         String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email) VALUES(?,?,?,?,?,?)";
         query = conn.prepareStatement(sql);
@@ -68,6 +62,7 @@ public class SQLHandler {
         query.setString(3, firstname);
         query.setString(4, surname);
         query.setDate(5, dob);
+        //unsure which format this date is
         query.setString(6, email);
 
         query.executeUpdate();
@@ -89,7 +84,8 @@ public class SQLHandler {
             output.add((rs.getString("password")));
             output.add((rs.getString("firstname")));
             output.add((rs.getString("surname")));
-            output.add((rs.getDate("dob")));
+            output.add((rs.getString("dob")));
+            //unsure which format this reads as
             output.add((rs.getString("email")));
         }
         return output;
