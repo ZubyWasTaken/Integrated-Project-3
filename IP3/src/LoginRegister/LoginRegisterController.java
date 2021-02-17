@@ -5,8 +5,12 @@
  */
 package LoginRegister;
 
+import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import ip3.Hash;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -88,7 +92,7 @@ public class LoginRegisterController implements Initializable{
     }    
 
     @FXML
-    private void btn(MouseEvent event) {
+    private void loginAnimation(MouseEvent event) {
         TranslateTransition slide = new TranslateTransition();
         slide.setDuration(Duration.seconds(0.4));
         slide.setNode(layer2);
@@ -125,7 +129,7 @@ public class LoginRegisterController implements Initializable{
     }
 
     @FXML
-    private void btn2(MouseEvent event) {
+    private void signupAnimation(MouseEvent event) {
         TranslateTransition slide = new TranslateTransition();
         slide.setDuration(Duration.seconds(0.4));
         slide.setNode(layer2);
@@ -173,54 +177,78 @@ public class LoginRegisterController implements Initializable{
 
     @FXML
     private void click(ActionEvent event) {
-        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
-            String tilte = "Sign In";
-            String message = n1.getText();
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
         
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage(message);
-            tray.setNotificationType(NotificationType.SUCCESS);
-            tray.showAndDismiss(Duration.millis(3000));
+  
+        String username = inputUser.getText().trim();
+        String password = inputPass.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            inputUser.getStyleClass().add("wrong");
+            return;
         }
-        if(!"erin".equals(n1.getText())){
-            String tilte = "Sign In";
-            String message = "Error Username "+"'"+n1.getText()+"'"+" Wrong";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
+
+        Hash h = new Hash();
+        SQLHandler sql = new SQLHandler();
+        ArrayList<String> user = sql.searchUsersTable(username);
+
+        if (user.size() < 6) {
+            loginFailed();
+        } else if (!h.verifyHash(password, user.get(4))) {
+            loginFailed();
+        } else {
+            login(username);
+        }
+    }
         
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage(message);
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-        }
-        if (!"password".equals(n2.getText())){
-            String tilte = "Sign In";
-            String message = "Error Password " + "Wrong";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
         
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage(message);
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-        }
-        if (!"erin".equals(n1.getText())&&!"password".equals(n2.getText())){
-            String tilte = "Sign In";
-            String message = "Error Username "+"'"+n1.getText()+"'"+", and Password " +"Wrong";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-        
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage(message);
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-        }
+//        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
+//            String tilte = "Sign In";
+//            String message = n1.getText();
+//            TrayNotification tray = new TrayNotification();
+//            AnimationType type = AnimationType.POPUP;
+//        
+//            tray.setAnimationType(type);
+//            tray.setTitle(tilte);
+//            tray.setMessage(message);
+//            tray.setNotificationType(NotificationType.SUCCESS);
+//            tray.showAndDismiss(Duration.millis(3000));
+//        }
+//        if(!"erin".equals(n1.getText())){
+//            String tilte = "Sign In";
+//            String message = "Error Username "+"'"+n1.getText()+"'"+" Wrong";
+//            TrayNotification tray = new TrayNotification();
+//            AnimationType type = AnimationType.POPUP;
+//        
+//            tray.setAnimationType(type);
+//            tray.setTitle(tilte);
+//            tray.setMessage(message);
+//            tray.setNotificationType(NotificationType.ERROR);
+//            tray.showAndDismiss(Duration.millis(3000));
+//        }
+//        if (!"password".equals(n2.getText())){
+//            String tilte = "Sign In";
+//            String message = "Error Password " + "Wrong";
+//            TrayNotification tray = new TrayNotification();
+//            AnimationType type = AnimationType.POPUP;
+//        
+//            tray.setAnimationType(type);
+//            tray.setTitle(tilte);
+//            tray.setMessage(message);
+//            tray.setNotificationType(NotificationType.ERROR);
+//            tray.showAndDismiss(Duration.millis(3000));
+//        }
+//        if (!"erin".equals(n1.getText())&&!"password".equals(n2.getText())){
+//            String tilte = "Sign In";
+//            String message = "Error Username "+"'"+n1.getText()+"'"+", and Password " +"Wrong";
+//            TrayNotification tray = new TrayNotification();
+//            AnimationType type = AnimationType.POPUP;
+//        
+//            tray.setAnimationType(type);
+//            tray.setTitle(tilte);
+//            tray.setMessage(message);
+//            tray.setNotificationType(NotificationType.ERROR);
+//            tray.showAndDismiss(Duration.millis(3000));
+//        }
     }
     }
 
