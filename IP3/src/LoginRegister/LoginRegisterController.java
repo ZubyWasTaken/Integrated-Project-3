@@ -7,6 +7,7 @@ package LoginRegister;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import ip3.Hash;
 import ip3.Shaker;
 import java.net.URL;
@@ -64,6 +65,9 @@ public class LoginRegisterController implements Initializable {
 
     @FXML
     private TextField loginUsername;
+    
+     @FXML
+    private JFXTextField regUsername;
 
     @FXML
     private PasswordField loginPassword;
