@@ -27,4 +27,23 @@ public class User {
 
     }
 
+     public int getUserID() {
+        return this.userid;
+    }
+
+    public String getFirstname() {
+        return this.firstname;
+    }
+
+    public String getSurname() {
+        return this.surname;
+    }
+
+     public String getUsername() {
+        return this.username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
 }
