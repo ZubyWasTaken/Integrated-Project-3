@@ -100,28 +100,28 @@ public class LoginRegisterController implements Initializable {
     @FXML
     private void login(MouseEvent event) {
 
-        String username = loginUsername.getText().trim();
-        String password = loginPassword.getText().trim();
-
-        if (username.isEmpty() || password.isEmpty()) {
-            loginUsername.getStyleClass().add("wrong");
-            //animation here
-            return;
-        }
-
-        Hash h = new Hash();
-        SQLHandler sql = new SQLHandler();
-        ArrayList<String> user = sql.searchUsersTable(username);
-
-        if (user.size() < 6) {
-            loginFailed();
-            //animation here
-            
-        } else if (!h.verifyHash(password, user.get(4))) {
-            loginFailed();
-        } else {
-            login(username);
-        }
+//        String username = loginUsername.getText().trim();
+//        String password = loginPassword.getText().trim();
+//
+//        if (username.isEmpty() || password.isEmpty()) {
+//            loginUsername.getStyleClass().add("wrong");
+//            //animation here
+//            return;
+//        }
+//
+//        Hash h = new Hash();
+//        SQLHandler sql = new SQLHandler();
+//        ArrayList<String> user = sql.searchUsersTable(username);
+//
+//        if (user.size() < 6) {
+//            loginFailed();
+//            //animation here
+//            
+//        } else if (!h.verifyHash(password, user.get(4))) {
+//            loginFailed();
+//        } else {
+//            login(username);
+//        }
 
 //        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
 //            String tilte = "Sign In";
