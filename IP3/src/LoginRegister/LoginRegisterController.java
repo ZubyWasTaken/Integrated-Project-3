@@ -5,19 +5,18 @@
  */
 package LoginRegister;
 
-import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import ip3.Hash;
 import ip3.Shaker;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -61,14 +60,16 @@ public class LoginRegisterController implements Initializable {
     private JFXButton btnsignin;
     @FXML
     private TextField regusername;
-    @FXML
-    private TextField regpassword;
+
 
     @FXML
     private TextField loginUsername;
 
     @FXML
-    private TextField loginPassword;
+    private PasswordField loginPassword;
+    
+    @FXML
+    private JFXPasswordField  regpassword;
 
     @FXML
     private AnchorPane layer1;
@@ -89,38 +90,78 @@ public class LoginRegisterController implements Initializable {
         regpassword.setVisible(true);
 
     }
-    
+
     public void loginFailed() {
         Shaker shaker = new Shaker(signin);
         shaker.shake();
         loginPassword.setText("");
         loginUsername.requestFocus();
     }
+    
+
+     @FXML
+    private void register(MouseEvent event) {
+        String username = regusername.getText().trim();
+       
+        
+       /*  if (password.length() < 8 || password.length() > 32) {
+           
+           String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Password must be between 8-32 characters.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+            return;
+             
+        }
+        */
+    }
+
 
     @FXML
-    private void login(MouseEvent event) {
+    private void login(MouseEvent event) throws SQLException {
 
         String username = loginUsername.getText().trim();
         String password = loginPassword.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            loginUsername.getStyleClass().add("wrong");
-            //animation here
+         //   loginUsername.getStyleClass().add("wrong");
+           String tilte = "Log In";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Please enter both a username and a password");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
             return;
         }
 
         Hash h = new Hash();
-        SQLHandler sql = new SQLHandler();
-        ArrayList<String> user = sql.searchUsersTable(username);
+      // SQLHandler sql = new SQLHandler();
+       // ArrayList<String> user = sql.searchUsersTable(username);
+        String user = "erin";
+        if (user.length() < 6) {
+            loginFailed();
+           String tilte = "Log In";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
 
-        if (user.size() < 6) {
-            loginFailed();
-            //animation here
-            
-        } else if (!h.verifyHash(password, user.get(4))) {
-            loginFailed();
-        } else {
-            login(username);
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Username not long enough");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+     //   } else if (!h.verifyHash(password, user.get(4))) {
+     //       loginFailed();
+     //   } else {
+           // login(username);
         }
 
 //        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
@@ -244,8 +285,5 @@ public class LoginRegisterController implements Initializable {
         }));
     }
 
-    @FXML
-    private void btnsignup(MouseEvent event) {
-    }
-
+   
 }
