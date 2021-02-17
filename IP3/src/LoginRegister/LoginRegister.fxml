@@ -29,7 +29,7 @@
                   <JFXButton fx:id="btnsignup" layoutX="189.0" layoutY="375.0" onMouseClicked="#btnsignup" prefHeight="32.0" prefWidth="118.0" style="-fx-background-color: #002b43;" text="SIGN UP" textFill="WHITE" />
                   <JFXButton fx:id="btnsignin" layoutX="189.0" layoutY="375.0" onMouseClicked="#login" prefHeight="32.0" prefWidth="118.0" style="-fx-background-color: #002b43;" text="SIGN IN" textFill="WHITE" />
                   <TextField fx:id="loginUsername" layoutX="119.0" layoutY="218.0" prefHeight="32.0" prefWidth="258.0" promptText="Username" />
-                  <PasswordField fx:id="loginPass" layoutX="119.0" layoutY="268.0" prefHeight="32.0" prefWidth="258.0" promptText="password" />
+                  <PasswordField fx:id="loginPassword" layoutX="119.0" layoutY="268.0" prefHeight="32.0" prefWidth="258.0" promptText="password" />
                </children>
             </AnchorPane>
          </children>

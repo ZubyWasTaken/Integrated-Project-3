@@ -7,16 +7,12 @@ package SQL;
 
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 /**
@@ -55,17 +51,19 @@ public class SQLHandler {
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
-    public void createUser(int id, String username, String password, String firstname, String surname, String userscore) throws SQLException {
+    public void createUser( String username, String password, String firstname, String surname, Date dob , String email) throws SQLException {
 
-        String sql = "INSERT INTO Users ( FirstName, Surname, Username, Password, isAdmin, UserScore) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email) VALUES(?,?,?,?,?,?)";
         query = conn.prepareStatement(sql);
 
-        ;
-        query.setString(1, firstname);
-        query.setString(2, surname);
-        query.setString(3, username);
-        query.setString(4, password);
-        query.setString(6, userscore);
+        
+        query.setString(1, username);
+        query.setString(2, password);
+        query.setString(3, firstname);
+        query.setString(4, surname);
+        query.setDate(5, dob);
+        //unsure which format this date is
+        query.setString(6, email);
 
         query.executeUpdate();
         query.close();
@@ -81,13 +79,14 @@ public class SQLHandler {
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
-            output.add((rs.getString("UserID")));
-            output.add((rs.getString("Firstname")));
-            output.add((rs.getString("Surname")));
-            output.add((rs.getString("Username")));
-            output.add((rs.getString("Password")));
-            output.add((rs.getString("isAdmin")));
-            output.add((rs.getString("UserScore")));
+            output.add((rs.getString("id")));
+            output.add((rs.getString("username")));
+            output.add((rs.getString("password")));
+            output.add((rs.getString("firstname")));
+            output.add((rs.getString("surname")));
+            output.add((rs.getString("dob")));
+            //unsure which format this reads as
+            output.add((rs.getString("email")));
         }
         return output;
     }

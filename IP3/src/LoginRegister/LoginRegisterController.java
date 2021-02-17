@@ -9,6 +9,8 @@ import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import ip3.Hash;
 import ip3.Shaker;
+import ip3.SwitchWindow;
+import ip3.User;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
@@ -89,7 +92,7 @@ public class LoginRegisterController implements Initializable {
         regpassword.setVisible(true);
 
     }
-    
+
     public void loginFailed() {
         Shaker shaker = new Shaker(signin);
         shaker.shake();
@@ -97,8 +100,14 @@ public class LoginRegisterController implements Initializable {
         loginUsername.requestFocus();
     }
 
+    public void login(String user) throws SQLException {
+
+//        SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new UserHome(currentUser));
+//        new UserHome should be for the homepage, rename as you need 
+    }
+
     @FXML
-    private void login(MouseEvent event) {
+    private void login(MouseEvent event) throws SQLException {
 
         String username = loginUsername.getText().trim();
         String password = loginPassword.getText().trim();
@@ -116,7 +125,7 @@ public class LoginRegisterController implements Initializable {
         if (user.size() < 6) {
             loginFailed();
             //animation here
-            
+
         } else if (!h.verifyHash(password, user.get(4))) {
             loginFailed();
         } else {
