@@ -48,6 +48,9 @@ public class SQLHandler {
         return conn;
     }
 
+    
+    
+    
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
@@ -68,6 +71,26 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
+       //------------------------------------//
+    // GET ALL USERNAMES FROM USERS TABLE //
+    //------------------------------------//
+    public ArrayList getAllUsers() throws SQLException {
+
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT username FROM Users";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            output.add(rs.getString("Username"));
+        }
+
+        query.close();
+        return output;
+    }
+
+    
     
     //------------------------------------//
     // GET A SPECIFIC USER FROM USERS TABLE //
@@ -91,4 +114,18 @@ public class SQLHandler {
         return output;
     }
 
+    public void initialUser(String username, String password) throws SQLException {
+        String sql = "INSERT INTO Users ( username, password) VALUES(?,?)";
+        query = conn.prepareStatement(sql);
+
+        
+        query.setString(1, username);
+        query.setString(2, password);
+       
+
+        query.executeUpdate();
+        query.close();
+    
+    }
 }
+

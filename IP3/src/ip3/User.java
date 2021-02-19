@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -15,6 +17,7 @@ import java.util.Locale;
  */
 public class User {
 
+   
     private final int userid;
     private final String firstname;
     private final String surname;
@@ -35,6 +38,12 @@ public class User {
         email = userInfo.get(6);
     }
 
+    
+     public static void initialUser(String username, String password) throws SQLException {
+        sql.initialUser(username, password);
+    }
+
+    
     public static void createUser(String userid, String username, String password, String firstname, String surname, String dateOfBirth, String email) throws SQLException, ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 
@@ -42,6 +51,14 @@ public class User {
         //unsure of the format it'll parse it to.
 
         sql.createUser(username, password, firstname, surname, date, email);
+
+    }
+    
+    public static boolean match(String val){
+        Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
+        Matcher match = pattern.matcher(val);
+        boolean valUser = match.find();
+        return valUser;
 
     }
 
@@ -65,6 +82,16 @@ public class User {
         return this.password;
     }
 
+     public String getDOB() {
+        return this.dateOfBirth;
+    }
+     
+     public String getEmail(){
+         return this.email;
+     }
+     
+     
+    
     //getters for dob and email
     //setters for everything
 }
