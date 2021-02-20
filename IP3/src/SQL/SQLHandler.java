@@ -7,6 +7,8 @@ package SQL;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,6 +30,7 @@ public class SQLHandler {
 
     Connection conn = SQLHandler.getConn();
     PreparedStatement query;
+    FileInputStream fs = null;
 
     public SQLHandler() {
 
@@ -91,5 +94,17 @@ public class SQLHandler {
             output.add((rs.getString("UserScore")));
         }
         return output;
+    }
+    
+    public void addFile(String location) throws SQLException, FileNotFoundException {
+        File file = new File (location);
+        fs=new FileInputStream(file);
+        query=conn.prepareStatement("INSERT INTO FILES(ID,LOCATION,FILETOBYTE) VALUES (?,?,?)");
+        query.setString(1, "1");
+        query.setString(2,"files/uni.png" );
+        query.setBinaryStream(3,fs,(int)file.length());
+        query.executeUpdate();
+        System.out.println("Image Stored Successfully");
+        query.close();
     }
 }
