@@ -5,22 +5,26 @@
  */
 package LoginRegister;
 
+import Interests.Interests;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import ip3.Hash;
 import ip3.Shaker;
+import ip3.SwitchWindow;
+import ip3.User;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
@@ -59,16 +63,18 @@ public class LoginRegisterController implements Initializable {
     private JFXButton btnsignup;
     @FXML
     private JFXButton btnsignin;
-    @FXML
-    private TextField regusername;
-    @FXML
-    private TextField regpassword;
 
     @FXML
-    private TextField loginUsername;
+    private JFXTextField loginUsername;
 
     @FXML
-    private TextField loginPassword;
+    private JFXTextField regusername;
+
+    @FXML
+    private JFXPasswordField loginPassword;
+
+    @FXML
+    private JFXPasswordField regpassword;
 
     @FXML
     private AnchorPane layer1;
@@ -89,7 +95,114 @@ public class LoginRegisterController implements Initializable {
         regpassword.setVisible(true);
 
     }
-    
+
+    @FXML
+    private void register(MouseEvent event) throws SQLException {
+        String username = regusername.getText().trim();
+        String password = regpassword.getText().trim();
+        ArrayList<String> allUsers = new ArrayList<>();
+        SQLHandler sql = new SQLHandler();
+        allUsers = sql.getAllUsers();
+
+        checkEmpty(username, password);
+
+        //Checking if username is available
+        if (allUsers.contains(username)) {
+
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("This username is taken. Please select a new one");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+        }
+
+        //Validation for special characters
+        if (User.match(password) == true) {
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Password cannot contain special characters.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        }
+
+        if (User.match(username) == true) {
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Username cannot contain special characters.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        }
+
+        //Validation for password length
+        if ((password.length() < 8 || password.length() > 32) && (!username.isEmpty() && !password.isEmpty())) {
+
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Password must be between 8-32 characters.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+
+            return;
+
+        }
+
+        //If username and password fail all checks, else create new user
+        if (allUsers.contains(username) || User.match(password) == true || User.match(username) == true || (password.length() < 8 || password.length() > 32)
+                || username.length() < 4 || username.isEmpty() || password.isEmpty()) {
+
+            registerFailed();
+
+        } else {
+            Hash h = new Hash();
+            password = h.hash(password);
+
+            User.initialUser(username, password);
+
+            String tilte = "Sign In";
+            String message = regusername.getText();
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Welcome to StudyBudz, " + message + "!");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+
+        }
+
+    }
+
+    //failed login
     public void loginFailed() {
         Shaker shaker = new Shaker(signin);
         shaker.shake();
@@ -97,80 +210,125 @@ public class LoginRegisterController implements Initializable {
         loginUsername.requestFocus();
     }
 
+    //failed register
+    private void registerFailed() {
+        Shaker shake = new Shaker(btnsignup);
+        shake.shake();
+        regusername.requestFocus();
+        //regusername.getStyleClass().add("wrong");
+    }
+
     @FXML
-    private void login(MouseEvent event) {
+    private void login(MouseEvent event) throws SQLException {
 
         String username = loginUsername.getText().trim();
         String password = loginPassword.getText().trim();
 
+        checkEmpty(username, password);
+
         if (username.isEmpty() || password.isEmpty()) {
-            loginUsername.getStyleClass().add("wrong");
-            //animation here
-            return;
-        }
 
-        Hash h = new Hash();
-        SQLHandler sql = new SQLHandler();
-        ArrayList<String> user = sql.searchUsersTable(username);
+            loginFailed();
 
-        if (user.size() < 6) {
-            loginFailed();
-            //animation here
-            
-        } else if (!h.verifyHash(password, user.get(4))) {
-            loginFailed();
         } else {
-            login(username);
+            Hash h = new Hash();
+            SQLHandler sql = new SQLHandler();
+            ArrayList<String> user = sql.searchUsersTable(username);
+
+            if (user.size() < 6) {
+                String tilte = "Login";
+                TrayNotification tray = new TrayNotification();
+                AnimationType type = AnimationType.POPUP;
+
+                tray.setAnimationType(type);
+                tray.setTitle(tilte);
+                tray.setMessage("Username is incorrect.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+
+                registerFailed();
+
+                return;
+            } else if (!h.verifyHash(password, user.get(2))) {
+                String tilte = "Login";
+                TrayNotification tray = new TrayNotification();
+                AnimationType type = AnimationType.POPUP;
+
+                tray.setAnimationType(type);
+                tray.setTitle(tilte);
+                tray.setMessage("Password incorrect.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+
+                registerFailed();
+
+                return;
+           
+            } else {
+                System.out.println("Success");
+                login(username);
+            }
+
+        }
+    }
+
+    public void login(String user) throws SQLException {
+        User currentUser = new User(user);
+
+         SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Interests(currentUser));
+    }
+    @FXML
+    private void checkEmpty(String username, String password) {
+        if (username.isEmpty() && password.isEmpty()) {
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Username and password are empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+
+            return;
+
         }
 
-//        if("erin".equals(n1.getText())&&"password".equals(n2.getText())){
-//            String tilte = "Sign In";
-//            String message = n1.getText();
-//            TrayNotification tray = new TrayNotification();
-//            AnimationType type = AnimationType.POPUP;
-//        
-//            tray.setAnimationType(type);
-//            tray.setTitle(tilte);
-//            tray.setMessage(message);
-//            tray.setNotificationType(NotificationType.SUCCESS);
-//            tray.showAndDismiss(Duration.millis(3000));
-//        }
-//        if(!"erin".equals(n1.getText())){
-//            String tilte = "Sign In";
-//            String message = "Error Username "+"'"+n1.getText()+"'"+" Wrong";
-//            TrayNotification tray = new TrayNotification();
-//            AnimationType type = AnimationType.POPUP;
-//        
-//            tray.setAnimationType(type);
-//            tray.setTitle(tilte);
-//            tray.setMessage(message);
-//            tray.setNotificationType(NotificationType.ERROR);
-//            tray.showAndDismiss(Duration.millis(3000));
-//        }
-//        if (!"password".equals(n2.getText())){
-//            String tilte = "Sign In";
-//            String message = "Error Password " + "Wrong";
-//            TrayNotification tray = new TrayNotification();
-//            AnimationType type = AnimationType.POPUP;
-//        
-//            tray.setAnimationType(type);
-//            tray.setTitle(tilte);
-//            tray.setMessage(message);
-//            tray.setNotificationType(NotificationType.ERROR);
-//            tray.showAndDismiss(Duration.millis(3000));
-//        }
-//        if (!"erin".equals(n1.getText())&&!"password".equals(n2.getText())){
-//            String tilte = "Sign In";
-//            String message = "Error Username "+"'"+n1.getText()+"'"+", and Password " +"Wrong";
-//            TrayNotification tray = new TrayNotification();
-//            AnimationType type = AnimationType.POPUP;
-//        
-//            tray.setAnimationType(type);
-//            tray.setTitle(tilte);
-//            tray.setMessage(message);
-//            tray.setNotificationType(NotificationType.ERROR);
-//            tray.showAndDismiss(Duration.millis(3000));
-//        }
+        if (username.isEmpty()) {
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Username is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        }
+
+        if (password.isEmpty()) {
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Password is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+
+            return;
+
+        }
+
     }
 
     @FXML
@@ -242,10 +400,6 @@ public class LoginRegisterController implements Initializable {
         slide.setOnFinished((e -> {
 
         }));
-    }
-
-    @FXML
-    private void btnsignup(MouseEvent event) {
     }
 
 }
