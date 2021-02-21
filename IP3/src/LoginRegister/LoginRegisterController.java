@@ -185,7 +185,7 @@ public class LoginRegisterController implements Initializable {
             Hash h = new Hash();
             password = h.hash(password);
 
-            User.initialUser(username, password);
+           User intialUser= new User(username, password);
 
             String tilte = "Sign In";
             String message = regusername.getText();
@@ -197,7 +197,7 @@ public class LoginRegisterController implements Initializable {
             tray.setMessage("Welcome to StudyBudz, " + message + "!");
             tray.setNotificationType(NotificationType.SUCCESS);
             tray.showAndDismiss(Duration.millis(3000));
-
+            SwitchWindow.switchWindow((Stage) btnsignup.getScene().getWindow(), new Interests(intialUser));   
         }
 
     }

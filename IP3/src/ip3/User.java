@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  *
  * @author Zuby
  */
+
 public class User {
 
    
@@ -25,6 +26,7 @@ public class User {
     private final String password;
     private final String dateOfBirth;
     private final String email;
+    private final int uniId;
     private static final SQLHandler sql = new SQLHandler();
 
     public User(String user) throws SQLException {
@@ -36,21 +38,27 @@ public class User {
         surname = userInfo.get(4);
         dateOfBirth = userInfo.get(5);
         email = userInfo.get(6);
+        uniId=parseInt(userInfo.get(7));
     }
 
     
-     public static void initialUser(String username, String password) throws SQLException {
-        sql.initialUser(username, password);
+     public User(String username, String password) {
+        userid=0;
+         this.username=username;
+        this.password=password;
+        dateOfBirth = null;
+        email=null;
+        firstname=null;
+        surname=null;
+        uniId=0;
     }
 
     
-    public static void createUser(String userid, String username, String password, String firstname, String surname, String dateOfBirth, String email) throws SQLException, ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+    public static void createUser(String username, String password, String firstname, String surname, String dateOfBirth, String email, int uniId) throws SQLException, ParseException {
 
-        Date date = (Date) formatter.parse(dateOfBirth);
         //unsure of the format it'll parse it to.
 
-        sql.createUser(username, password, firstname, surname, date, email);
+        sql.createUser(username, password, firstname, surname, dateOfBirth, email,uniId);
 
     }
     
@@ -61,6 +69,27 @@ public class User {
         return valUser;
 
     }
+     public static boolean matchName(String val){
+        Pattern pattern = Pattern.compile("[^A-Za-z]");
+        Matcher match = pattern.matcher(val);
+        boolean valUser = match.find();
+        return valUser;
+
+    }
+    
+  public static boolean isValid(String email) 
+    { 
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+                            "[a-zA-Z0-9_+&*-]+)*@" + 
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
+                            "A-Z]{2,7}$"; 
+                              
+        Pattern pat = Pattern.compile(emailRegex); 
+        if (email == null) 
+            return false; 
+        return pat.matcher(email).matches(); 
+    } 
+
 
     public int getUserID() {
         return this.userid;
