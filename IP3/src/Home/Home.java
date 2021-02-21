@@ -17,7 +17,15 @@ import javafx.stage.Stage;
  */
 public class Home {
 
-    User currentUser;
+    User user;
+
+  
+
+    public Home(User currentUser) {
+           user = currentUser;
+    }
+
+   
 
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
@@ -30,7 +38,5 @@ public class Home {
         stage.centerOnScreen();
     }
 
-    public Home(User user) {
-        currentUser = user;
-    }
+   
 }
