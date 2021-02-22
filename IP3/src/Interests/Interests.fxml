@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
+   <children>
+      <JFXDatePicker fx:id="birthday" defaultColor="#11008f" layoutX="438.0" layoutY="176.0" />
+      <JFXTextField fx:id="firstName" layoutX="156.0" layoutY="102.0" />
+      <JFXTextField fx:id="userEmail" layoutX="155.0" layoutY="177.0" />
+      <JFXTextField fx:id="secondName" layoutX="439.0" layoutY="98.0" />
+      <JFXComboBox fx:id="uniChoice" layoutX="265.0" layoutY="414.0" prefHeight="25.0" prefWidth="160.0" />
+      <JFXButton fx:id="finishReg" layoutX="298.0" layoutY="607.0" onAction="#done" prefHeight="25.0" prefWidth="94.0" text="Register" />
+   </children>
+</AnchorPane>

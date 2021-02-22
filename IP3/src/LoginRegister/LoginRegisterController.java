@@ -5,6 +5,7 @@
  */
 package LoginRegister;
 
+import Home.Home;
 import Interests.Interests;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
@@ -197,7 +198,7 @@ public class LoginRegisterController implements Initializable {
             tray.setMessage("Welcome to StudyBudz, " + message + "!");
             tray.setNotificationType(NotificationType.SUCCESS);
             tray.showAndDismiss(Duration.millis(3000));
-
+            register(username);
         }
 
     }
@@ -263,7 +264,7 @@ public class LoginRegisterController implements Initializable {
                 registerFailed();
 
                 return;
-           
+
             } else {
                 System.out.println("Success");
                 login(username);
@@ -275,8 +276,18 @@ public class LoginRegisterController implements Initializable {
     public void login(String user) throws SQLException {
         User currentUser = new User(user);
 
-         SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Interests(currentUser));
+       
     }
+
+    
+
+    public void register(String user) throws SQLException {
+
+        User currentUser = new User(user);
+
+        SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Interests(currentUser));
+    }
+
     @FXML
     private void checkEmpty(String username, String password) {
         if (username.isEmpty() && password.isEmpty()) {
