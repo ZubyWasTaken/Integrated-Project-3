@@ -6,6 +6,8 @@
 package SQL;
 
 
+import ip3.Interests;
+import ip3.Categories;
 import ip3.Uni;
 import java.io.File;
 import java.io.FileInputStream;
@@ -176,6 +178,65 @@ public class SQLHandler {
             output.add((rs.getInt("id")));
             output.add((rs.getString("name")));
 
+        }
+        return output;
+}
+        public List searchCategoriesTable(String searchQuery) throws SQLException {
+
+        List output = new ArrayList<>();
+        String sql = "SELECT id, name FROM categories WHERE name = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("name")));
+
+        }
+        return output;
+}
+        public ObservableList showCategories() throws SQLException{
+        ObservableList<Categories> output = FXCollections.observableArrayList();
+        output.clear();
+
+        String sql = "SELECT * FROM categories";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            int catId = rs.getInt("id");
+            String catName = rs.getString("name");
+       output.add(new Categories(catId, catName));
+
+        }
+        query.close();
+        return output;
+    }
+        public List searchInterestsTable(String searchQuery) throws SQLException {
+
+        List output = new ArrayList<>();
+        String sql = "SELECT id, name, catId FROM interests WHERE name = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("name")));
+            output.add((rs.getInt("catId")));
+
+        }
+        return output;
+}
+        public ObservableList InterestsTable(int searchQuery) throws SQLException {
+
+        ObservableList<Interests> output = FXCollections.observableArrayList();
+        output.clear();
+        String sql = "SELECT id, name, catId FROM interests WHERE catId = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            int catId = rs.getInt("catId");
+            output.add(new Interests(id, name,catId));
         }
         return output;
 }

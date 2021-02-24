@@ -6,9 +6,13 @@
 package Interests;
 
 import SQL.SQLHandler;
+import com.jfoenix.controls.JFXComboBox;
+import ip3.Categories;
 import ip3.Shaker;
 import ip3.Uni;
 import ip3.User;
+import ip3.Interests;
+import java.awt.event.ItemEvent;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -18,6 +22,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -49,19 +56,30 @@ public class InterestController implements Initializable {
     @FXML
     Button registerBut;
     @FXML
-    ChoiceBox uniSelect;
+    JFXComboBox uniSelect;
+    @FXML
+    JFXComboBox catSelect;
+    @FXML
+    JFXComboBox intSelect;
     LocalDate date = LocalDate.now();
     ObservableList<Uni> data = FXCollections.observableArrayList();
+    ObservableList<Categories> data2 = FXCollections.observableArrayList();
+    ObservableList<Interests> data3 = FXCollections.observableArrayList();
     ObservableList<String> names = FXCollections.observableArrayList();
+    ObservableList<String> namesCat = FXCollections.observableArrayList();
+    ObservableList<String> namesInt = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
+    int uniId;
+    int catId;
     public void setData(User user) {
-        currentUser = user;
+    currentUser = user;
+    
 
     }
     @FXML
     private void register(MouseEvent event) throws SQLException, ParseException {
         String firstname, surname, username, password, email, dob;
-        int uniId;
+        
         
         firstname = getfname.getText();
         firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
@@ -109,8 +127,8 @@ public class InterestController implements Initializable {
         }
          else
          {
-             String tempcat = (String) uniSelect.getSelectionModel().getSelectedItem();
-        uniId = Uni.fetchUniId(tempcat);   
+        String tempcat = (String) uniSelect.getSelectionModel().getSelectedItem();
+        uniId = Uni.fetchUniId(tempcat);      
         User.createUser(username, password, firstname, surname, dob, email, uniId);
         System.out.println("Registered Successfully");
          }
@@ -121,6 +139,62 @@ public class InterestController implements Initializable {
         getfname.requestFocus();
         //regusername.getStyleClass().add("wrong");
     }
+    
+    private void uniPopulate() {
+         try {
+            data = sql.showUniversities();
+        } catch (SQLException ex) {
+            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Uni d:data)
+        {
+            names.add(d.getName());
+        }
+        uniSelect.setItems(names);
+    }
+   
+    private void catPopulate(){
+          try {
+            data2 = sql.showCategories();
+        } catch (SQLException ex) {
+            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Categories c:data2)
+        {
+            
+           
+            namesCat.add(c.getName());
+        }
+        catSelect.setItems(namesCat);
+}
+     private void interestPopulate(int catId){
+         namesInt.removeAll();
+         try {
+            data3 = sql.InterestsTable(catId);
+        } catch (SQLException ex) {
+            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Interests i:data3)
+        {
+            
+           
+            namesInt.add(i.getName());
+        }
+        intSelect.setItems(namesInt);
+}
+    
+    private void catSelectItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException
+    {
+        if (evt.getStateChange()== ItemEvent.SELECTED){
+            
+        String tempcat = (String) catSelect.getSelectionModel().getSelectedItem();
+        int catId = Categories.fetchCatId(tempcat); 
+        data3.removeAll();
+        interestPopulate(catId);
+        }
+    }
+   
+            
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     DatePicker maxDate = new DatePicker(); // DatePicker, used to define max date available, you can also create another for minimum date
@@ -140,20 +214,23 @@ public class InterestController implements Initializable {
 };
         // update DatePicker cell factory
         getdob.setDayCellFactory(dayCellFactory);
+       uniPopulate();
+       catPopulate();
+       catSelect.setOnAction(new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            String tempcat = (String) catSelect.getSelectionModel().getSelectedItem();
+            try {
+                 catId = Categories.fetchCatId(tempcat);
+            } catch (SQLException ex) {
+                Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-        try {
-            data = sql.showUniversities();
-        } catch (SQLException ex) {
-            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+            interestPopulate(catId);
         }
-        for (Uni d:data)
-        {
-            
-           
-            names.add(d.getName());
-        }
-        uniSelect.setItems(names);
-        }
+    });
     }
+}
+
    
 
