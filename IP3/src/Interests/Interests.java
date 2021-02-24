@@ -20,10 +20,11 @@ public class Interests extends Application {
         User currentUser;
         public void start(Stage stage) throws Exception {
       
-        Parent root = FXMLLoader.load(getClass().getResource("Interests.fxml"));
-        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Interests.fxml"));
+        Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
-        
+        InterestController controller = loader.getController();
+        controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Interests");
         stage.show();        
@@ -34,3 +35,4 @@ public class Interests extends Application {
     }
   
 }
+   

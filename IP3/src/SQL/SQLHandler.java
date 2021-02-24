@@ -6,13 +6,21 @@
 package SQL;
 
 
+import ip3.Interests;
+import ip3.Categories;
+import ip3.Uni;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 /**
@@ -23,6 +31,7 @@ public class SQLHandler {
 
     Connection conn = SQLHandler.getConn();
     PreparedStatement query;
+    FileInputStream fs = null;
 
     public SQLHandler() {
 
@@ -54,20 +63,18 @@ public class SQLHandler {
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
-    public void createUser( String username, String password, String firstname, String surname, Date dob , String email) throws SQLException {
+    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id) throws SQLException {
 
-        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid) VALUES(?,?,?,?,?,?,?)";
         query = conn.prepareStatement(sql);
-
-        
-        query.setString(1, username);
+            query.setString(1, username);
         query.setString(2, password);
         query.setString(3, firstname);
         query.setString(4, surname);
-        query.setDate(5, dob);
+        query.setString(5, dob);
         //unsure which format this date is
         query.setString(6, email);
-
+        query.setInt(7, id);
         query.executeUpdate();
         query.close();
     }
@@ -114,6 +121,19 @@ public class SQLHandler {
         return output;
     }
 
+    
+    public void addFile(String location) throws SQLException, FileNotFoundException {
+        File file = new File (location);
+        fs=new FileInputStream(file);
+        query=conn.prepareStatement("INSERT INTO FILES(ID,LOCATION,FILETOBYTE) VALUES (?,?,?)");
+        query.setString(1, "1");
+        query.setString(2,"files/uni.png" );
+        query.setBinaryStream(3,fs,(int)file.length());
+        query.executeUpdate();
+        System.out.println("Image Stored Successfully");
+        query.close();
+    }
+
     public void initialUser(String username, String password) throws SQLException {
         String sql = "INSERT INTO Users ( username, password) VALUES(?,?)";
         query = conn.prepareStatement(sql);
@@ -125,7 +145,100 @@ public class SQLHandler {
 
         query.executeUpdate();
         query.close();
+
     
     }
+    
+    public ObservableList showUniversities() throws SQLException{
+        ObservableList<Uni> output = FXCollections.observableArrayList();
+        output.clear();
+
+        String sql = "SELECT * FROM uni";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            int uniId = rs.getInt("id");
+            String uniName = rs.getString("name");
+            String uniLoc = rs.getString("location");
+        
+            output.add(new Uni(uniId, uniName, uniLoc));
+
+        }
+        query.close();
+        return output;
+    }
+        public List searchUniTable(String searchQuery) throws SQLException {
+
+        List output = new ArrayList<>();
+        String sql = "SELECT id, name FROM uni WHERE name = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("name")));
+
+        }
+        return output;
+}
+        public List searchCategoriesTable(String searchQuery) throws SQLException {
+
+        List output = new ArrayList<>();
+        String sql = "SELECT id, name FROM categories WHERE name = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("name")));
+
+        }
+        return output;
+}
+        public ObservableList showCategories() throws SQLException{
+        ObservableList<Categories> output = FXCollections.observableArrayList();
+        output.clear();
+
+        String sql = "SELECT * FROM categories";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            int catId = rs.getInt("id");
+            String catName = rs.getString("name");
+       output.add(new Categories(catId, catName));
+
+        }
+        query.close();
+        return output;
+    }
+        public List searchInterestsTable(String searchQuery) throws SQLException {
+
+        List output = new ArrayList<>();
+        String sql = "SELECT id, name, catId FROM interests WHERE name = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("name")));
+            output.add((rs.getInt("catId")));
+
+        }
+        return output;
+}
+        public ObservableList InterestsTable(int searchQuery) throws SQLException {
+
+        ObservableList<Interests> output = FXCollections.observableArrayList();
+        output.clear();
+        String sql = "SELECT id, name, catId FROM interests WHERE catId = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            int catId = rs.getInt("catId");
+            output.add(new Interests(id, name,catId));
+        }
+        return output;
+}
 }
 
