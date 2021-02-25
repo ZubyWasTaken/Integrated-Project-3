@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Home;
+package HomeTutor;
 
 import LoginRegister.LoginRegister;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
-import ip3.User;
+import ip3.Tutor;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -19,41 +19,39 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
+ * FXML Controller class
  *
- * @author Zuby
+ * @author stani
  */
-public class homeController implements Initializable {
-
+public class HomeTutorController implements Initializable {
     @FXML
     private Label labelWelcome;
-    User currentUser;
+    Tutor currentTutor;
     @FXML
     private JFXButton sgnOutBut;
-    @FXML
-    private Label username;
+    @FXML 
+    private JFXButton editBut;
     
-    public void setData(User user) {
-    currentUser = user;
+    public void setData(Tutor tutor) {
+    currentTutor = tutor;
     
+
     }
-    
-    @FXML
+ @FXML
     private void signOut(ActionEvent event){
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
     }
-    
+     @FXML
+    private void edit(ActionEvent event){
+        SwitchWindow.switchWindow((Stage) editBut.getScene().getWindow(), new EditTutor(currentTutor)); 
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
-            username.setText(currentUser.getUsername());
+    
 }
          });
     }
 }
-
-
-
-
-

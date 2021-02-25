@@ -32,6 +32,7 @@ public class Interests {
        public int getCarId(){
            return this.catId;
        }
+       /*
        public static int fetchIntId(String tempcat) throws SQLException {
         List intInfo = sql.searchInterestsTable(tempcat);
 
@@ -40,4 +41,5 @@ public class Interests {
         return tempIntId;
 
     }
+*/
 }

@@ -12,6 +12,8 @@ import ip3.Uni;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -63,9 +65,9 @@ public class SQLHandler {
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
-    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id) throws SQLException {
+    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id, int catId) throws SQLException {
 
-        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid, catid) VALUES(?,?,?,?,?,?,?,?)";
         query = conn.prepareStatement(sql);
             query.setString(1, username);
         query.setString(2, password);
@@ -75,6 +77,7 @@ public class SQLHandler {
         //unsure which format this date is
         query.setString(6, email);
         query.setInt(7, id);
+        query.setInt(8, catId);
         query.executeUpdate();
         query.close();
     }
@@ -86,6 +89,20 @@ public class SQLHandler {
 
         ArrayList<String> output = new ArrayList<>();
         String sql = "SELECT username FROM Users";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            output.add(rs.getString("Username"));
+        }
+
+        query.close();
+        return output;
+    }
+    public ArrayList getAllTutors() throws SQLException {
+
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT username FROM tutors";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
 
@@ -117,23 +134,53 @@ public class SQLHandler {
             output.add((rs.getString("dob")));
             //unsure which format this reads as
             output.add((rs.getString("email")));
+            output.add((rs.getString("uniid")));
+            output.add((rs.getString("catid")));
+        }
+        return output;
+    }
+    public ArrayList searchTutorsTable(String searchQuery) throws SQLException {
+
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT * FROM tutors WHERE Username = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getString("id")));
+            output.add((rs.getString("firstname")));
+            output.add((rs.getString("surname")));
+            output.add((rs.getString("username")));
+            output.add((rs.getString("password")));
+            output.add((rs.getString("catid")));
+            output.add((rs.getString("title")));
+            output.add((rs.getString("uniid")));
         }
         return output;
     }
 
     
-    public void addFile(String location) throws SQLException, FileNotFoundException {
-        File file = new File (location);
-        fs=new FileInputStream(file);
-        query=conn.prepareStatement("INSERT INTO FILES(ID,LOCATION,FILETOBYTE) VALUES (?,?,?)");
-        query.setString(1, "1");
-        query.setString(2,"files/uni.png" );
-        query.setBinaryStream(3,fs,(int)file.length());
-        query.executeUpdate();
-        System.out.println("Image Stored Successfully");
+    public  void addFile(byte[] photo, int tutorid) throws SQLException {
+      String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  tutor_id=\""+tutorid+"\"";
+        query = conn.prepareStatement(sql);
+            query.setBytes(1,photo);
+            query.executeUpdate();
         query.close();
     }
-
+    
+    public InputStream getImage(int tutorid) throws SQLException{
+       InputStream blob = null;
+       String sql = "SELECT filetobyte FROM profile_pics WHERE tutor_id = \"" + tutorid + "\"";
+       query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            blob = rs.getBinaryStream("filetobyte");
+           
+    }
+       
+        System.out.println("Success");
+        return blob;
+    }
+    
     public void initialUser(String username, String password) throws SQLException {
         String sql = "INSERT INTO Users ( username, password) VALUES(?,?)";
         query = conn.prepareStatement(sql);
@@ -211,6 +258,7 @@ public class SQLHandler {
         query.close();
         return output;
     }
+        /*
         public List searchInterestsTable(String searchQuery) throws SQLException {
 
         List output = new ArrayList<>();
@@ -239,6 +287,6 @@ public class SQLHandler {
             output.add(new Interests(id, name,catId));
         }
         return output;
-}
+}*/
 }
 

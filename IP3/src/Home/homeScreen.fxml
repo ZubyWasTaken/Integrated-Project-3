@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Pages.Home.homeController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
     <children>
-        <Button fx:id="buttonLogin" layoutX="808.0" layoutY="458.0" onAction="#loginButton" text="Login" />
-        <Label fx:id="labelWelcome" alignment="CENTER" layoutX="370.0" layoutY="71.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="553.0" text="Welcome">
+        <Label fx:id="labelWelcome" alignment="CENTER" layoutX="370.0" layoutY="71.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="553.0" text="Welcome back, ">
          <font>
             <Font size="28.0" />
          </font></Label>
-      <Button fx:id="buttonRegister" layoutX="363.0" layoutY="465.0" onAction="#loginButton" text="Register" />
+      <JFXButton fx:id="sgnOutBut" layoutX="1019.0" layoutY="45.0" onAction="#signOut" prefHeight="57.0" prefWidth="173.0" text="Sign Out">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </JFXButton>
+      <Label fx:id="username" alignment="CENTER" layoutX="370.0" layoutY="144.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="553.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
