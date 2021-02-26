@@ -8,7 +8,7 @@ package HomeTutor;
 import LoginRegister.LoginRegister;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
-import ip3.Tutor;
+import ip3.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -26,14 +26,14 @@ import javafx.stage.Stage;
 public class HomeTutorController implements Initializable {
     @FXML
     private Label labelWelcome;
-    Tutor currentTutor;
+    User currentUser;
     @FXML
     private JFXButton sgnOutBut;
     @FXML 
     private JFXButton editBut;
     
-    public void setData(Tutor tutor) {
-    currentTutor = tutor;
+    public void setData(User user) {
+    currentUser = user;
     
 
     }
@@ -43,7 +43,7 @@ public class HomeTutorController implements Initializable {
     }
      @FXML
     private void edit(ActionEvent event){
-        SwitchWindow.switchWindow((Stage) editBut.getScene().getWindow(), new EditTutor(currentTutor)); 
+        SwitchWindow.switchWindow((Stage) editBut.getScene().getWindow(), new EditTutor(currentUser)); 
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -28,6 +28,7 @@ public class User {
     private final String email;
     private final int uniId;
     private final int catId;
+    private final int titleId;
     private static final SQLHandler sql = new SQLHandler();
 
     public User(String user) throws SQLException {
@@ -41,6 +42,7 @@ public class User {
         email = userInfo.get(6);
         uniId=parseInt(userInfo.get(7));
         catId = parseInt(userInfo.get(8));
+        titleId=parseInt(userInfo.get(9));
     }
 
     
@@ -54,14 +56,15 @@ public class User {
         surname=null;
         uniId=0;
         catId=0;
+        titleId=0;
     }
 
     
-    public static void createUser(String username, String password, String firstname, String surname, String dateOfBirth, String email, int uniId, int catId) throws SQLException, ParseException {
+    public static void createUser(String username, String password, String firstname, String surname, String dateOfBirth, String email, int uniId, int catId, int titleId) throws SQLException, ParseException {
 
         //unsure of the format it'll parse it to.
 
-        sql.createUser(username, password, firstname, surname, dateOfBirth, email,uniId, catId);
+        sql.createUser(username, password, firstname, surname, dateOfBirth, email,uniId, catId, titleId);
 
     }
     
@@ -131,6 +134,10 @@ public class User {
      
      public String getEmail(){
          return this.email;
+     }
+     
+     public int getTitleId(){
+         return this.titleId;
      }
      
      

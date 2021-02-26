@@ -5,12 +5,11 @@
  */
 package HomeTutor;
 
-import Interests.Interests;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import ip3.SwitchWindow;
-import ip3.Tutor;
+import ip3.User;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +37,7 @@ import javafx.stage.Stage;
  * @author stani
  */
 public class EditTutorController implements Initializable {
-Tutor currentTutor;
+User currentUser;
 @FXML
 private JFXTextField showLoc;
 @FXML
@@ -53,8 +52,9 @@ private JFXButton saveBut;
 SQLHandler sql=new SQLHandler();       
 byte[] photo=null;
 String filename=null;
- public void setData(Tutor tutor) {
-    currentTutor = tutor;
+
+ public void setData(User user) {
+    currentUser=user;
     }
  @FXML
  private void upload(ActionEvent event){
@@ -82,13 +82,13 @@ String filename=null;
              bos.write(buf,0,readNum);
          }
          photo=bos.toByteArray();
-         sql.addFile(photo,currentTutor.getUserID());
+         sql.updateImage(photo,currentUser.getUserID());
          System.out.println("Success");
-         SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new EditTutor(currentTutor));   
+         SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new EditTutor(currentUser));   
  }
  @FXML 
  private void back(ActionEvent event){
-     SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentTutor));   
+     SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));   
  }
     /**
      * Initializes the controller class.
@@ -100,7 +100,7 @@ String filename=null;
             public void run() {
     try {
        
-        InputStream fs= sql.getImage(currentTutor.getUserID());
+        InputStream fs= sql.getImage(currentUser.getUserID());
         Image image = new Image(fs);
         imageShow.setImage(image);
     } catch (SQLException ex) {

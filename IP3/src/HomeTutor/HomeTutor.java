@@ -16,9 +16,6 @@ package HomeTutor;
  */
 
 
-import Home.homeController;
-import Interests.InterestController;
-import ip3.Tutor;
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +29,7 @@ import javafx.stage.Stage;
  */
 public class HomeTutor extends Application{
 
-    Tutor currentTutor;
+    User currentUser;
 
     public void start(Stage stage) throws Exception {
       
@@ -41,15 +38,15 @@ public class HomeTutor extends Application{
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
         HomeTutorController controller = loader.getController();
-        controller.setData(currentTutor);
+        controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Home");
         stage.show();        
         stage.centerOnScreen();
     }
   
- public HomeTutor(Tutor tutor) {
-        currentTutor=tutor;
+ public HomeTutor(User user) {
+        currentUser=user;
     }
 
    

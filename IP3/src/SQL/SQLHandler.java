@@ -65,9 +65,9 @@ public class SQLHandler {
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
-    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id, int catId) throws SQLException {
+    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id, int catId, int titleId) throws SQLException {
 
-        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid, catid) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid, catid, title_id) VALUES(?,?,?,?,?,?,?,?,?)";
         query = conn.prepareStatement(sql);
             query.setString(1, username);
         query.setString(2, password);
@@ -78,6 +78,7 @@ public class SQLHandler {
         query.setString(6, email);
         query.setInt(7, id);
         query.setInt(8, catId);
+        query.setInt(9, titleId);
         query.executeUpdate();
         query.close();
     }
@@ -136,31 +137,15 @@ public class SQLHandler {
             output.add((rs.getString("email")));
             output.add((rs.getString("uniid")));
             output.add((rs.getString("catid")));
+            output.add((rs.getString("title_id")));
         }
         return output;
     }
-    public ArrayList searchTutorsTable(String searchQuery) throws SQLException {
 
-        ArrayList<String> output = new ArrayList<>();
-        String sql = "SELECT * FROM tutors WHERE Username = \"" + searchQuery + "\"";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-        while (rs.next()) {
-            output.add((rs.getString("id")));
-            output.add((rs.getString("firstname")));
-            output.add((rs.getString("surname")));
-            output.add((rs.getString("username")));
-            output.add((rs.getString("password")));
-            output.add((rs.getString("catid")));
-            output.add((rs.getString("title")));
-            output.add((rs.getString("uniid")));
-        }
-        return output;
-    }
 
     
-    public  void addFile(byte[] photo, int tutorid) throws SQLException {
-      String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  tutor_id=\""+tutorid+"\"";
+    public  void updateImage(byte[] photo, int tutorid) throws SQLException {
+      String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  user_id=\""+tutorid+"\"";
         query = conn.prepareStatement(sql);
             query.setBytes(1,photo);
             query.executeUpdate();
@@ -169,7 +154,7 @@ public class SQLHandler {
     
     public InputStream getImage(int tutorid) throws SQLException{
        InputStream blob = null;
-       String sql = "SELECT filetobyte FROM profile_pics WHERE tutor_id = \"" + tutorid + "\"";
+       String sql = "SELECT filetobyte FROM profile_pics WHERE user_id = \"" + tutorid + "\"";
        query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
@@ -288,5 +273,14 @@ public class SQLHandler {
         }
         return output;
 }*/
+
+    public void addImage(byte[] photo, int userID) throws SQLException {
+        String sql = "INSERT INTO  profile_pics (filetobyte,user_id) VALUES (?,?)";
+        query = conn.prepareStatement(sql);
+            query.setBytes(1,photo);
+            query.setInt(2,userID);
+            query.executeUpdate();
+        query.close();
+    }
 }
 

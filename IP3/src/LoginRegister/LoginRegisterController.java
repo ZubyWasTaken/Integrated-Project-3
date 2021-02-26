@@ -15,14 +15,11 @@ import com.jfoenix.controls.JFXTextField;
 import ip3.Hash;
 import ip3.Shaker;
 import ip3.SwitchWindow;
-import ip3.Tutor;
 import ip3.User;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,6 +38,7 @@ import tray.notification.TrayNotification;
  */
 public class LoginRegisterController implements Initializable {
 
+    //FXML declaration
     @FXML
     private AnchorPane layer2;
     @FXML
@@ -63,32 +61,25 @@ public class LoginRegisterController implements Initializable {
     private Label a2;
     @FXML
     private Label b2;
-
     @FXML
     private JFXButton btnsignup;
     @FXML
     private JFXButton btnsignin;
-
     @FXML
     private JFXTextField loginUsername;
-
     @FXML
     private JFXTextField regusername;
-
     @FXML
     private JFXPasswordField loginPassword;
-
     @FXML
     private JFXPasswordField regpassword;
-
     @FXML
     private AnchorPane layer1;
-    
-
-    
-     ArrayList<String> allUsers = new ArrayList<>();
-     ArrayList<String> allTutors = new ArrayList<>();
+   
+    //Other variables declaration
+    ArrayList<String> allUsers = new ArrayList<>();
     SQLHandler sql = new SQLHandler();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -112,12 +103,12 @@ public class LoginRegisterController implements Initializable {
         String username = regusername.getText().trim();
         String password = regpassword.getText().trim();
         allUsers=sql.getAllUsers();
-        allTutors = sql.getAllTutors();
+        
         //validation to check fields are not empty
         checkEmpty(username,password);
 
         //Checking if username is available (both in tutors and student)
-        if (allUsers.contains(username)||allTutors.contains(username)) {
+        if (allUsers.contains(username)) {
 
             String tilte = "Register";
             TrayNotification tray = new TrayNotification();
@@ -218,8 +209,8 @@ public class LoginRegisterController implements Initializable {
         checkEmpty(username, password);
         Hash h = new Hash();
         allUsers = sql.searchUsersTable(username);
-        allTutors = sql.searchTutorsTable(username);
-            if (allUsers.contains(username)){
+        
+           
             if (allUsers.size() < 6){
                 String tilte = "Login";
                 TrayNotification tray = new TrayNotification();
@@ -253,38 +244,34 @@ public class LoginRegisterController implements Initializable {
              
                 login(username);
                 System.out.println("Success");  
+                String tilte = "Login";
+                TrayNotification tray = new TrayNotification();
+                AnimationType type = AnimationType.POPUP;
+                tray.setAnimationType(type);
+                tray.setTitle(tilte);
+                tray.setMessage("Welcome Back, " + username);
+                tray.setNotificationType(NotificationType.SUCCESS);
+                tray.showAndDismiss(Duration.millis(3000));
                 }
-            }
-           
-            if (allTutors.contains(username)){
-               loginTutor(username);
-               System.out.println("Success");
-               }
-            String tilte = "Login";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage("Welcome Back, " + username);
-            tray.setNotificationType(NotificationType.SUCCESS);
-            tray.showAndDismiss(Duration.millis(3000));
+     
+            
     
     }
  
+   
+    
     private void login(String user) throws SQLException {
         
         User currentUser = new User(user);
-        SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Home(currentUser)); 
+        if (currentUser.getTitleId()==1) {
+            SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Home(currentUser));
+        } else {
+            SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new HomeTutor(currentUser));
+        }
+        
         
        
     }
-    private void loginTutor(String user) throws SQLException{
-        Tutor currentTutor = new Tutor(user);
-        SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new HomeTutor(currentTutor)); 
-    }
-
-    
 
     public void register(String user) throws SQLException {
 

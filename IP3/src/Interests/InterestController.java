@@ -17,6 +17,11 @@ import ip3.Shaker;
 import ip3.Uni;
 import ip3.User;
 import ip3.SwitchWindow;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -71,6 +76,7 @@ public class InterestController implements Initializable {
      String firstname, surname, username, password, email, dob;
     int uniId;
     int catId;
+    int title_id = 1;
     User currentUser;
     
     public void setData(User user) {
@@ -78,7 +84,7 @@ public class InterestController implements Initializable {
     }
     
     @FXML
-    private void register(ActionEvent event) throws SQLException, ParseException {
+    private void register(ActionEvent event) throws SQLException, ParseException, IOException {
  
         
         firstname = getfname.getText();
@@ -142,7 +148,7 @@ public class InterestController implements Initializable {
          else
          {
             uniId=User.getUniId(email);
-            User.createUser(username, password, firstname, surname, dob, email, uniId, catId);
+            User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
             String message = username;
             TrayNotification tray = new TrayNotification();
             AnimationType type = AnimationType.POPUP;
@@ -153,6 +159,7 @@ public class InterestController implements Initializable {
             tray.setNotificationType(NotificationType.SUCCESS);
             tray.showAndDismiss(Duration.millis(3000));
             User user = new User(username);
+            setImage(username);
              SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
          }
 }
@@ -160,6 +167,19 @@ public class InterestController implements Initializable {
         Shaker shake = new Shaker(registerBut);
         shake.shake();
         getfname.requestFocus();
+    }
+    
+    private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
+        User user = new User(username);
+        File image = new File ("C:\\Users\\stani\\Desktop\\Integrated-Project-3\\IP3\\src\\SQL\\files\\noPic.png");
+         FileInputStream fis = new FileInputStream(image);
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         byte[] buf = new byte[1024];
+         for (int readNum; (readNum=fis.read(buf))!=-1;){
+             bos.write(buf,0,readNum);
+         }
+         byte[] photo=bos.toByteArray();
+         sql.addImage(photo,user.getUserID());
     }
     
     @FXML
