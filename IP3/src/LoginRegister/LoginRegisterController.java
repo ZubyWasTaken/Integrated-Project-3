@@ -6,6 +6,7 @@
 package LoginRegister;
 
 import Home.Home;
+import HomeTutor.HomeTutor;
 import Interests.Interests;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
@@ -37,6 +38,7 @@ import tray.notification.TrayNotification;
  */
 public class LoginRegisterController implements Initializable {
 
+    //FXML declaration
     @FXML
     private AnchorPane layer2;
     @FXML
@@ -59,55 +61,53 @@ public class LoginRegisterController implements Initializable {
     private Label a2;
     @FXML
     private Label b2;
-
     @FXML
     private JFXButton btnsignup;
     @FXML
     private JFXButton btnsignin;
-
     @FXML
     private JFXTextField loginUsername;
-
     @FXML
     private JFXTextField regusername;
-
     @FXML
     private JFXPasswordField loginPassword;
-
     @FXML
     private JFXPasswordField regpassword;
-
     @FXML
     private AnchorPane layer1;
-
+   
+    //Other variables declaration
+    ArrayList<String> allUsers = new ArrayList<>();
+    SQLHandler sql = new SQLHandler();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        s1.setVisible(false);
-        s2.setVisible(false);
-        s3.setVisible(false);
-        signup.setVisible(false);
-
-        b2.setVisible(false);
-        btnsignin.setVisible(false);
-        loginUsername.setVisible(false);
-        loginPassword.setVisible(false);
-
-        regusername.setVisible(true);
-        regpassword.setVisible(true);
-
+        
+            s1.setVisible(false);
+            s2.setVisible(false);
+            s3.setVisible(false);
+            signup.setVisible(false);
+            
+            b2.setVisible(false);
+            btnsignin.setVisible(false);
+            loginUsername.setVisible(false);
+            loginPassword.setVisible(false);
+            
+            regusername.setVisible(true);
+            regpassword.setVisible(true);
+        
     }
 
     @FXML
     private void register(MouseEvent event) throws SQLException {
         String username = regusername.getText().trim();
         String password = regpassword.getText().trim();
-        ArrayList<String> allUsers = new ArrayList<>();
-        SQLHandler sql = new SQLHandler();
-        allUsers = sql.getAllUsers();
+        allUsers=sql.getAllUsers();
+        
+        //validation to check fields are not empty
+        checkEmpty(username,password);
 
-        checkEmpty(username, password);
-
-        //Checking if username is available
+        //Checking if username is available (both in tutors and student)
         if (allUsers.contains(username)) {
 
             String tilte = "Register";
@@ -175,29 +175,10 @@ public class LoginRegisterController implements Initializable {
             return;
 
         }
-
-        //If username and password fail all checks, else create new user
-        if (allUsers.contains(username) || User.match(password) == true || User.match(username) == true || (password.length() < 8 || password.length() > 32)
-                || username.length() < 4 || username.isEmpty() || password.isEmpty()) {
-
-            registerFailed();
-
-        } else {
+         else {
             Hash h = new Hash();
             password = h.hash(password);
-
-           User intialUser= new User(username, password);
-
-            String tilte = "Sign In";
-            String message = regusername.getText();
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage("Welcome to StudyBudz, " + message + "!");
-            tray.setNotificationType(NotificationType.SUCCESS);
-            tray.showAndDismiss(Duration.millis(3000));
+            User intialUser= new User(username, password);
             SwitchWindow.switchWindow((Stage) btnsignup.getScene().getWindow(), new Interests(intialUser));   
         }
 
@@ -224,19 +205,13 @@ public class LoginRegisterController implements Initializable {
 
         String username = loginUsername.getText().trim();
         String password = loginPassword.getText().trim();
-
+        
         checkEmpty(username, password);
-
-        if (username.isEmpty() || password.isEmpty()) {
-
-            loginFailed();
-
-        } else {
-            Hash h = new Hash();
-            SQLHandler sql = new SQLHandler();
-            ArrayList<String> user = sql.searchUsersTable(username);
-
-            if (user.size() < 6) {
+        Hash h = new Hash();
+        allUsers = sql.searchUsersTable(username);
+        
+           
+            if (allUsers.size() < 6){
                 String tilte = "Login";
                 TrayNotification tray = new TrayNotification();
                 AnimationType type = AnimationType.POPUP;
@@ -247,10 +222,10 @@ public class LoginRegisterController implements Initializable {
                 tray.setNotificationType(NotificationType.ERROR);
                 tray.showAndDismiss(Duration.millis(3000));
 
-                registerFailed();
+                loginFailed();
 
                 return;
-            } else if (!h.verifyHash(password, user.get(2))) {
+            } else if (!h.verifyHash(password, allUsers.get(2))) {
                 String tilte = "Login";
                 TrayNotification tray = new TrayNotification();
                 AnimationType type = AnimationType.POPUP;
@@ -261,25 +236,42 @@ public class LoginRegisterController implements Initializable {
                 tray.setNotificationType(NotificationType.ERROR);
                 tray.showAndDismiss(Duration.millis(3000));
 
-                registerFailed();
+                loginFailed();
 
                 return;
 
             } else {
-                System.out.println("Success");
+             
                 login(username);
-            }
-
-        }
+                System.out.println("Success");  
+                String tilte = "Login";
+                TrayNotification tray = new TrayNotification();
+                AnimationType type = AnimationType.POPUP;
+                tray.setAnimationType(type);
+                tray.setTitle(tilte);
+                tray.setMessage("Welcome Back, " + username);
+                tray.setNotificationType(NotificationType.SUCCESS);
+                tray.showAndDismiss(Duration.millis(3000));
+                }
+     
+            
+    
     }
-
-    public void login(String user) throws SQLException {
+ 
+   
+    
+    private void login(String user) throws SQLException {
+        
         User currentUser = new User(user);
-
+        if (currentUser.getTitleId()==1) {
+            SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Home(currentUser));
+        } else {
+            SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new HomeTutor(currentUser));
+        }
+        
+        
        
     }
-
-    
 
     public void register(String user) throws SQLException {
 
@@ -290,7 +282,7 @@ public class LoginRegisterController implements Initializable {
 
     @FXML
     private void checkEmpty(String username, String password) {
-        if (username.isEmpty() && password.isEmpty()) {
+        if (username.isEmpty()) {
             String tilte = "Register";
             TrayNotification tray = new TrayNotification();
             AnimationType type = AnimationType.POPUP;
@@ -338,8 +330,7 @@ public class LoginRegisterController implements Initializable {
 
             return;
 
-        }
-
+    }
     }
 
     @FXML

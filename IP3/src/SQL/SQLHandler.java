@@ -12,6 +12,8 @@ import ip3.Uni;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -42,10 +44,12 @@ public class SQLHandler {
     //----------------------//
     public static Connection getConn() {
 
-        String url = "jdbc:sqlite:src/SQL/ip3.db";
+        String url = "jdbc:mysql://139.59.171.16/ip3";
+        String username = "ip3";
+        String password = "password";
         Connection conn;
         try {
-            conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -63,9 +67,9 @@ public class SQLHandler {
     //-----------------------------//
     // ADD NEW DATA TO USERS TABLE //
     //-----------------------------//
-    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id) throws SQLException {
+    public void createUser( String username, String password, String firstname, String surname, String dob , String email, int id, int catId, int titleId) throws SQLException {
 
-        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users ( username, password, firstname, surname, dob, email, uniid, catid, title_id) VALUES(?,?,?,?,?,?,?,?,?)";
         query = conn.prepareStatement(sql);
             query.setString(1, username);
         query.setString(2, password);
@@ -75,6 +79,8 @@ public class SQLHandler {
         //unsure which format this date is
         query.setString(6, email);
         query.setInt(7, id);
+        query.setInt(8, catId);
+        query.setInt(9, titleId);
         query.executeUpdate();
         query.close();
     }
@@ -86,6 +92,20 @@ public class SQLHandler {
 
         ArrayList<String> output = new ArrayList<>();
         String sql = "SELECT username FROM Users";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            output.add(rs.getString("Username"));
+        }
+
+        query.close();
+        return output;
+    }
+    public ArrayList getAllTutors() throws SQLException {
+
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT username FROM tutors";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
 
@@ -117,23 +137,37 @@ public class SQLHandler {
             output.add((rs.getString("dob")));
             //unsure which format this reads as
             output.add((rs.getString("email")));
+            output.add((rs.getString("uniid")));
+            output.add((rs.getString("catid")));
+            output.add((rs.getString("title_id")));
         }
         return output;
     }
 
+
     
-    public void addFile(String location) throws SQLException, FileNotFoundException {
-        File file = new File (location);
-        fs=new FileInputStream(file);
-        query=conn.prepareStatement("INSERT INTO FILES(ID,LOCATION,FILETOBYTE) VALUES (?,?,?)");
-        query.setString(1, "1");
-        query.setString(2,"files/uni.png" );
-        query.setBinaryStream(3,fs,(int)file.length());
-        query.executeUpdate();
-        System.out.println("Image Stored Successfully");
+    public  void updateImage(byte[] photo, int tutorid) throws SQLException {
+      String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  user_id=\""+tutorid+"\"";
+        query = conn.prepareStatement(sql);
+            query.setBytes(1,photo);
+            query.executeUpdate();
         query.close();
     }
-
+    
+    public InputStream getImage(int tutorid) throws SQLException{
+       InputStream blob = null;
+       String sql = "SELECT filetobyte FROM profile_pics WHERE user_id = \"" + tutorid + "\"";
+       query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            blob = rs.getBinaryStream("filetobyte");
+           
+    }
+       
+        System.out.println("Success");
+        return blob;
+    }
+    
     public void initialUser(String username, String password) throws SQLException {
         String sql = "INSERT INTO Users ( username, password) VALUES(?,?)";
         query = conn.prepareStatement(sql);
@@ -211,6 +245,7 @@ public class SQLHandler {
         query.close();
         return output;
     }
+        /*
         public List searchInterestsTable(String searchQuery) throws SQLException {
 
         List output = new ArrayList<>();
@@ -239,6 +274,15 @@ public class SQLHandler {
             output.add(new Interests(id, name,catId));
         }
         return output;
-}
+}*/
+
+    public void addImage(byte[] photo, int userID) throws SQLException {
+        String sql = "INSERT INTO  profile_pics (filetobyte,user_id) VALUES (?,?)";
+        query = conn.prepareStatement(sql);
+            query.setBytes(1,photo);
+            query.setInt(2,userID);
+            query.executeUpdate();
+        query.close();
+    }
 }
 

@@ -5,14 +5,23 @@
  */
 package Interests;
 
+import Home.Home;
+import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import ip3.Categories;
 import ip3.Shaker;
 import ip3.Uni;
 import ip3.User;
-import ip3.Interests;
-import java.awt.event.ItemEvent;
+import ip3.SwitchWindow;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -27,12 +36,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import tray.animations.AnimationType;
@@ -44,46 +50,45 @@ import tray.notification.TrayNotification;
  * @author erino
  */
 public class InterestController implements Initializable {
-    User currentUser;
+    //FXML//
     @FXML
-    TextField getfname;
+    JFXTextField getfname;
     @FXML
-    TextField getsurname;
+    JFXTextField getsurname;
     @FXML
-    TextField getemail;
+    JFXTextField getemail;
     @FXML
-    DatePicker getdob;
+    JFXDatePicker getdob;
     @FXML
-    Button registerBut;
-    @FXML
-    JFXComboBox uniSelect;
+    JFXButton registerBut;
     @FXML
     JFXComboBox catSelect;
     @FXML
-    JFXComboBox intSelect;
+    JFXButton cancelBut;
+    
+    //Variables//
     LocalDate date = LocalDate.now();
     ObservableList<Uni> data = FXCollections.observableArrayList();
     ObservableList<Categories> data2 = FXCollections.observableArrayList();
-    ObservableList<Interests> data3 = FXCollections.observableArrayList();
     ObservableList<String> names = FXCollections.observableArrayList();
     ObservableList<String> namesCat = FXCollections.observableArrayList();
-    ObservableList<String> namesInt = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
+     String firstname, surname, username, password, email, dob;
     int uniId;
     int catId;
+    int title_id = 1;
+    User currentUser;
+    
     public void setData(User user) {
     currentUser = user;
-    
-
     }
+    
     @FXML
-    private void register(MouseEvent event) throws SQLException, ParseException {
-        String firstname, surname, username, password, email, dob;
-        
+    private void register(ActionEvent event) throws SQLException, ParseException, IOException {
+ 
         
         firstname = getfname.getText();
         firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
-
         surname = getsurname.getText();
         surname = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase();
         username = currentUser.getUsername();
@@ -125,34 +130,65 @@ public class InterestController implements Initializable {
             return;
 
         }
+        if(dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty() ){
+            String tilte = "Register";
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle(tilte);
+            tray.setMessage("Please enter all details");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+        }
+       
          else
          {
-        String tempcat = (String) uniSelect.getSelectionModel().getSelectedItem();
-        uniId = Uni.fetchUniId(tempcat);      
-        User.createUser(username, password, firstname, surname, dob, email, uniId);
-        System.out.println("Registered Successfully");
+            uniId=User.getUniId(email);
+            User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
+            String message = username;
+            TrayNotification tray = new TrayNotification();
+            AnimationType type = AnimationType.POPUP;
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Welcome to StudyBudz, " + message + "!");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+            User user = new User(username);
+            setImage(username);
+             SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
          }
 }
     private void registerFailed() {
         Shaker shake = new Shaker(registerBut);
         shake.shake();
         getfname.requestFocus();
-        //regusername.getStyleClass().add("wrong");
     }
     
-    private void uniPopulate() {
-         try {
-            data = sql.showUniversities();
-        } catch (SQLException ex) {
-            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (Uni d:data)
-        {
-            names.add(d.getName());
-        }
-        uniSelect.setItems(names);
+    private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
+        User user = new User(username);
+        File image = new File ("C:\\Users\\stani\\Desktop\\Integrated-Project-3\\IP3\\src\\SQL\\files\\noPic.png");
+         FileInputStream fis = new FileInputStream(image);
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         byte[] buf = new byte[1024];
+         for (int readNum; (readNum=fis.read(buf))!=-1;){
+             bos.write(buf,0,readNum);
+         }
+         byte[] photo=bos.toByteArray();
+         sql.addImage(photo,user.getUserID());
     }
-   
+    
+    @FXML
+    private void cancel(ActionEvent event){
+        SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new LoginRegister()); 
+    }
+  
+    
+    //Adding categories for selection
     private void catPopulate(){
           try {
             data2 = sql.showCategories();
@@ -161,43 +197,14 @@ public class InterestController implements Initializable {
         }
         for (Categories c:data2)
         {
-            
-           
             namesCat.add(c.getName());
         }
         catSelect.setItems(namesCat);
 }
-     private void interestPopulate(int catId){
-         namesInt.removeAll();
-         try {
-            data3 = sql.InterestsTable(catId);
-        } catch (SQLException ex) {
-            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (Interests i:data3)
-        {
-            
-           
-            namesInt.add(i.getName());
-        }
-        intSelect.setItems(namesInt);
-}
-    
-    private void catSelectItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException
-    {
-        if (evt.getStateChange()== ItemEvent.SELECTED){
-            
-        String tempcat = (String) catSelect.getSelectionModel().getSelectedItem();
-        int catId = Categories.fetchCatId(tempcat); 
-        data3.removeAll();
-        interestPopulate(catId);
-        }
-    }
-   
-            
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    DatePicker maxDate = new DatePicker(); // DatePicker, used to define max date available, you can also create another for minimum date
+    DatePicker maxDate = new DatePicker(); // DatePicker, used to define max date available
     maxDate.setValue(date); // Max date available will be now
     final Callback<DatePicker, DateCell> dayCellFactory;
 
@@ -214,8 +221,9 @@ public class InterestController implements Initializable {
 };
         // update DatePicker cell factory
         getdob.setDayCellFactory(dayCellFactory);
-       uniPopulate();
        catPopulate();
+       
+       //Getting the id for the selected cateogry
        catSelect.setOnAction(new EventHandler() {
         @Override
         public void handle(Event event) {
@@ -226,10 +234,12 @@ public class InterestController implements Initializable {
                 Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            interestPopulate(catId);
         }
     });
+
+    
     }
+    
 }
 
    

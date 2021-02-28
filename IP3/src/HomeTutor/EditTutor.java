@@ -3,9 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Home;
+package HomeTutor;
 
-import Interests.InterestController;
+/**
+ *
+ * @author stani
+ */
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,17 +27,17 @@ import javafx.stage.Stage;
  *
  * @author Zuby
  */
-public class Home extends Application{
+public class EditTutor extends Application{
 
     User currentUser;
 
     public void start(Stage stage) throws Exception {
       
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("editTutor.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
-        homeController controller = loader.getController();
+        EditTutorController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Home");
@@ -35,7 +45,7 @@ public class Home extends Application{
         stage.centerOnScreen();
     }
   
- public Home(User user) {
+ public EditTutor(User user) {
         currentUser=user;
     }
 
