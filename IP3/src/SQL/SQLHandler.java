@@ -44,10 +44,12 @@ public class SQLHandler {
     //----------------------//
     public static Connection getConn() {
 
-        String url = "jdbc:sqlite:src/SQL/ip3.db";
+        String url = "jdbc:mysql://139.59.171.16/ip3";
+        String username = "ip3";
+        String password = "password";
         Connection conn;
         try {
-            conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
