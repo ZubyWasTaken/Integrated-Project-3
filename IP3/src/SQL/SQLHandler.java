@@ -6,14 +6,10 @@
 package SQL;
 
 
-import ip3.Interests;
 import ip3.Categories;
 import ip3.Uni;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
