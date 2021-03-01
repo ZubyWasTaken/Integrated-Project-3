@@ -5,6 +5,9 @@
  */
 package Home;
 
+import Chat.Chat;
+
+import Interests.Interests;
 import LoginRegister.LoginRegister;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
@@ -23,17 +26,21 @@ import javafx.stage.Stage;
  * @author Zuby
  */
 public class homeController implements Initializable {
-
+   
     @FXML
     private Label labelWelcome;
     User currentUser;
     @FXML
     private JFXButton sgnOutBut;
+    
+     @FXML
+    private JFXButton chat;
     @FXML
     private Label username;
     
     public void setData(User user) {
     currentUser = user;
+  
     
     }
     
@@ -42,8 +49,17 @@ public class homeController implements Initializable {
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
     }
     
+    @FXML
+    private void viewChats(ActionEvent event){
+       
+        SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser)); 
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
+  
+        
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
