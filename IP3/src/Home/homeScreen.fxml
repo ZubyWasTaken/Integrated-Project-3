@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
     <children>
         <Label fx:id="labelWelcome" alignment="CENTER" layoutX="370.0" layoutY="71.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="553.0" text="Welcome back, ">
          <font>
@@ -21,5 +21,6 @@
             <Font size="28.0" />
          </font>
       </Label>
+      <JFXButton fx:id="chat" layoutX="142.0" layoutY="291.0" onAction="#viewChats" text="Chat" />
     </children>
 </AnchorPane>
