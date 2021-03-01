@@ -44,7 +44,7 @@ public class SQLHandler {
     //----------------------//
     public static Connection getConn() {
 
-        String url = "jdbc:mysql://139.59.171.16/ip3";
+        String url = "jdbc:mysql://139.59.171.16/ip3dev";
         String username = "ip3";
         String password = "password";
         Connection conn;
