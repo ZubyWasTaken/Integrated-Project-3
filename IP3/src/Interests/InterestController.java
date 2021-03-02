@@ -149,7 +149,7 @@ public class InterestController implements Initializable {
        
          else
          {
-            uniId=User.getUniId(email);
+            uniId=User.fetchUniId(email);
             User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
             String message = username;
             TrayNotification tray = new TrayNotification();
@@ -162,7 +162,7 @@ public class InterestController implements Initializable {
             tray.showAndDismiss(Duration.millis(3000));
             User user = new User(username);
             setImage(username);
-             SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
+            SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
          }
 }
     private void registerFailed() {

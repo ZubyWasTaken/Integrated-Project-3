@@ -280,5 +280,54 @@ public class SQLHandler {
             query.executeUpdate();
         query.close();
     }
+
+   
+    public void updateUsername(int userID, String username) throws SQLException {
+        String sql = "UPDATE Users SET username=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,username);
+            query.executeUpdate();
+        query.close();
+    }
+
+    public void editPassword(int userID, String password) throws SQLException {
+        String sql = "UPDATE Users SET password=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,password);
+            query.executeUpdate();
+        query.close();
+    }
+
+    public void updateFirstname(int userID, String firstname) throws SQLException {
+         String sql = "UPDATE Users SET firstname=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,firstname);
+            query.executeUpdate();
+        query.close();
+    }
+    public void updateSurname(int userID, String surname) throws SQLException {
+         String sql = "UPDATE Users SET sruname=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,surname);
+            query.executeUpdate();
+        query.close();
+    }
+    public void updateEmail(int userID, String email) throws SQLException {
+         String sql = "UPDATE Users SET email=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,email);
+        
+            query.executeUpdate();
+        query.close();
+    }
+     
+
+    public void updateUni(int userID, int uniId) throws SQLException {
+        String sql = "UPDATE Users SET uniid=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+        query.setInt(1,uniId);
+        query.executeUpdate();
+        query.close();
+    }
 }
 
