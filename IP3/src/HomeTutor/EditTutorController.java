@@ -35,7 +35,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
@@ -157,11 +156,11 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
  }
  
  @FXML
- private void returnToAcc(ActionEvent event){
-     tp.getSelectionModel().select(accTab);
+ private void returnToAcc(Event event) throws SQLException{
+
  }
   @FXML
- private void returnToPersonal(ActionEvent event){
+ private void returnToPersonal(Event event){
      tp.getSelectionModel().select(personalTab);
  }
  
@@ -189,6 +188,7 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
         tp.getSelectionModel().select(accTab);
         InputStream fs= sql.getImage(currentUser.getUserID());
         Image image = new Image(fs);
+        
         imageShow.setImage(image);
         username.setText(currentUser.getUsername());
         fname.setText(currentUser.getFirstname());
