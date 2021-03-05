@@ -6,7 +6,9 @@
 package SQL;
 
 
+import com.jfoenix.controls.JFXTextArea;
 import ip3.Categories;
+import ip3.Question;
 import ip3.Uni;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -98,23 +100,7 @@ public class SQLHandler {
         query.close();
         return output;
     }
-    public ArrayList getAllTutors() throws SQLException {
 
-        ArrayList<String> output = new ArrayList<>();
-        String sql = "SELECT username FROM tutors";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-
-        while (rs.next()) {
-            output.add(rs.getString("Username"));
-        }
-
-        query.close();
-        return output;
-    }
-
-    
-    
     //------------------------------------//
     // GET A SPECIFIC USER FROM USERS TABLE //
     //------------------------------------//
@@ -140,8 +126,10 @@ public class SQLHandler {
         return output;
     }
 
-
-    
+    //------------------//
+   //UPDATE PROFILE PIC//
+  //------------------//
+   
     public  void updateImage(byte[] photo, int tutorid) throws SQLException {
       String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  user_id=\""+tutorid+"\"";
         query = conn.prepareStatement(sql);
@@ -149,6 +137,11 @@ public class SQLHandler {
             query.executeUpdate();
         query.close();
     }
+    
+    //------------------//
+   //LOAD PROFILE PIC  //
+  //------------------//
+   
     
     public InputStream getImage(int tutorid) throws SQLException{
        InputStream blob = null;
@@ -178,7 +171,10 @@ public class SQLHandler {
 
     
     }
-    
+    //------------------//
+   //LOAD UNIS         //
+  //------------------//
+   
     public ObservableList showUniversities() throws SQLException{
         ObservableList<Uni> output = FXCollections.observableArrayList();
         output.clear();
@@ -198,6 +194,11 @@ public class SQLHandler {
         query.close();
         return output;
     }
+    
+    //------------------//
+   //GET A SPECIFIC UNI//
+  //------------------//
+   
         public List searchUniTable(String searchQuery) throws SQLException {
 
         List output = new ArrayList<>();
@@ -211,6 +212,11 @@ public class SQLHandler {
         }
         return output;
 }
+        
+    //------------------//
+   //GET A SPECIFIC CATEGORY//
+  //------------------//
+   
         public List searchCategoriesTable(String searchQuery) throws SQLException {
 
         List output = new ArrayList<>();
@@ -224,6 +230,11 @@ public class SQLHandler {
         }
         return output;
 }
+        
+     //------------------//
+   //LOAD ALL CATEGORIES//
+  //------------------//
+   
         public ObservableList showCategories() throws SQLException{
         ObservableList<Categories> output = FXCollections.observableArrayList();
         output.clear();
@@ -271,13 +282,186 @@ public class SQLHandler {
         }
         return output;
 }*/
-
+    //------------------//
+   //ADD A PROFILE PIC//
+  //------------------//
+   
     public void addImage(byte[] photo, int userID) throws SQLException {
         String sql = "INSERT INTO  profile_pics (filetobyte,user_id) VALUES (?,?)";
         query = conn.prepareStatement(sql);
             query.setBytes(1,photo);
             query.setInt(2,userID);
             query.executeUpdate();
+        query.close();
+    }
+
+       //------------------//
+   //UPDATE USERNAME//
+  //------------------//
+   
+    public void updateUsername(int userID, String username) throws SQLException {
+        String sql = "UPDATE Users SET username=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,username);
+            query.executeUpdate();
+        query.close();
+    }
+    
+    //------------------//
+   //UPDATE PASSWORD//
+  //------------------//
+   
+    public void editPassword(int userID, String password) throws SQLException {
+        String sql = "UPDATE Users SET password=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,password);
+            query.executeUpdate();
+        query.close();
+    }
+    
+        //------------------//
+   //UPDATE FIRST NAME//
+  //------------------//
+   
+
+    public void updateFirstname(int userID, String firstname) throws SQLException {
+         String sql = "UPDATE Users SET firstname=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,firstname);
+            query.executeUpdate();
+        query.close();
+    }
+    
+        //------------------//
+   //UPDATE SURNAME//
+  //------------------//
+   
+    
+    public void updateSurname(int userID, String surname) throws SQLException {
+         String sql = "UPDATE Users SET sruname=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,surname);
+            query.executeUpdate();
+        query.close();
+    }
+    
+        //------------------//
+   //UPDATE EMAIL//
+  //------------------//
+   
+    public void updateEmail(int userID, String email) throws SQLException {
+         String sql = "UPDATE Users SET email=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+            query.setString(1,email);
+        
+            query.executeUpdate();
+        query.close();
+    }
+    
+         //------------------//
+   //UPDATE UNI//
+  //------------------//
+   
+
+    public void updateUni(int userID, int uniId) throws SQLException {
+        String sql = "UPDATE Users SET uniid=? WHERE  id=\""+userID+"\"";
+        query = conn.prepareStatement(sql);
+        query.setInt(1,uniId);
+        query.executeUpdate();
+        query.close();
+    }
+
+    //-----------------------------------====//
+   //GET A SPECIFIC QUESTION                //
+  //---------------------------------------//
+   
+    public List searchQuestions(String quest) throws SQLException {
+        List output = new ArrayList<>();
+       String sql = "SELECT * FROM Questions WHERE text = \"" + quest + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getInt("cat_id")));
+            output.add((rs.getString("text")));
+            output.add((rs.getInt("user_id")));
+
+        }
+        return output;
+        
+    }
+
+        //------------------//
+   //ADD A NEW QUESTION//
+  //------------------//
+   
+    
+    public void createQuestion( int cat_id, String text, int sender) throws SQLException {
+        String sql = "INSERT INTO Questions ( cat_id, text, user_id) VALUES(?,?,?)";
+        query = conn.prepareStatement(sql);
+        query.setInt(1, cat_id);
+        query.setString(2, text);
+        query.setInt(3, sender);
+        query.executeUpdate();
+        query.close();
+    }
+
+    public ArrayList<String> searchReplies(int quest_id) throws SQLException {
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT * FROM Replies WHERE quest_id = \"" + quest_id + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getString("id")));
+            output.add((rs.getString("quest_id")));
+            output.add((rs.getString("text")));
+            output.add((rs.getString("user_id")));
+        }
+        return output;
+    }
+    
+    
+        //------------------//
+   //ADD A NEW REPLY//
+  //------------------//
+   
+    
+    public void createReply( int quest_id, String text, int replier) throws SQLException {
+        String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
+        query = conn.prepareStatement(sql);
+        query.setInt(1, quest_id);
+        query.setString(2, text);
+        query.setInt(3, replier);
+        query.executeUpdate();
+        query.close();
+    }
+    
+    public ObservableList showQuestionsTable(int cat_id) throws SQLException {
+
+        ObservableList<Question> output = FXCollections.observableArrayList();
+        output.clear();
+
+        String sql = "SELECT * FROM Questions WHERE cat_id=\"" + cat_id + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            int question_id = rs.getInt("id");
+            int category_id = rs.getInt("cat_id");
+            String question = rs.getString("text");
+            int sender = rs.getInt("user_id");
+            output.add(new Question(question_id, category_id, question, sender));
+        }
+        query.close();
+        return output;
+}
+
+    public void addReply(String replyText, int id, int userID) throws SQLException {
+       String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
+        query = conn.prepareStatement(sql);
+        query.setInt(1, id);
+        query.setString(2, replyText);
+        query.setInt(3, userID);
+        query.executeUpdate();
         query.close();
     }
 }

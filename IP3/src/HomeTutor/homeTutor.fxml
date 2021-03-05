@@ -22,5 +22,10 @@
             <Font size="27.0" />
          </font>
       </JFXButton>
+      <JFXButton fx:id="qa" layoutX="141.0" layoutY="194.0" onAction="#qaSwitch" prefHeight="57.0" prefWidth="173.0" text="Q &amp; A ">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>
