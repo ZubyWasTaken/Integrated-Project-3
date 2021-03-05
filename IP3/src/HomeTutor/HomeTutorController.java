@@ -6,6 +6,7 @@
 package HomeTutor;
 
 import LoginRegister.LoginRegister;
+import QA_Tutor.QA_Tutor;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
 import ip3.User;
@@ -31,19 +32,27 @@ public class HomeTutorController implements Initializable {
     private JFXButton sgnOutBut;
     @FXML 
     private JFXButton editBut;
+    @FXML
+    private JFXButton qa;
     
     public void setData(User user) {
     currentUser = user;
     
 
     }
- @FXML
+    @FXML
     private void signOut(ActionEvent event){
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
     }
+    
      @FXML
     private void edit(ActionEvent event){
         SwitchWindow.switchWindow((Stage) editBut.getScene().getWindow(), new EditTutor(currentUser)); 
+    }
+    
+    @FXML
+    private void qaSwitch(ActionEvent event){
+         SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new QA_Tutor(currentUser)); 
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

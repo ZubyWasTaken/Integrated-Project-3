@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="QA_Tutor.ReplyController">
+   <children>
+      <JFXTextArea fx:id="replyText" layoutX="68.0" layoutY="75.0" promptText="Type your reply:" />
+      <JFXButton fx:id="sendBut" layoutX="462.0" layoutY="294.0" onAction="#send" prefHeight="25.0" prefWidth="77.0" text="Send" />
+   </children>
+</AnchorPane>

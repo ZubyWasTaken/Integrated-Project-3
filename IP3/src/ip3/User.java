@@ -1,6 +1,7 @@
 package ip3;
 
 import SQL.SQLHandler;
+import com.jfoenix.controls.JFXTextField;
 import static java.lang.Integer.parseInt;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -20,13 +21,13 @@ public class User {
 
    
     private final int userid;
-    private final String firstname;
-    private final String surname;
-    private final String username;
-    private final String password;
+    private  String firstname;
+    private  String surname;
+    private String username;
+    private String password;
     private final String dateOfBirth;
-    private final String email;
-    private final int uniId;
+    private String email;
+    private  int uniId;
     private final int catId;
     private final int titleId;
     private static final SQLHandler sql = new SQLHandler();
@@ -82,14 +83,17 @@ public class User {
         return valUser;
 
     }
-    public static int getUniId(String email){
+    public static int fetchUniId(String email){
         int uniID=0;
-        String emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-                          
-                              
-        Pattern pat = Pattern.compile(emailRegex); 
+        String emailGcu = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@caledonian.ac.uk"; 
+        String emailStrath = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@uni.strath.ac.uk";
+        Pattern pat = Pattern.compile(emailGcu); 
+        Pattern pat2 = Pattern.compile(emailStrath); 
         if (pat.matcher(email).matches()){
         uniID=1;
+        }
+        else if (pat2.matcher(email).matches()) {
+            uniID=2;
         }
            return uniID;
     }
@@ -140,8 +144,44 @@ public class User {
          return this.titleId;
      }
      
+     public int getCatId(){
+         return this.catId;
+     }
+     
+     public int getUniId() {
+       return this.uniId;
+    }
      
     
     //getters for dob and email
     //setters for everything
+
+    public void setPassword(String password) {
+        this.password=password;
+    }
+
+    public void editPassword(User currentUser) throws SQLException {
+        sql.editPassword(currentUser.getUserID(),currentUser.getPassword());
+    }
+
+    public void setUsername(String username) {
+       this.username=username;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname=firstname;
+    }
+    public void setSurname(String surname) {
+        this.surname=surname;
+    }
+
+    public void setUniId(int uniId) {
+       this.uniId=uniId;
+    }
+    
+    public void setEmail (String email){
+        this.email=email;
+    }
+
+    
 }
