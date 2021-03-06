@@ -5,7 +5,6 @@
  */
 package QA_Tutor;
 
-import HomeTutor.HomeTutorController;
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +20,11 @@ public class QA_Tutor extends Application{
 
     User currentUser;
 
+    
+  
+    
     public void start(Stage stage) throws Exception {
       
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("QA_Tutor.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);

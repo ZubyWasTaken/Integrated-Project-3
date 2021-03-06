@@ -6,6 +6,7 @@
 package ip3;
 
 import SQL.SQLHandler;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
@@ -18,9 +19,10 @@ import java.util.List;
  */
 public class Question {
     private int id;
-    private int cat_id;
     private String text;
-    private int sender;
+    private String sender;
+    private boolean resolved;
+    private int replies;
     
     private static SQLHandler sql = new SQLHandler();
     
@@ -32,42 +34,47 @@ public class Question {
         sender = parseInt(questInfo.get(3));
     }
 */
-    public static Question search(String userquest) throws SQLException, IOException {
-       List questionInfo = sql.searchQuestions(userquest);
+    public static Question search(int userquest) throws SQLException, IOException {
+        List questionInfo = sql.searchQuestions(userquest);
         int id = (int) questionInfo.get(0);
-        int cat_id = (int) questionInfo.get(1);
-        String text = (String) questionInfo.get(2);
-        int sender = (int) questionInfo.get(3);
-        
-        Question currentQuestion = new Question(id, cat_id, text, sender);
+        String text = (String) questionInfo.get(1);
+        String sender = (String) questionInfo.get(2);
+        boolean resolved = (boolean) questionInfo.get(3);
+        Question currentQuestion = new Question(id, text, sender, resolved);
 
         return currentQuestion;
     }
-     public Question(int id, int cat_id, String text, int sender){
+    public Question(int id, String text, String sender, boolean resolved){
          this.id=id;
-         this.cat_id=cat_id;
          this.text=text;
          this.sender=sender;  
+         this.resolved=resolved;
+         getReplies();
      }
      
      public int getId(){
          return this.id;
      }
      
-     public int getCatId(){
-         return this.cat_id;
-     }
+   
      
      public String getText(){
          return this.text;
      }
      
-     public int getSender(){
+     public String getSender(){
          return this.sender;
      }
      
-     public void createQuestion(int cat_id, String text, int sender) throws SQLException{
-         sql.createQuestion(cat_id, text, sender);
+     public boolean getResolved(){
+         return this.resolved;
      }
+     public void createQuestion( String text, int sender) throws SQLException{
+         sql.createQuestion(text, sender);
+     }
+
+    private void getReplies() {
+        
+    }
      
 }
