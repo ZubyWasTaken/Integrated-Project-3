@@ -398,10 +398,11 @@ public class SQLHandler {
    
     
     public void createQuestion(String text, int sender) throws SQLException {
-        String sql = "INSERT INTO Questions (text, user_id) VALUES(?,?)";
+        String sql = "INSERT INTO Questions (text, user_id,teacher) VALUES(?,?,?)";
         query = conn.prepareStatement(sql);
         query.setString(1, text);
         query.setInt(2, sender);
+        query.setInt(3, 1);
         query.executeUpdate();
         query.close();
     }
@@ -458,7 +459,7 @@ public class SQLHandler {
         output.clear();
 
         String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
-        "Questions.user_id= Users.id WHERE Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\"";
+        "Questions.user_id= Users.id WHERE Questions.teacher = 2 AND Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
