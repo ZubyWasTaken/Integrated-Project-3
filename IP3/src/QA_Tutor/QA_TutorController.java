@@ -22,12 +22,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -48,9 +50,7 @@ public class QA_TutorController implements Initializable {
     private TableColumn<Question, String> col_author;
     @FXML
     private TableColumn<Question, Boolean> col_resolved;
-    @FXML
-    private JFXButton replyBut;
-    
+   
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
@@ -93,16 +93,25 @@ public class QA_TutorController implements Initializable {
     },0,10000); 
                 }
     
-    @FXML
-    private void addReply(ActionEvent event) throws SQLException, IOException{
-         Question currentQuestion = Question.search(getTablePos());
-         SwitchWindow.switchWindow((Stage) replyBut.getScene().getWindow(), new Reply(currentQuestion,currentUser));
-    }
-    
      private int getTablePos() {
         TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         Question item = table.getItems().get(index);
         return item.getId();
     }
+     
+     @FXML
+     private void clickItem(MouseEvent event) {
+    table.setOnMouseClicked((MouseEvent event1) -> {
+        if(event1.getClickCount()==2){
+            try {
+               Question currentQuestion = Question.search(getTablePos());
+               SwitchWindow.switchWindow((Stage) table.getScene().getWindow(), new ReplyTutor(currentQuestion,currentUser));
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       
+    });
+}
 }

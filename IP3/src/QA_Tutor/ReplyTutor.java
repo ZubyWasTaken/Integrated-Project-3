@@ -18,11 +18,11 @@ import javafx.stage.Stage;
  *
  * @author stani
  */
-public class Reply extends Application {
+public class ReplyTutor extends Application {
 
     Question currentQuestion;
     User currentUser;
-    Reply(Question currentQuestion, User currentUser) {
+    ReplyTutor(Question currentQuestion, User currentUser) {
         this.currentQuestion=currentQuestion;
         this.currentUser=currentUser;
     }
@@ -35,6 +35,7 @@ public class Reply extends Application {
         Scene scene = new Scene(root);
         ReplyController controller = loader.getController();
         controller.setData(currentQuestion, currentUser);
+        
         stage.setScene(scene);
         stage.setTitle("Q & A");
         stage.show();        

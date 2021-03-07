@@ -423,14 +423,15 @@ public class SQLHandler {
     
      public List searchReplies(int reply) throws SQLException {
         List output = new ArrayList<>();
-       String sql = "SELECT* FROM Replies WHERE id = \"" + reply + "\"";
+       String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Replies.user_id, Users.id, Users.username FROM Replies INNER JOIN Users ON\n" +
+        "Replies.user_id= Users.id WHERE Replies.id = \"" + reply + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
             output.add((rs.getInt("id")));
             output.add((rs.getInt("quest_id")));
             output.add((rs.getString("text")));
-            output.add((rs.getInt("user_id")));
+            output.add((rs.getString("username")));
 
         }
         return output;
@@ -480,6 +481,13 @@ public class SQLHandler {
         query.setInt(3, userID);
         query.executeUpdate();
         query.close();
+    }
+
+    public void deleteReply(int id) throws SQLException {
+      String sql = "DELETE FROM Replies WHERE id =\"" +id + "\"";
+        query = conn.prepareStatement(sql);
+        query.executeUpdate();
+        query.close();   
     }
     
 }
