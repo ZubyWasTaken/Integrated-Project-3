@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
@@ -22,27 +23,64 @@
             <Font size="28.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="934.0" layoutY="58.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="346.0" text="News Feed" underline="true">
+      <Label alignment="CENTER" layoutX="963.0" layoutY="58.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="289.0" text="News Feed" underline="true">
          <font>
             <Font size="46.0" />
          </font>
       </Label>
       <Label fx:id="feedTitle" alignment="CENTER" layoutX="963.0" layoutY="117.0" minHeight="16" minWidth="69" prefHeight="38.0" prefWidth="289.0" text="Please Select a Feed">
          <font>
-            <Font size="24.0" />
+            <Font size="22.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="articleHyperlink1" layoutX="988.0" layoutY="212.0" prefHeight="38.0" prefWidth="244.0" text="Hyperlink" />
-      <Label fx:id="lblArticle1" alignment="TOP_LEFT" layoutX="988.0" layoutY="155.0" prefHeight="57.0" prefWidth="244.0" text="test" wrapText="true" />
-      <Hyperlink fx:id="articleHyperlink2" layoutX="988.0" layoutY="307.0" prefHeight="38.0" prefWidth="244.0" text="Hyperlink" />
-      <Label fx:id="lblArticle2" alignment="TOP_LEFT" layoutX="988.0" layoutY="250.0" prefHeight="57.0" prefWidth="244.0" text="test" wrapText="true" />
-      <Hyperlink fx:id="articleHyperlink3" layoutX="988.0" layoutY="402.0" prefHeight="38.0" prefWidth="244.0" text="Hyperlink" />
-      <Label fx:id="lblArticle3" alignment="TOP_LEFT" layoutX="988.0" layoutY="345.0" prefHeight="57.0" prefWidth="244.0" text="test" wrapText="true" />
-      <Hyperlink fx:id="articleHyperlink4" layoutX="988.0" layoutY="497.0" prefHeight="38.0" prefWidth="244.0" text="Hyperlink" />
-      <Label fx:id="lblArticle4" alignment="TOP_LEFT" layoutX="988.0" layoutY="440.0" prefHeight="57.0" prefWidth="244.0" text="test" wrapText="true" />
-      <Hyperlink fx:id="articleHyperlink5" layoutX="985.0" layoutY="592.0" prefHeight="38.0" prefWidth="244.0" text="Hyperlink" />
-      <Label fx:id="lblArticle5" alignment="TOP_LEFT" layoutX="985.0" layoutY="535.0" prefHeight="57.0" prefWidth="244.0" text="test" wrapText="true" />
-      <JFXButton fx:id="btnTech" layoutX="875.0" layoutY="136.0" onAction="#techFeed" text="Technology" />
-      <JFXButton fx:id="btnUK" layoutX="882.0" layoutY="177.0" onAction="#UKFeed" text="UK News" />
+      <VBox alignment="CENTER" layoutX="853.0" layoutY="149.0" prefHeight="128.0" prefWidth="100.0" spacing="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="71.0" text="Categories" underline="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="btnUK" onAction="#UKFeed" prefHeight="25.0" prefWidth="78.0" text="UK" />
+            <JFXButton fx:id="btnWorld" onAction="#worldFeed" prefHeight="25.0" prefWidth="78.0" text="World" />
+            <JFXButton fx:id="btnBusiness" onAction="#businessFeed" prefHeight="25.0" prefWidth="78.0" text="Business" />
+            <JFXButton fx:id="btnPolitics" onAction="#politicsFeed" prefHeight="25.0" prefWidth="78.0" text="Politics" />
+            <JFXButton fx:id="btnTech" onAction="#techFeed" prefHeight="25.0" prefWidth="78.0" text="Technology" />
+            <JFXButton fx:id="btnScience" onAction="#scienceFeed" prefHeight="25.0" prefWidth="78.0" text="Science" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="963.0" layoutY="155.0" prefHeight="532.0" prefWidth="289.0" spacing="30">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle1" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 1" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink1" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 1" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle2" alignment="TOP_LEFT" prefHeight="38" prefWidth="244.0" text="Article 2" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink2" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 2" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle3" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 3" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink3" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 3" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle4" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 4" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink4" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 4" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle5" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 5" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink5" prefHeight="25.0" prefWidth="244.0" text="Article 5" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
