@@ -189,7 +189,7 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="btnUserQNA" layoutX="222.0" layoutY="233.0" onAction="#userQNA" prefHeight="42.0" prefWidth="78.0" text="QNA" />
+      <JFXButton fx:id="UserQNA" layoutX="428.0" layoutY="276.0" onAction="#userQNA" prefHeight="42.0" prefWidth="78.0" text="QNA" />
       <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
     </children>
 </AnchorPane>

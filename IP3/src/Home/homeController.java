@@ -123,7 +123,7 @@ public class homeController implements Initializable {
 
     @FXML
     private void userQNA(ActionEvent event) {
-        SwitchWindow.switchWindow((Stage) btnUserQNA.getScene().getWindow(), new UserQNA(currentUser));
+        SwitchWindow.switchWindow((Stage) UserQNA.getScene().getWindow(), new UserQNA(currentUser));
     }
 
     @FXML
