@@ -9,6 +9,7 @@ package SQL;
 import com.jfoenix.controls.JFXTextArea;
 import ip3.Categories;
 import ip3.Question;
+import ip3.Reply;
 import ip3.Uni;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -42,7 +43,7 @@ public class SQLHandler {
     //----------------------//
     public static Connection getConn() {
 
-        String url = "jdbc:mysql://139.59.171.16/ip3dev";
+        String url = "jdbc:mysql://139.59.171.16/ip3_stella";
         String username = "ip3";
         String password = "password";
         Connection conn;
@@ -375,17 +376,17 @@ public class SQLHandler {
    //GET A SPECIFIC QUESTION                //
   //---------------------------------------//
    
-    public List searchQuestions(String quest) throws SQLException {
+    public List searchQuestions(int quest) throws SQLException {
         List output = new ArrayList<>();
-       String sql = "SELECT * FROM Questions WHERE text = \"" + quest + "\"";
+       String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
+        "Questions.user_id= Users.id WHERE Questions.id = \"" + quest + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
             output.add((rs.getInt("id")));
-            output.add((rs.getInt("cat_id")));
             output.add((rs.getString("text")));
-            output.add((rs.getInt("user_id")));
-
+            output.add((rs.getString("user_id")));
+            output.add(rs.getBoolean("resolved"));
         }
         return output;
         
@@ -396,30 +397,46 @@ public class SQLHandler {
   //------------------//
    
     
-    public void createQuestion( int cat_id, String text, int sender) throws SQLException {
-        String sql = "INSERT INTO Questions ( cat_id, text, user_id) VALUES(?,?,?)";
+    public void createQuestion(String text, int sender) throws SQLException {
+        String sql = "INSERT INTO Questions (text, user_id,teacher) VALUES(?,?,?)";
         query = conn.prepareStatement(sql);
-        query.setInt(1, cat_id);
-        query.setString(2, text);
-        query.setInt(3, sender);
+        query.setString(1, text);
+        query.setInt(2, sender);
+        query.setInt(3, 1);
         query.executeUpdate();
         query.close();
     }
 
-    public ArrayList<String> searchReplies(int quest_id) throws SQLException {
-        ArrayList<String> output = new ArrayList<>();
-        String sql = "SELECT * FROM Replies WHERE quest_id = \"" + quest_id + "\"";
+    public ObservableList showReplies(int quest_id) throws SQLException {
+        ObservableList<Reply> output = FXCollections.observableArrayList();
+        String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Users.username FROM Replies INNER JOIN Users ON Replies.user_id=Users.id WHERE Replies.quest_id = \"" + quest_id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
-            output.add((rs.getString("id")));
-            output.add((rs.getString("quest_id")));
-            output.add((rs.getString("text")));
-            output.add((rs.getString("user_id")));
-        }
-        return output;
+            int id = rs.getInt("id");
+            int question_id = rs.getInt("quest_id");
+            String text = rs.getString("text");
+            String replier = rs.getString("username");
+            output.add(new Reply(id,question_id, text, replier));
+        } 
+        return output;   
     }
     
+     public List searchReplies(int reply) throws SQLException {
+        List output = new ArrayList<>();
+       String sql = "SELECT* FROM Replies WHERE id = \"" + reply + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getInt("quest_id")));
+            output.add((rs.getString("text")));
+            output.add((rs.getInt("user_id")));
+
+        }
+        return output;
+        
+    }
     
         //------------------//
    //ADD A NEW REPLY//
@@ -436,20 +453,21 @@ public class SQLHandler {
         query.close();
     }
     
-    public ObservableList showQuestionsTable(int cat_id) throws SQLException {
+    public ObservableList showQuestionsTable(int cat_id, int uni_id) throws SQLException {
 
         ObservableList<Question> output = FXCollections.observableArrayList();
         output.clear();
 
-        String sql = "SELECT * FROM Questions WHERE cat_id=\"" + cat_id + "\"";
+        String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
+        "Questions.user_id= Users.id WHERE Questions.teacher = 2 AND Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
             int question_id = rs.getInt("id");
-            int category_id = rs.getInt("cat_id");
             String question = rs.getString("text");
-            int sender = rs.getInt("user_id");
-            output.add(new Question(question_id, category_id, question, sender));
+            String sender = rs.getString("username");
+            boolean resolved = rs.getBoolean("resolved");
+            output.add(new Question(question_id, question, sender, resolved));
         }
         query.close();
         return output;
@@ -464,5 +482,6 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
 }
 

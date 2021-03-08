@@ -5,7 +5,7 @@
  */
 package Home;
 
-import Interests.InterestController;
+import UserQNA.UserQNAController;
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,11 +30,11 @@ public class Home extends Application{
         homeController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("Home");
+        stage.setTitle("UserQNA");
         stage.show();        
         stage.centerOnScreen();
     }
-  
+
  public Home(User user) {
         currentUser=user;
     }

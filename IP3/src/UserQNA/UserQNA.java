@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package QA_Tutor;
+package UserQNA;
 
 import ip3.User;
 import javafx.application.Application;
@@ -14,29 +14,27 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author stani
+ * @author Zuby
  */
-public class QA_Tutor extends Application{
+public class UserQNA extends Application{
 
     User currentUser;
 
-    
-  
-    
     public void start(Stage stage) throws Exception {
-      
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("QA_Tutor.fxml"));
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("userQNAScreen.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
-        QA_TutorController controller = loader.getController();
+        UserQNAController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("Q & A");
-        stage.show();        
+        stage.setTitle("UserQNA");
+        stage.show();
         stage.centerOnScreen();
     }
-  
- public QA_Tutor(User user) {
+
+ public UserQNA(User user) {
         currentUser=user;
     }
 

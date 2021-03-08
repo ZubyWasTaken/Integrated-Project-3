@@ -14,12 +14,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,10 +45,12 @@ public class QA_TutorController implements Initializable {
      @FXML
     private TableColumn<Question, String> col_quest;
     @FXML
-    private TableColumn<Question, Integer> col_author;
-   
+    private TableColumn<Question, String> col_author;
+    @FXML
+    private TableColumn<Question, Boolean> col_resolved;
     @FXML
     private JFXButton replyBut;
+    
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
@@ -59,54 +62,47 @@ public class QA_TutorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask(){
+     @Override
+            public void run() {
+               
+            
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
          try {
-            data = sql.showQuestionsTable(currentUser.getCatId());
+            data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
      
         
         col_quest.setCellValueFactory(new PropertyValueFactory<>("text"));
         col_author.setCellValueFactory(new PropertyValueFactory<>("sender"));
+        col_resolved.setCellValueFactory(new PropertyValueFactory<>("resolved"));
         table.setItems(data);
-        FilteredList<Question> filtQuest = new FilteredList<>(data, e -> true);
-        /*search.setOnKeyReleased(e -> {
-            search.textProperty().addListener((observableValue, oldValue, newValue) -> {
-                filtQuest.setPredicate((Predicate<? super Question>) question -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return true;
-                    }
-                    String lowerCaseFilter = newValue.toLowerCase();
-                    if (question.getText().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-
-                    return false;
-                });
-            });*/
-           /* SortedList<Question> sortedData = new SortedList<>(filtQuest);
-            sortedData.comparatorProperty().bind(table.comparatorProperty());
-            table.setItems(sortedData);*/
+      
             } catch (SQLException ex) {
             Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            }
-    });
          
-    }    
+            }
+         });
+    }
+
+
+         
+    },0,10000); 
+                }
     
     @FXML
     private void addReply(ActionEvent event) throws SQLException, IOException{
          Question currentQuestion = Question.search(getTablePos());
-            SwitchWindow.switchWindow((Stage) replyBut.getScene().getWindow(), new Reply(currentQuestion,currentUser));
+         SwitchWindow.switchWindow((Stage) replyBut.getScene().getWindow(), new Reply(currentQuestion,currentUser));
     }
     
-     private String getTablePos() {
+     private int getTablePos() {
         TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         Question item = table.getItems().get(index);
-        String questionText = (String) col_quest.getCellObservableValue(item).getValue();
-
-        return questionText;
+        return item.getId();
     }
 }

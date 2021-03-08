@@ -7,7 +7,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeTutor.HomeTutorController">
    <children>
-      <Label fx:id="labelWelcome" alignment="CENTER" layoutX="370.0" layoutY="71.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="553.0" text="Tutor Home">
+      <Label fx:id="labelWelcome" alignment="CENTER" layoutX="370.0" layoutY="71.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="553.0" text="Tutor UserQNA">
          <font>
             <Font size="28.0" />
          </font>

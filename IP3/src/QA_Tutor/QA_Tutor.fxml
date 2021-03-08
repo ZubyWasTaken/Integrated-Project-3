@@ -7,12 +7,13 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.QA_TutorController">
    <children>
-      <TableView fx:id="table" layoutX="14.0" layoutY="44.0" prefHeight="342.0" prefWidth="449.0">
+      <TableView fx:id="table" layoutX="14.0" layoutY="44.0" prefHeight="306.0" prefWidth="503.0">
         <columns>
-          <TableColumn fx:id="col_quest" editable="false" prefWidth="366.0000104904175" text="Question" />
-          <TableColumn fx:id="col_author" editable="false" prefWidth="82.0" text="By" />
+          <TableColumn fx:id="col_quest" editable="false" prefWidth="241.33330821990967" text="Question" />
+          <TableColumn fx:id="col_author" editable="false" prefWidth="103.3333740234375" text="By" />
+            <TableColumn fx:id="col_resolved" editable="false" prefWidth="140.6666768391927" text="Resolved" />
         </columns>
       </TableView>
-      <JFXButton fx:id="replyBut" layoutX="501.0" layoutY="101.0" onAction="#addReply" text="Reply" />
+      <JFXButton fx:id="replyBut" layoutX="524.0" layoutY="116.0" onAction="#addReply" text="Reply" />
    </children>
 </AnchorPane>
