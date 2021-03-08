@@ -49,7 +49,7 @@ public class Question {
          this.text=text;
          this.sender=sender;  
          this.resolved=resolved;
-         getReplies();
+         //getReplies();
      }
      
      public int getId(){
@@ -73,8 +73,8 @@ public class Question {
          sql.createQuestion(text, sender);
      }
 
-    private void getReplies() {
+    /*private void getReplies() {
         
     }
-     
+     */
 }

@@ -5,6 +5,7 @@
  */
 package QA_Tutor;
 
+import HomeTutor.HomeTutor;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import ip3.Question;
@@ -13,6 +14,7 @@ import ip3.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,12 +24,16 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -49,14 +55,17 @@ public class QA_TutorController implements Initializable {
     @FXML
     private TableColumn<Question, Boolean> col_resolved;
     @FXML
-    private JFXButton replyBut;
-    
+    private JFXButton backBut;
+   
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
     
-    public void setData(User user) {
+    public void setData(User user) throws SQLException {
     currentUser = user;
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    sql.updateLogin(currentUser.getUserID(), timestamp, true);
+
     }
   
 
@@ -93,16 +102,31 @@ public class QA_TutorController implements Initializable {
     },0,10000); 
                 }
     
-    @FXML
-    private void addReply(ActionEvent event) throws SQLException, IOException{
-         Question currentQuestion = Question.search(getTablePos());
-         SwitchWindow.switchWindow((Stage) replyBut.getScene().getWindow(), new Reply(currentQuestion,currentUser));
-    }
-    
      private int getTablePos() {
         TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         Question item = table.getItems().get(index);
         return item.getId();
     }
+     
+     @FXML
+     private void clickItem(MouseEvent event) {
+    table.setOnMouseClicked((MouseEvent event1) -> {
+        if(event1.getClickCount()==2){
+            try {
+               Question currentQuestion = Question.search(getTablePos());
+               SwitchWindow.switchWindow((Stage) table.getScene().getWindow(), new ReplyTutor(currentQuestion,currentUser));
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       
+    });
+    
+}
+     @FXML 
+ private void back(ActionEvent event){
+
+            SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));   
+         }
 }

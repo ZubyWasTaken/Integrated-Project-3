@@ -5,6 +5,9 @@
  */
 package Home;
 
+import Chat.Chat;
+
+import Interests.Interests;
 import LoginRegister.LoginRegister;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
@@ -45,9 +48,8 @@ public class homeController implements Initializable {
 
     User currentUser;
 
-
     @FXML
-    private JFXButton btnUserQNA;
+    private JFXButton UserQNA;
 
     @FXML
     private JFXButton sgnOutBut;
@@ -118,7 +120,7 @@ public class homeController implements Initializable {
 
     @FXML
     private void userQNA(ActionEvent event) {
-        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new UserQNA(currentUser));
+        SwitchWindow.switchWindow((Stage) UserQNA.getScene().getWindow(), new UserQNA(currentUser));
     }
 
     @FXML
@@ -740,3 +742,8 @@ public class homeController implements Initializable {
         });
     }
 }
+
+
+
+
+
