@@ -6,9 +6,11 @@
 package ip3;
 
 import SQL.SQLHandler;
+import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,22 +26,25 @@ public class Reply {
  * @author stani
  */
     
-    private final int id;
-    private final int quest_id;
+    private int id;
+    private int quest_id;
     private final String text;
-    private final int sender;
+    private final String sender;
     
-    SQLHandler sql = new SQLHandler();
+    private static SQLHandler sql = new SQLHandler();
     
-     public Reply(int question) throws SQLException {
-        ArrayList<String> questInfo = sql.searchReplies(question);
-        id = parseInt(questInfo.get(0));
-        quest_id = parseInt(questInfo.get(1));
-        text = questInfo.get(2);
-        sender = parseInt(questInfo.get(3));
+     public static Reply search(int replyId) throws SQLException, IOException {
+        List questInfo = sql.searchReplies(replyId);
+        int id = (int) questInfo.get(0);
+        int quest_id = (int) questInfo.get(1);
+        String text = (String) questInfo.get(2);
+        String sender = (String) questInfo.get(3);
+        Reply reply = new Reply (id,quest_id,text,sender);
+        return reply;
+                
     }
     
-     public Reply(int id, int quest_id, String text, int sender){
+     public Reply(int id, int quest_id, String text, String sender){
          this.id=id;
          this.quest_id=quest_id;
          this.text=text;
@@ -58,7 +63,7 @@ public class Reply {
          return this.text;
      }
      
-     public int getSender(){
+     public String getSender(){
          return this.sender;
      }
      /*

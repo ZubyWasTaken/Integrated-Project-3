@@ -2,12 +2,20 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="QA_Tutor.ReplyController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.ReplyController">
    <children>
-      <JFXTextArea fx:id="replyText" layoutX="68.0" layoutY="75.0" promptText="Type your reply:" />
-      <JFXButton fx:id="sendBut" layoutX="462.0" layoutY="294.0" onAction="#send" prefHeight="25.0" prefWidth="77.0" text="Send" />
+      <JFXTextArea fx:id="replyText" layoutX="68.0" layoutY="265.0" prefHeight="104.0" prefWidth="417.0" promptText="Type your reply:" />
+      <JFXButton fx:id="sendBut" layoutX="474.0" layoutY="356.0" onAction="#send" prefHeight="25.0" prefWidth="77.0" text="Send" />
+      <TableView fx:id="table" layoutX="68.0" layoutY="36.0" onMouseClicked="#clickItem" prefHeight="187.0" prefWidth="491.0">
+        <columns>
+          <TableColumn fx:id="col_reply" prefWidth="354.6666946411133" text="Reply" />
+          <TableColumn fx:id="col_author" minWidth="0.0" prefWidth="135.99996948242188" text="By" />
+        </columns>
+      </TableView>
+      <JFXButton fx:id="removeBut" layoutX="540.0" layoutY="356.0" onAction="#remove" text="Remove" underline="true" />
    </children>
 </AnchorPane>

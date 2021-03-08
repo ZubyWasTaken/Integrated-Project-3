@@ -9,6 +9,7 @@ package SQL;
 import com.jfoenix.controls.JFXTextArea;
 import ip3.Categories;
 import ip3.Question;
+import ip3.Reply;
 import ip3.Uni;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -42,7 +44,7 @@ public class SQLHandler {
     //----------------------//
     public static Connection getConn() {
 
-        String url = "jdbc:mysql://139.59.171.16/ip3dev";
+        String url = "jdbc:mysql://139.59.171.16/ip3_stella";
         String username = "ip3";
         String password = "password";
         Connection conn;
@@ -134,6 +136,18 @@ public class SQLHandler {
       String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  user_id=\""+tutorid+"\"";
         query = conn.prepareStatement(sql);
             query.setBytes(1,photo);
+            query.executeUpdate();
+        query.close();
+    }
+    //----------///
+    //update login//
+    //---------////
+    
+    public void updateLogin(int id, Timestamp timestamp, boolean online) throws SQLException{
+        String sql = "UPDATE loginData SET lastLogin = ?, online = ? WHERE user_id =\"" + id + "\"";
+         query = conn.prepareStatement(sql);
+            query.setTimestamp(1,timestamp);
+            query.setBoolean(2, online);
             query.executeUpdate();
         query.close();
     }
@@ -252,36 +266,7 @@ public class SQLHandler {
         query.close();
         return output;
     }
-        /*
-        public List searchInterestsTable(String searchQuery) throws SQLException {
-
-        List output = new ArrayList<>();
-        String sql = "SELECT id, name, catId FROM interests WHERE name = \"" + searchQuery + "\"";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-        while (rs.next()) {
-            output.add((rs.getInt("id")));
-            output.add((rs.getString("name")));
-            output.add((rs.getInt("catId")));
-
-        }
-        return output;
-}
-        public ObservableList InterestsTable(int searchQuery) throws SQLException {
-
-        ObservableList<Interests> output = FXCollections.observableArrayList();
-        output.clear();
-        String sql = "SELECT id, name, catId FROM interests WHERE catId = \"" + searchQuery + "\"";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            int catId = rs.getInt("catId");
-            output.add(new Interests(id, name,catId));
-        }
-        return output;
-}*/
+       
     //------------------//
    //ADD A PROFILE PIC//
   //------------------//
@@ -370,22 +355,33 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
+    //------------------------//
+    //UPDATE CATEGORY--------//
+    //-----------------------//
+     public void updateCategory(int catId) throws SQLException {
+        String sql = "UPDATE Users SET catid=? WHERE  id=\""+catId+"\"";
+        query = conn.prepareStatement(sql);
+        query.setInt(1,catId);
+        query.executeUpdate();
+        query.close();
+    }
 
     //-----------------------------------====//
    //GET A SPECIFIC QUESTION                //
   //---------------------------------------//
    
-    public List searchQuestions(String quest) throws SQLException {
+    public List searchQuestions(int quest) throws SQLException {
         List output = new ArrayList<>();
-       String sql = "SELECT * FROM Questions WHERE text = \"" + quest + "\"";
+       String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
+        "Questions.user_id= Users.id WHERE Questions.id = \"" + quest + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
             output.add((rs.getInt("id")));
-            output.add((rs.getInt("cat_id")));
             output.add((rs.getString("text")));
-            output.add((rs.getInt("user_id")));
-
+            output.add((rs.getString("username")));
+            output.add(rs.getBoolean("resolved"));
         }
         return output;
         
@@ -396,73 +392,144 @@ public class SQLHandler {
   //------------------//
    
     
-    public void createQuestion( int cat_id, String text, int sender) throws SQLException {
-        String sql = "INSERT INTO Questions ( cat_id, text, user_id) VALUES(?,?,?)";
+    public void createQuestion(String text, int sender) throws SQLException {
+        String sql = "INSERT INTO Questions (text, user_id) VALUES(?,?)";
         query = conn.prepareStatement(sql);
-        query.setInt(1, cat_id);
-        query.setString(2, text);
-        query.setInt(3, sender);
+        query.setString(1, text);
+        query.setInt(2, sender);
         query.executeUpdate();
         query.close();
     }
 
-    public ArrayList<String> searchReplies(int quest_id) throws SQLException {
-        ArrayList<String> output = new ArrayList<>();
-        String sql = "SELECT * FROM Replies WHERE quest_id = \"" + quest_id + "\"";
+    public ObservableList showReplies(int quest_id) throws SQLException {
+        ObservableList<Reply> output = FXCollections.observableArrayList();
+        String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Users.username FROM Replies INNER JOIN Users ON Replies.user_id=Users.id WHERE Replies.quest_id = \"" + quest_id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
-            output.add((rs.getString("id")));
-            output.add((rs.getString("quest_id")));
-            output.add((rs.getString("text")));
-            output.add((rs.getString("user_id")));
-        }
-        return output;
+            int id = rs.getInt("id");
+            int question_id = rs.getInt("quest_id");
+            String text = rs.getString("text");
+            String replier = rs.getString("username");
+            //Timestamp timestamp=rs.getTimestamp("timestamp");
+            output.add(new Reply(id,question_id, text, replier));
+        } 
+        return output;   
     }
     
+     public List searchReplies(int reply) throws SQLException {
+        List output = new ArrayList<>();
+       String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Replies.user_id, Users.id, Users.username FROM Replies INNER JOIN Users ON\n" +
+        "Replies.user_id= Users.id WHERE Replies.id = \"" + reply + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getInt("quest_id")));
+            output.add((rs.getString("text")));
+            output.add((rs.getString("username")));
+
+        }
+        return output;
+        
+    }
     
         //------------------//
    //ADD A NEW REPLY//
   //------------------//
    
     
-    public void createReply( int quest_id, String text, int replier) throws SQLException {
-        String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
-        query = conn.prepareStatement(sql);
-        query.setInt(1, quest_id);
-        query.setString(2, text);
-        query.setInt(3, replier);
-        query.executeUpdate();
-        query.close();
-    }
     
-    public ObservableList showQuestionsTable(int cat_id) throws SQLException {
+    
+    public ObservableList showQuestionsTable(int cat_id, int uni_id) throws SQLException {
 
         ObservableList<Question> output = FXCollections.observableArrayList();
         output.clear();
 
-        String sql = "SELECT * FROM Questions WHERE cat_id=\"" + cat_id + "\"";
+        String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
+        "Questions.user_id= Users.id WHERE Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
             int question_id = rs.getInt("id");
-            int category_id = rs.getInt("cat_id");
             String question = rs.getString("text");
-            int sender = rs.getInt("user_id");
-            output.add(new Question(question_id, category_id, question, sender));
+            String sender = rs.getString("username");
+            boolean resolved = rs.getBoolean("resolved");
+            output.add(new Question(question_id, question, sender, resolved));
         }
         query.close();
         return output;
 }
 
-    public void addReply(String replyText, int id, int userID) throws SQLException {
-       String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
+    public void addReply(String replyText, int id, int userID, Timestamp timestamp) throws SQLException {
+       String sql = "INSERT INTO Replies ( quest_id, text, user_id, timestamp) VALUES(?,?,?,?)";
         query = conn.prepareStatement(sql);
         query.setInt(1, id);
         query.setString(2, replyText);
         query.setInt(3, userID);
+        query.setTimestamp(4, timestamp);
         query.executeUpdate();
         query.close();
     }
-}
+
+    public void deleteReply(int id) throws SQLException {
+      String sql = "DELETE FROM Replies WHERE id =\"" +id + "\"";
+        query = conn.prepareStatement(sql);
+        query.executeUpdate();
+        query.close();   
+    }
+
+    public Timestamp getLastLogin(int id ) throws SQLException{
+        Timestamp timestamp = null;
+        String sql = "SELECT lastLogin FROM loginData WHERE user_id=\"" + id + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+         
+        while (rs.next()) {
+         timestamp = rs.getTimestamp("lastLogin");
+      
+    }
+        return timestamp;
+    }
+    
+    public int countQuestions(int cat_id, int uni_id, Timestamp now, Timestamp timestamp) throws SQLException{
+        int count = 0;
+        String sql = "SELECT Questions.id, Users.id FROM Questions INNER JOIN Users ON\n" +
+        "Questions.user_id= Users.id  WHERE Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" AND Questions.timestamp < \"" + now +"\" AND Questions.timestamp >\"" + timestamp +"\"";
+         query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+             count ++;
+        }
+        query.close();
+        return count;
+    }
+
+    public List searchPosts(int userquest) throws SQLException {
+        List output = new ArrayList<>();
+       String sql = "SELECT Posts.id, Posts.text, Questions.user_id, Users.id, Users.username FROM Posts INNER JOIN Users ON\n" +
+        "Posts.user_id= Users.id WHERE Posts.id = \"" + userquest + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("text")));
+            output.add((rs.getString("username")));
+        }
+        return output;
+    }
+
+    public void createPost(String text, int sender, Timestamp timestamp) throws SQLException {
+      
+        String sql = "INSERT INTO Posts (text, timestamp, user_id,) VALUES(?,?,?)";
+        query = conn.prepareStatement(sql);
+        query.setString(1, text);
+        query.setTimestamp(2, timestamp);
+        query.setInt(3, sender);
+        query.executeUpdate();
+        query.close();
+    }
+    }
+    
+
 
