@@ -1,4 +1,4 @@
-package Home;
+package UserQNA;
 
 import ip3.User;
 import javafx.fxml.Initializable;

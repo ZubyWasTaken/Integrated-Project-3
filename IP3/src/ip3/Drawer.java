@@ -5,8 +5,8 @@
  */
 package ip3;
 
-import Home.homeController;
-import Home.drawerController;
+import UserQNA.homeController;
+import UserQNA.drawerController;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox;
 public class Drawer {
     public void drawerPullout(JFXDrawer drawer, User currentUser, JFXHamburger hamburger){
      try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/drawer.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserQNA/drawer.fxml"));
                 VBox box = loader.load();
                 drawer.setSidePane(box);
                 drawerController controller = loader.getController();

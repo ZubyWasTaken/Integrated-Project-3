@@ -5,7 +5,7 @@
  */
 package Interests;
 
-import Home.Home;
+import UserQNA.Home;
 import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;

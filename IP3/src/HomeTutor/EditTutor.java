@@ -40,7 +40,7 @@ public class EditTutor extends Application{
         EditTutorController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("Home");
+        stage.setTitle("UserQNA");
         stage.show();        
         stage.centerOnScreen();
     }
