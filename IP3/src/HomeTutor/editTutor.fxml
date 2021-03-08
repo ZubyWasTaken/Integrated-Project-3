@@ -58,7 +58,7 @@
                      <children>
                         <JFXTextField fx:id="fname" layoutX="28.0" layoutY="32.0" prefHeight="25.0" prefWidth="166.0" />
                         <JFXTextField fx:id="surname" layoutX="28.0" layoutY="83.0" prefHeight="25.0" prefWidth="166.0" />
-                        <JFXComboBox fx:id="catSelect" layoutX="28.0" layoutY="201.0" prefHeight="25.0" prefWidth="166.0" />
+                        <JFXComboBox fx:id="catSelect" layoutX="28.0" layoutY="201.0" onMouseClicked="#clickItem" prefHeight="25.0" prefWidth="166.0" />
                         <JFXTextField fx:id="email" layoutX="28.0" layoutY="136.0" prefHeight="25.0" prefWidth="166.0" />
                         <Label layoutX="28.0" layoutY="13.0" text="First name">
                            <font>

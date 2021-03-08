@@ -40,7 +40,7 @@ public class HomeTutor extends Application{
         HomeTutorController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("UserQNA");
+        stage.setTitle("Home");
         stage.show();        
         stage.centerOnScreen();
     }
