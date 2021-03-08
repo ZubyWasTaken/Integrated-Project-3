@@ -6,65 +6,110 @@
 package Home;
 
 import LoginRegister.LoginRegister;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import UserQNA.UserQNA;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import ip3.SwitchWindow;
 import ip3.User;
-import ip3.Drawer;
-import SQL.SQLHandler;
-import ip3.Question;
+
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 
 /**
- *
  * @author Zuby
  */
+@SuppressWarnings("DuplicatedCode")
 public class homeController implements Initializable {
-
-    User currentUser;
-    @FXML
-    private JFXHamburger hamburger;
-
-    @FXML
-    private JFXDrawer drawer;
 
     @FXML
     private Label labelWelcome;
 
+    User currentUser;
+
+
     @FXML
-    private Button sgnOutBut;
+    private JFXButton btnUserQNA;
+
+    @FXML
+    private JFXButton sgnOutBut;
+
+    @FXML
+    private JFXButton btnUK;
+
+    @FXML
+    private JFXButton btnTech;
+
+    @FXML
+    private JFXButton btnPolitics;
+
+    @FXML
+    private JFXButton btnWorld;
+
+    @FXML
+    private JFXButton btnBusiness;
+
+    @FXML
+    private JFXButton btnScience;
 
     @FXML
     private Label username;
 
     @FXML
-    private ListView feed;
+    private Label feedTitle;
 
     @FXML
-    private Button msgBtn;
+    private Label lblArticle1;
 
     @FXML
-    private TextArea msgArea;
+    private Hyperlink articleHyperlink1;
 
-    ObservableList<Question> data = FXCollections.observableArrayList();
-    SQLHandler sql = new SQLHandler();
+    @FXML
+    private Label lblArticle2;
+
+    @FXML
+    private Hyperlink articleHyperlink2;
+
+    @FXML
+    private Label lblArticle3;
+
+    @FXML
+    private Hyperlink articleHyperlink3;
+
+    @FXML
+    private Label lblArticle4;
+
+    @FXML
+    private Hyperlink articleHyperlink4;
+
+    @FXML
+    private Label lblArticle5;
+
+    @FXML
+    private Hyperlink articleHyperlink5;
+
+
+    public void setData(User user) {
+        currentUser = user;
+    }
 
     @FXML
     private void signOut(ActionEvent event) {
@@ -72,107 +117,626 @@ public class homeController implements Initializable {
     }
 
     @FXML
-    private void sendMsg(ActionEvent event) {
+    private void userQNA(ActionEvent event) {
+        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new UserQNA(currentUser));
+    }
 
-        String typeQuest = msgArea.getText().trim();
-        if (typeQuest.equals("")) {
-            System.out.println("nothing");
+    @FXML
+    private void UKFeed(ActionEvent event) {
+        //Unhides all other buttons and hides this button
+        btnUK.setDisable(true);
+        btnWorld.setDisable(false);
+        btnBusiness.setDisable(false);
+        btnTech.setDisable(false);
+        btnPolitics.setDisable(false);
+        btnScience.setDisable(false);
 
-        } else {
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/uk)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/uk/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
 
-            msgArea.clear();
-            TextFlow questText = new TextFlow();
-            Text text = new Text(typeQuest);
+        feedTitle.setText(feed.getTitle());
 
-            text.setStyle("-fx-font: 16 arial;");
-            questText.getChildren().add(text);
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
 
-            HBox quest = new HBox();
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
 
-            // quest.setStyle("-fx-background-color: #b7d4cb;");
-            HBox answers = new HBox();
-            Button btn = new Button();
-            // btn.setPrefWidth(100);
-            btn.setText("Replies");
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
 
-            answers.setMaxWidth(feed.getWidth() - 20);
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
 
-            answers.setAlignment(Pos.BOTTOM_RIGHT);
-           
-        //    btn.setAlignment(Pos.CENTER_RIGHT);
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
 
-            answers.getChildren().addAll(btn);
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
 
-            quest.setMaxWidth(feed.getWidth() - 20);
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
 
-            quest.setAlignment(Pos.TOP_LEFT);
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
 
-            quest.getChildren().addAll(questText);
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
 
-           
-            feed.getItems().add(quest);
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
 
-            feed.getItems().add(answers);
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
 
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
         }
 
     }
 
-//    public synchronized void  addFeed(){
-//         Task<HBox> yourMessages = new Task<HBox>() {
-//            @Override
-//            public HBox call() throws Exception {
-//             
-//              Label quest = new Label();
-//               
-//                    quest.setText("This my question g");
-//                  
-//               
-//                HBox hbox = new HBox();
-//                hbox.setMaxWidth(feed.getWidth() - 20);
-//                hbox.setAlignment(Pos.TOP_RIGHT);
-//               
-//                hbox.getChildren().addAll(quest);
-//                return hbox;
-//             }
-//      
-//           
-//      
-//       
-//
-//     };
-//                yourMessages.setOnSucceeded(event -> feed.getItems().add(yourMessages.getValue()));
-//        
-//    }
-//    @FXML
-//    private void viewChats(ActionEvent event){
-//       
-//        SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser)); 
-//    }
+    @FXML
+    private void worldFeed(ActionEvent event) {
+        //Unhides all other buttons and hides this button
+        btnUK.setDisable(false);
+        btnWorld.setDisable(true);
+        btnBusiness.setDisable(false);
+        btnTech.setDisable(false);
+        btnPolitics.setDisable(false);
+        btnScience.setDisable(false);
+
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/world)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/world/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
+
+        feedTitle.setText(feed.getTitle());
+
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
+
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
+
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
+
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
+
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
+
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
+
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
+        }
+
+    }
+
+    @FXML
+    private void businessFeed(ActionEvent event) {
+        //Unhides all other buttons and hides this button
+        btnUK.setDisable(false);
+        btnWorld.setDisable(false);
+        btnBusiness.setDisable(true);
+        btnTech.setDisable(false);
+        btnPolitics.setDisable(false);
+        btnScience.setDisable(false);
+
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/business)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/business/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
+
+        feedTitle.setText(feed.getTitle());
+
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
+
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
+
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
+
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
+
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
+
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
+
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void techFeed(ActionEvent event) {
+        //Unhides all other buttons and hides this button
+        btnUK.setDisable(false);
+        btnWorld.setDisable(false);
+        btnBusiness.setDisable(false);
+        btnTech.setDisable(true);
+        btnPolitics.setDisable(false);
+        btnScience.setDisable(false);
+
+
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/technology)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/technology/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
+
+        feedTitle.setText(feed.getTitle());
+
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
+
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
+
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
+
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
+
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
+
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
+
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void politicsFeed(ActionEvent event) {
+        //Unhides all other buttons and hides this button
+        btnUK.setDisable(false);
+        btnWorld.setDisable(false);
+        btnBusiness.setDisable(false);
+        btnTech.setDisable(false);
+        btnPolitics.setDisable(true);
+        btnScience.setDisable(false);
+
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/politics)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/politics/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
+
+        feedTitle.setText(feed.getTitle());
+
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
+
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
+
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
+
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
+
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
+
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
+
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void scienceFeed(ActionEvent event) {
+        //Unhides all other buttons and hides this button
+        btnUK.setDisable(false);
+        btnWorld.setDisable(false);
+        btnBusiness.setDisable(false);
+        btnTech.setDisable(false);
+        btnPolitics.setDisable(false);
+        btnScience.setDisable(true);
+
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/science_and_environment)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
+
+        feedTitle.setText(feed.getTitle());
+
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
+
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
+
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
+
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
+
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
+
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) try {
+                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+            } catch (IOException | URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
+
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
+        }
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        final int MAX_CHARS = 280;
-
-        msgArea.setTextFormatter(new TextFormatter<String>(change
-                -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
                 username.setText(currentUser.getUsername());
 
-                Drawer newdrawer = new Drawer();
+                //Sets feed title to inform user to select a feed
+                feedTitle.setText("Please Select a Feed.");
 
-                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+
+                //Hides the labels and hyperlinks from the user
+                for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+                    label.setVisible(false);
+                }
+
+                for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+                    hyperlink.setVisible(false);
+                }
+
 
             }
         });
-    }
-
-    public void setData(User user) {
-        currentUser = user;
-
     }
 }

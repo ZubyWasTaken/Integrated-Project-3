@@ -43,7 +43,7 @@ public class SQLHandler {
     //----------------------//
     public static Connection getConn() {
 
-        String url = "jdbc:mysql://139.59.171.16/ip3_stella ";
+        String url = "jdbc:mysql://139.59.171.16/ip3_stella";
         String username = "ip3";
         String password = "password";
         Connection conn;
