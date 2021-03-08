@@ -110,9 +110,10 @@ public class UserQNAController implements Initializable {
 
             quest.getChildren().addAll(questText);
 
-            feed.getItems().add(quest);
+              feed.getItems().add(0,answers);
+            feed.getItems().add(0,quest);
 
-            feed.getItems().add(answers);
+          
 
         }
 
