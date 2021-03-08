@@ -82,5 +82,6 @@
             </VBox>
          </children>
       </VBox>
+      <JFXButton fx:id="UserQNA" layoutX="138.0" layoutY="164.0" onAction="#userQNA" text="User QNA" />
     </children>
 </AnchorPane>
