@@ -15,6 +15,7 @@ import ip3.Reply;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,7 +113,8 @@ public class ReplyController implements Initializable {
             tray.showAndDismiss(Duration.millis(3000));
         }
         else {
-        sql.addReply(reply, currentQuestion.getId(),currentUser.getUserID());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        sql.addReply(reply, currentQuestion.getId(),currentUser.getUserID(), timestamp);
         SwitchWindow.switchWindow((Stage) sendBut.getScene().getWindow(), new ReplyTutor(currentQuestion,currentUser));
         }
     }

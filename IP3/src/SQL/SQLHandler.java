@@ -18,6 +18,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -138,6 +139,18 @@ public class SQLHandler {
             query.executeUpdate();
         query.close();
     }
+    //----------///
+    //update login//
+    //---------////
+    
+    public void updateLogin(int id, Timestamp timestamp, boolean online) throws SQLException{
+        String sql = "UPDATE loginData SET lastLogin = ?, online = ? WHERE user_id =\"" + id + "\"";
+         query = conn.prepareStatement(sql);
+            query.setTimestamp(1,timestamp);
+            query.setBoolean(2, online);
+            query.executeUpdate();
+        query.close();
+    }
     
     //------------------//
    //LOAD PROFILE PIC  //
@@ -253,36 +266,7 @@ public class SQLHandler {
         query.close();
         return output;
     }
-        /*
-        public List searchInterestsTable(String searchQuery) throws SQLException {
-
-        List output = new ArrayList<>();
-        String sql = "SELECT id, name, catId FROM interests WHERE name = \"" + searchQuery + "\"";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-        while (rs.next()) {
-            output.add((rs.getInt("id")));
-            output.add((rs.getString("name")));
-            output.add((rs.getInt("catId")));
-
-        }
-        return output;
-}
-        public ObservableList InterestsTable(int searchQuery) throws SQLException {
-
-        ObservableList<Interests> output = FXCollections.observableArrayList();
-        output.clear();
-        String sql = "SELECT id, name, catId FROM interests WHERE catId = \"" + searchQuery + "\"";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            int catId = rs.getInt("catId");
-            output.add(new Interests(id, name,catId));
-        }
-        return output;
-}*/
+       
     //------------------//
    //ADD A PROFILE PIC//
   //------------------//
@@ -371,6 +355,17 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
+    //------------------------//
+    //UPDATE CATEGORY--------//
+    //-----------------------//
+     public void updateCategory(int catId) throws SQLException {
+        String sql = "UPDATE Users SET catid=? WHERE  id=\""+catId+"\"";
+        query = conn.prepareStatement(sql);
+        query.setInt(1,catId);
+        query.executeUpdate();
+        query.close();
+    }
 
     //-----------------------------------====//
    //GET A SPECIFIC QUESTION                //
@@ -416,6 +411,7 @@ public class SQLHandler {
             int question_id = rs.getInt("quest_id");
             String text = rs.getString("text");
             String replier = rs.getString("username");
+            //Timestamp timestamp=rs.getTimestamp("timestamp");
             output.add(new Reply(id,question_id, text, replier));
         } 
         return output;   
@@ -443,15 +439,7 @@ public class SQLHandler {
   //------------------//
    
     
-    public void createReply( int quest_id, String text, int replier) throws SQLException {
-        String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
-        query = conn.prepareStatement(sql);
-        query.setInt(1, quest_id);
-        query.setString(2, text);
-        query.setInt(3, replier);
-        query.executeUpdate();
-        query.close();
-    }
+    
     
     public ObservableList showQuestionsTable(int cat_id, int uni_id) throws SQLException {
 
@@ -473,12 +461,13 @@ public class SQLHandler {
         return output;
 }
 
-    public void addReply(String replyText, int id, int userID) throws SQLException {
-       String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
+    public void addReply(String replyText, int id, int userID, Timestamp timestamp) throws SQLException {
+       String sql = "INSERT INTO Replies ( quest_id, text, user_id, timestamp) VALUES(?,?,?,?)";
         query = conn.prepareStatement(sql);
         query.setInt(1, id);
         query.setString(2, replyText);
         query.setInt(3, userID);
+        query.setTimestamp(4, timestamp);
         query.executeUpdate();
         query.close();
     }
@@ -488,6 +477,32 @@ public class SQLHandler {
         query = conn.prepareStatement(sql);
         query.executeUpdate();
         query.close();   
+    }
+
+    public Timestamp getLastLogin(int id ) throws SQLException{
+        Timestamp timestamp = null;
+        String sql = "SELECT lastLogin FROM loginData WHERE user_id=\"" + id + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+         
+        while (rs.next()) {
+         timestamp = rs.getTimestamp("lastLogin");
+      
+    }
+        return timestamp;
+    }
+    
+    public int countQuestions(int cat_id, int uni_id, Timestamp now, Timestamp timestamp) throws SQLException{
+        int count = 0;
+        String sql = "SELECT Questions.id, Users.id FROM Questions INNER JOIN Users ON\n" +
+        "Questions.user_id= Users.id  WHERE Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" AND Questions.timestamp < \"" + now +"\" AND Questions.timestamp >\"" + timestamp +"\"";
+         query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+             count ++;
+        }
+        query.close();
+        return count;
     }
     
 }

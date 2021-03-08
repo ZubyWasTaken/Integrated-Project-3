@@ -28,7 +28,7 @@ public class User {
     private final String dateOfBirth;
     private String email;
     private  int uniId;
-    private final int catId;
+    private  int catId;
     private final int titleId;
     private static final SQLHandler sql = new SQLHandler();
 
@@ -181,6 +181,10 @@ public class User {
     
     public void setEmail (String email){
         this.email=email;
+    }
+
+    public void setCatId(int catId) {
+       this.catId=catId;
     }
 
     

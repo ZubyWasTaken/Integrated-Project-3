@@ -340,11 +340,25 @@ private void emailSave() throws SQLException{
     }
     
 }
-
-private void catSelect(){
-    
-}
-
+@FXML
+     private void clickItem(MouseEvent event) {
+    catSelect.setOnMouseClicked((MouseEvent event1) -> {
+   
+            String tempcat = (String) catSelect.getSelectionModel().getSelectedItem();
+            try {
+                 catId = Categories.fetchCatId(tempcat);
+            } catch (SQLException ex) {
+                Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        
+    });
+     }
+    private void catSelect() throws SQLException{
+    if (catId!=currentUser.getCatId()){
+    currentUser.setCatId(catId);
+    sql.updateCategory(currentUser.getCatId());
         }
-                
+}     
+}
                 

@@ -5,6 +5,7 @@
  */
 package QA_Tutor;
 
+import HomeTutor.HomeTutor;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import ip3.Question;
@@ -13,6 +14,7 @@ import ip3.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +27,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
@@ -50,13 +54,18 @@ public class QA_TutorController implements Initializable {
     private TableColumn<Question, String> col_author;
     @FXML
     private TableColumn<Question, Boolean> col_resolved;
+    @FXML
+    private JFXButton backBut;
    
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
     
-    public void setData(User user) {
+    public void setData(User user) throws SQLException {
     currentUser = user;
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    sql.updateLogin(currentUser.getUserID(), timestamp, true);
+
     }
   
 
@@ -113,5 +122,11 @@ public class QA_TutorController implements Initializable {
         }
        
     });
+    
 }
+     @FXML 
+ private void back(ActionEvent event){
+
+            SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));   
+         }
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeTutor.HomeTutorController">
@@ -22,10 +24,83 @@
             <Font size="27.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="qa" layoutX="141.0" layoutY="194.0" onAction="#qaSwitch" prefHeight="57.0" prefWidth="173.0" text="Q &amp; A ">
+      <JFXButton fx:id="qa" layoutX="97.0" layoutY="379.0" onAction="#qaSwitch" prefHeight="57.0" prefWidth="173.0" text="Q &amp; A ">
          <font>
             <Font size="27.0" />
          </font>
       </JFXButton>
+      <Label alignment="CENTER" layoutX="976.0" layoutY="129.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="289.0" text="News Feed" underline="true">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Label>
+      <Label fx:id="feedTitle" alignment="CENTER" layoutX="976.0" layoutY="188.0" minHeight="16" minWidth="69" prefHeight="38.0" prefWidth="289.0" text="Please Select a Feed">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <VBox alignment="CENTER" layoutX="860.0" layoutY="223.0" prefHeight="128.0" prefWidth="100.0" spacing="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="71.0" text="Categories" underline="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="btnUK" onAction="#UKFeed" prefHeight="25.0" prefWidth="78.0" text="UK" />
+            <JFXButton fx:id="btnWorld" onAction="#worldFeed" prefHeight="25.0" prefWidth="78.0" text="World" />
+            <JFXButton fx:id="btnBusiness" onAction="#businessFeed" prefHeight="25.0" prefWidth="78.0" text="Business" />
+            <JFXButton fx:id="btnPolitics" onAction="#politicsFeed" prefHeight="25.0" prefWidth="78.0" text="Politics" />
+            <JFXButton fx:id="btnTech" onAction="#techFeed" prefHeight="25.0" prefWidth="78.0" text="Technology" />
+            <JFXButton fx:id="btnScience" onAction="#scienceFeed" prefHeight="25.0" prefWidth="78.0" text="Science" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="961.0" layoutY="226.0" prefHeight="532.0" prefWidth="289.0" spacing="30">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle1" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 1" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink1" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 1" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle2" alignment="TOP_LEFT" prefHeight="38" prefWidth="244.0" text="Article 2" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink2" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 2" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle3" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 3" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink3" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 3" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle4" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 4" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink4" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 4" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+               <children>
+                  <Label fx:id="lblArticle5" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 5" wrapText="true" />
+                  <Hyperlink fx:id="articleHyperlink5" prefHeight="25.0" prefWidth="244.0" text="Article 5" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <Label layoutX="97.0" layoutY="285.0" text="You have">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="questionsCount" layoutX="212.0" layoutY="285.0" prefHeight="17.0" prefWidth="32.0">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font></Label>
+      <Label layoutX="249.0" layoutY="285.0" text="new questions">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
