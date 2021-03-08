@@ -5,6 +5,9 @@
  */
 package Home;
 
+import Chat.Chat;
+
+import Interests.Interests;
 import LoginRegister.LoginRegister;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -731,3 +734,8 @@ public class homeController implements Initializable {
         });
     }
 }
+
+
+
+
+
