@@ -39,6 +39,7 @@ import javafx.scene.text.TextFlow;
  * @author Zuby
  */
 public class UserQNAController implements Initializable {
+
     User currentUser;
     @FXML
     private JFXHamburger hamburger;
@@ -51,82 +52,72 @@ public class UserQNAController implements Initializable {
 
     @FXML
     private Button btnHome;
-    
-     
+
     @FXML
     private Label username;
-    
-      @FXML
+
+    @FXML
     private ListView feed;
 
     @FXML
     private Button msgBtn;
 
- @FXML
+    @FXML
     private TextArea msgArea;
- 
-   ObservableList<Question> data = FXCollections.observableArrayList();
+
+    ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
 
     @FXML
-    private void goHome(ActionEvent event){
+    private void goHome(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) btnHome.getScene().getWindow(), new Home(currentUser));
     }
-    
-    @FXML
-    private void  sendMsg(ActionEvent event){
-        
-    String typeQuest = msgArea.getText().trim();
-       if (typeQuest.equals("")){
-      System.out.println("nothing");
-             
-       }
-       else{
-           
-           
-         
-             
-        msgArea.clear();
-    TextFlow questText = new TextFlow();
-              Text text = new Text(typeQuest);
-              
- text.setStyle("-fx-font: 16 arial;");
-     questText.getChildren().add(text);
-               
-              
-              HBox quest = new HBox();
-             
-         // quest.setStyle("-fx-background-color: #b7d4cb;");
 
-              HBox answers = new HBox();
-           Button btn = new Button();
-          // btn.setPrefWidth(100);
-           btn.setText("Replies");
-           
-           
-                answers.setMaxWidth(200);
-               
-                answers.setAlignment(Pos.CENTER_RIGHT);
-                btn.setAlignment(Pos.CENTER_RIGHT);
-                
-                answers.getChildren().addAll(btn);
-                
-                quest.setMaxWidth(feed.getWidth() - 20);
-               
-                quest.setAlignment(Pos.TOP_LEFT);
-               
-              quest.getChildren().addAll(questText);
-              
-              
-               feed.getItems().add(quest);
-           
-             feed.getItems().add(answers);
-             
-       }
-               
+    @FXML
+    private void sendMsg(ActionEvent event) {
+
+        String typeQuest = msgArea.getText().trim();
+        if (typeQuest.equals("")) {
+            System.out.println("nothing");
+
+        } else {
+
+            msgArea.clear();
+            TextFlow questText = new TextFlow();
+            Text text = new Text(typeQuest);
+
+            text.setStyle("-fx-font: 16 arial;");
+            questText.getChildren().add(text);
+
+            HBox quest = new HBox();
+
+            // quest.setStyle("-fx-background-color: #b7d4cb;");
+            HBox answers = new HBox();
+            Button btn = new Button();
+            // btn.setPrefWidth(100);
+            btn.setText("Replies");
+
+            answers.setMaxWidth(feed.getWidth() - 20);
+
+            answers.setAlignment(Pos.BOTTOM_RIGHT);
+            btn.setAlignment(Pos.CENTER_RIGHT);
+
+            answers.getChildren().addAll(btn);
+
+            quest.setMaxWidth(feed.getWidth() - 20);
+
+            quest.setAlignment(Pos.TOP_LEFT);
+
+            quest.getChildren().addAll(questText);
+
+            feed.getItems().add(quest);
+
+            feed.getItems().add(answers);
+
+        }
+
     }
-    
-    
+
 //    public synchronized void  addFeed(){
 //         Task<HBox> yourMessages = new Task<HBox>() {
 //            @Override
@@ -153,49 +144,35 @@ public class UserQNAController implements Initializable {
 //                yourMessages.setOnSucceeded(event -> feed.getItems().add(yourMessages.getValue()));
 //        
 //    }
-    
-    
-    
-    
-             
 //    @FXML
 //    private void viewChats(ActionEvent event){
 //       
 //        SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser)); 
 //    }
-    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       
-   final int MAX_CHARS = 280 ;
 
-      
+        final int MAX_CHARS = 280;
 
-        msgArea.setTextFormatter(new TextFormatter<String>(change -> 
-            change.getControlNewText().length() <= MAX_CHARS ? change : null));
-        
-         Platform.runLater(new Runnable() {
-    @Override
+        msgArea.setTextFormatter(new TextFormatter<String>(change
+                -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
+
+        Platform.runLater(new Runnable() {
+            @Override
             public void run() {
 
-        username.setText(currentUser.getUsername());
+                username.setText(currentUser.getUsername());
 
-        Drawer newdrawer = new Drawer();
+                Drawer newdrawer = new Drawer();
 
-        newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
 
-    }
-         });
+            }
+        });
     }
 
     public void setData(User user) {
         currentUser = user;
 
-
     }
 }
-
-
-
-
-
