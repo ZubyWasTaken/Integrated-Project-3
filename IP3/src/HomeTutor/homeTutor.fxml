@@ -24,7 +24,7 @@
             <Font size="27.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="qa" layoutX="97.0" layoutY="379.0" onAction="#qaSwitch" prefHeight="57.0" prefWidth="173.0" text="Q &amp; A ">
+      <JFXButton fx:id="qa" layoutX="333.0" layoutY="350.0" onAction="#qaSwitch" prefHeight="57.0" prefWidth="173.0" text="View all" underline="true">
          <font>
             <Font size="27.0" />
          </font>

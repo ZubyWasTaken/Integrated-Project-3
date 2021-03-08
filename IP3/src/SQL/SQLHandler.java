@@ -380,7 +380,7 @@ public class SQLHandler {
         while (rs.next()) {
             output.add((rs.getInt("id")));
             output.add((rs.getString("text")));
-            output.add((rs.getString("user_id")));
+            output.add((rs.getString("username")));
             output.add(rs.getBoolean("resolved"));
         }
         return output;
@@ -504,6 +504,32 @@ public class SQLHandler {
         query.close();
         return count;
     }
+
+    public List searchPosts(int userquest) throws SQLException {
+        List output = new ArrayList<>();
+       String sql = "SELECT Posts.id, Posts.text, Questions.user_id, Users.id, Users.username FROM Posts INNER JOIN Users ON\n" +
+        "Posts.user_id= Users.id WHERE Posts.id = \"" + userquest + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getInt("id")));
+            output.add((rs.getString("text")));
+            output.add((rs.getString("username")));
+        }
+        return output;
+    }
+
+    public void createPost(String text, int sender, Timestamp timestamp) throws SQLException {
+      
+        String sql = "INSERT INTO Posts (text, timestamp, user_id,) VALUES(?,?,?)";
+        query = conn.prepareStatement(sql);
+        query.setString(1, text);
+        query.setTimestamp(2, timestamp);
+        query.setInt(3, sender);
+        query.executeUpdate();
+        query.close();
+    }
+    }
     
-}
+
 
