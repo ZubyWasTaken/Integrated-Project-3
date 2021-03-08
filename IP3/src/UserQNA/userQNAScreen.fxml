@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.homeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
    <children>
       <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
          <children>
@@ -47,7 +47,7 @@
             </HBox>
             <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
                <children>
-                  <Button fx:id="sgnOutBut" mnemonicParsing="false" onAction="#signOut" prefHeight="40.0" prefWidth="37.0" style="-fx-background-color: none;">
+                  <Button fx:id="btnHome" mnemonicParsing="false" onAction="#goHome" prefHeight="40.0" prefWidth="37.0" style="-fx-background-color: none;">
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                            <image>

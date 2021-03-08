@@ -5,7 +5,7 @@
  */
 package ip3;
 
-import UserQNA.homeController;
+import UserQNA.UserQNAController;
 import UserQNA.drawerController;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -49,7 +49,7 @@ public class Drawer {
                 }
                 );
             } catch (IOException ex) {
-                Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
 }

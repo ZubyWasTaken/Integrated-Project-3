@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package UserQNA;
+package Home;
 
+import UserQNA.UserQNAController;
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +34,7 @@ public class Home extends Application{
         stage.show();        
         stage.centerOnScreen();
     }
-  
+
  public Home(User user) {
         currentUser=user;
     }

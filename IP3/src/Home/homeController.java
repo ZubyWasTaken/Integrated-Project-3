@@ -9,6 +9,7 @@ import Chat.Chat;
 
 import Interests.Interests;
 import LoginRegister.LoginRegister;
+import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import ip3.SwitchWindow;
@@ -47,6 +48,9 @@ public class homeController implements Initializable {
 
     User currentUser;
 
+
+    @FXML
+    private JFXButton btnUserQNA;
 
     @FXML
     private JFXButton sgnOutBut;
@@ -113,6 +117,11 @@ public class homeController implements Initializable {
     @FXML
     private void signOut(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
+    }
+
+    @FXML
+    private void userQNA(ActionEvent event) {
+        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new UserQNA(currentUser));
     }
 
     @FXML

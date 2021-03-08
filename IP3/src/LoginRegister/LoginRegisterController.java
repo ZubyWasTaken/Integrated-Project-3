@@ -5,7 +5,7 @@
  */
 package LoginRegister;
 
-import UserQNA.Home;
+import Home.Home;
 import HomeTutor.HomeTutor;
 import Interests.Interests;
 import SQL.SQLHandler;

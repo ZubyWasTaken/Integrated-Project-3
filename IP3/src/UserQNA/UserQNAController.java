@@ -5,6 +5,7 @@
  */
 package UserQNA;
 
+import Home.Home;
 import LoginRegister.LoginRegister;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -37,7 +38,7 @@ import javafx.scene.text.TextFlow;
  *
  * @author Zuby
  */
-public class homeController implements Initializable {
+public class UserQNAController implements Initializable {
     User currentUser;
     @FXML
     private JFXHamburger hamburger;
@@ -49,7 +50,7 @@ public class homeController implements Initializable {
     private Label labelWelcome;
 
     @FXML
-    private Button sgnOutBut;
+    private Button btnHome;
     
      
     @FXML
@@ -68,8 +69,8 @@ public class homeController implements Initializable {
     SQLHandler sql = new SQLHandler();
 
     @FXML
-    private void signOut(ActionEvent event){
-        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
+    private void goHome(ActionEvent event){
+        SwitchWindow.switchWindow((Stage) btnHome.getScene().getWindow(), new Home(currentUser));
     }
     
     @FXML
