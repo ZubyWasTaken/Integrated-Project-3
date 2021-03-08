@@ -1,87 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
     <children>
         <Label fx:id="labelWelcome" alignment="CENTER" layoutX="528.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="224.0" text="Welcome Back! ">
          <font>
             <Font size="28.0" />
          </font></Label>
-      <JFXButton fx:id="sgnOutBut" layoutX="1107.0" layoutY="1.0" onAction="#signOut" prefHeight="57.0" prefWidth="173.0" text="Sign Out">
+      <Label alignment="CENTER" layoutX="749.0" layoutY="73.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="289.0" text="News Feed" underline="true">
          <font>
-            <Font size="27.0" />
-         </font>
-      </JFXButton>
-      <Label fx:id="username" alignment="CENTER" layoutX="504.0" layoutY="44.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="272.0">
-         <font>
-            <Font size="28.0" />
+            <Font size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="963.0" layoutY="58.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="289.0" text="News Feed" underline="true">
+      <Label fx:id="feedTitle" alignment="CENTER" layoutX="749.0" layoutY="132.0" minHeight="16" minWidth="69" prefHeight="38.0" prefWidth="289.0" text="Please Select a Feed">
          <font>
-            <Font size="46.0" />
+            <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="feedTitle" alignment="CENTER" layoutX="963.0" layoutY="117.0" minHeight="16" minWidth="69" prefHeight="38.0" prefWidth="289.0" text="Please Select a Feed">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Label>
-      <VBox alignment="CENTER" layoutX="853.0" layoutY="149.0" prefHeight="128.0" prefWidth="100.0" spacing="5">
+      <HBox layoutX="-4.0" prefHeight="67.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="71.0" text="Categories" underline="true">
+            <HBox prefHeight="69.0" prefWidth="419.0">
+               <children>
+                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome,">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets left="2.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label fx:id="username" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="143.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
+                     <children>
+                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXHamburger>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
+               <children>
+                  <JFXButton fx:id="sgnOutBut" onAction="#signOut">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="550.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" layoutX="628.0" layoutY="164.0" prefHeight="260.0" prefWidth="111.0" spacing="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="102.0" text="Categories" underline="true">
                <font>
-                  <Font size="14.0" />
+                  <Font size="20.0" />
                </font>
             </Label>
-            <JFXButton fx:id="btnUK" onAction="#UKFeed" prefHeight="25.0" prefWidth="78.0" text="UK" />
-            <JFXButton fx:id="btnWorld" onAction="#worldFeed" prefHeight="25.0" prefWidth="78.0" text="World" />
-            <JFXButton fx:id="btnBusiness" onAction="#businessFeed" prefHeight="25.0" prefWidth="78.0" text="Business" />
-            <JFXButton fx:id="btnPolitics" onAction="#politicsFeed" prefHeight="25.0" prefWidth="78.0" text="Politics" />
-            <JFXButton fx:id="btnTech" onAction="#techFeed" prefHeight="25.0" prefWidth="78.0" text="Technology" />
-            <JFXButton fx:id="btnScience" onAction="#scienceFeed" prefHeight="25.0" prefWidth="78.0" text="Science" />
+            <JFXButton fx:id="btnUK" onAction="#UKFeed" prefHeight="25.0" prefWidth="78.0" text="UK">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnWorld" onAction="#worldFeed" prefHeight="25.0" prefWidth="78.0" text="World">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnBusiness" onAction="#businessFeed" prefHeight="37.0" prefWidth="94.0" text="Business">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnPolitics" onAction="#politicsFeed" prefHeight="25.0" prefWidth="78.0" text="Politics">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnTech" onAction="#techFeed" prefHeight="37.0" prefWidth="112.0" text="Technology">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnScience" onAction="#scienceFeed" prefHeight="25.0" prefWidth="78.0" text="Science">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
          </children>
       </VBox>
-      <VBox alignment="CENTER" layoutX="963.0" layoutY="155.0" prefHeight="532.0" prefWidth="289.0" spacing="30">
+      <VBox alignment="CENTER" layoutX="749.0" layoutY="170.0" prefHeight="532.0" prefWidth="289.0" spacing="30">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle1" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 1" wrapText="true" />
-                  <Hyperlink fx:id="articleHyperlink1" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 1" />
+                  <Label fx:id="lblArticle1" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 1" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="articleHyperlink1" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Hyperlink>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle2" alignment="TOP_LEFT" prefHeight="38" prefWidth="244.0" text="Article 2" wrapText="true" />
-                  <Hyperlink fx:id="articleHyperlink2" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 2" />
+                  <Label fx:id="lblArticle2" alignment="TOP_LEFT" prefHeight="38" prefWidth="244.0" text="Article 2" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="articleHyperlink2" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 2">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Hyperlink>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle3" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 3" wrapText="true" />
-                  <Hyperlink fx:id="articleHyperlink3" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 3" />
+                  <Label fx:id="lblArticle3" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 3" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="articleHyperlink3" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Hyperlink>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle4" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 4" wrapText="true" />
-                  <Hyperlink fx:id="articleHyperlink4" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 4" />
+                  <Label fx:id="lblArticle4" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 4" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="articleHyperlink4" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 4">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Hyperlink>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle5" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 5" wrapText="true" />
-                  <Hyperlink fx:id="articleHyperlink5" prefHeight="25.0" prefWidth="244.0" text="Article 5" />
+                  <Label fx:id="lblArticle5" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" text="Article 5" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="articleHyperlink5" prefHeight="25.0" prefWidth="244.0" text="Article 5">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Hyperlink>
                </children>
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="UserQNA" layoutX="138.0" layoutY="164.0" onAction="#userQNA" text="User QNA" />
+      <JFXButton fx:id="btnUserQNA" layoutX="222.0" layoutY="233.0" onAction="#userQNA" prefHeight="42.0" prefWidth="78.0" text="QNA" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
     </children>
 </AnchorPane>

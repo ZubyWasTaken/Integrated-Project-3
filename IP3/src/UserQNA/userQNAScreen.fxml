@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
    <children>
       <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
          <children>
@@ -69,7 +69,7 @@
             </VBox>
          </children>
       </HBox>
-      <VBox layoutX="202.0" layoutY="65.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="556.0" prefWidth="646.0">
+      <VBox layoutX="202.0" layoutY="65.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="655.0" prefWidth="646.0">
          <children>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" VBox.vgrow="NEVER">
                <children>
@@ -88,13 +88,13 @@
                   </Button>
                </children>
             </HBox>
-            <ListView fx:id="feed" fixedCellSize="105.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="512.0" prefWidth="646.0">
+            <ListView fx:id="feed" fixedCellSize="105.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="617.0" prefWidth="646.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ListView>
          </children>
       </VBox>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="64.0" prefHeight="556.0" prefWidth="300.0" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="300.0" />
    </children>
 </AnchorPane>

@@ -11,7 +11,9 @@ import Interests.Interests;
 import LoginRegister.LoginRegister;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import ip3.Drawer;
 import ip3.SwitchWindow;
 import ip3.User;
 
@@ -26,15 +28,10 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 /**
@@ -107,6 +104,12 @@ public class homeController implements Initializable {
 
     @FXML
     private Hyperlink articleHyperlink5;
+    
+    
+    @FXML
+    private JFXHamburger hamburger;
+      @FXML
+    private JFXDrawer drawer;
 
 
     public void setData(User user) {
@@ -120,7 +123,7 @@ public class homeController implements Initializable {
 
     @FXML
     private void userQNA(ActionEvent event) {
-        SwitchWindow.switchWindow((Stage) UserQNA.getScene().getWindow(), new UserQNA(currentUser));
+        SwitchWindow.switchWindow((Stage) btnUserQNA.getScene().getWindow(), new UserQNA(currentUser));
     }
 
     @FXML
@@ -722,6 +725,9 @@ public class homeController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                 Drawer newdrawer = new Drawer();
+
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
                 //Sets feed title to inform user to select a feed
