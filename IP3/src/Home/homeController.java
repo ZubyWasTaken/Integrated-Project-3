@@ -727,6 +727,7 @@ public class homeController implements Initializable {
             public void run() {
                  Drawer newdrawer = new Drawer();
 
+                 drawer.setDisable(true);
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
