@@ -110,10 +110,8 @@ public class UserQNAController implements Initializable {
 
             quest.getChildren().addAll(questText);
 
-              feed.getItems().add(0,answers);
-            feed.getItems().add(0,quest);
-
-          
+            feed.getItems().add(0, answers);
+            feed.getItems().add(0, quest);
 
         }
 
@@ -163,7 +161,7 @@ public class UserQNAController implements Initializable {
             public void run() {
 
                 username.setText(currentUser.getUsername());
-
+                drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
 
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
