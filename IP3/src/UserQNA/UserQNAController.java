@@ -16,7 +16,11 @@ import SQL.SQLHandler;
 import ip3.Question;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,7 +68,8 @@ public class UserQNAController implements Initializable {
 
     @FXML
     private TextArea msgArea;
-
+    
+    Timestamp now = new Timestamp(System.currentTimeMillis());
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
 
@@ -74,47 +79,18 @@ public class UserQNAController implements Initializable {
     }
 
     @FXML
-    private void sendMsg(ActionEvent event) {
+    private void sendMsg(ActionEvent event) throws SQLException {
 
-        String typeQuest = msgArea.getText().trim();
+     String typeQuest = msgArea.getText().trim();
         if (typeQuest.equals("")) {
             System.out.println("nothing");
+    }
+            else {
+             msgArea.clear();
+            Question.createQuestion(typeQuest, currentUser.getUserID(), now);
+             SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
 
-        } else {
-
-            msgArea.clear();
-            TextFlow questText = new TextFlow();
-            Text text = new Text(typeQuest);
-
-            text.setStyle("-fx-font: 16 arial;");
-            questText.getChildren().add(text);
-
-            HBox quest = new HBox();
-
-            // quest.setStyle("-fx-background-color: #b7d4cb;");
-            HBox answers = new HBox();
-            Button btn = new Button();
-            // btn.setPrefWidth(100);
-            btn.setText("Replies");
-
-            answers.setMaxWidth(feed.getWidth() - 20);
-
-            answers.setAlignment(Pos.BOTTOM_RIGHT);
-            btn.setAlignment(Pos.CENTER_RIGHT);
-
-            answers.getChildren().addAll(btn);
-
-            quest.setMaxWidth(feed.getWidth() - 20);
-
-            quest.setAlignment(Pos.TOP_LEFT);
-
-            quest.getChildren().addAll(questText);
-
-            feed.getItems().add(0, answers);
-            feed.getItems().add(0, quest);
-
-        }
-
+    }
     }
 
 //    public synchronized void  addFeed(){
@@ -165,13 +141,60 @@ public class UserQNAController implements Initializable {
                 Drawer newdrawer = new Drawer();
 
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                try {
+                    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+                    data.forEach((_item) -> {
+                        displayQs(_item);
+                        ;
+                    });
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                } 
 
             }
         });
     }
 
-    public void setData(User user) {
+    public void setData(User user) throws SQLException {
         currentUser = user;
+        sql.updateLastSeenQ(currentUser.getUserID(), now);
 
     }
+     private void displayQs(Question question){
+       
+            TextFlow questText = new TextFlow();
+            Text text = new Text(question.getText());
+
+            text.setStyle("-fx-font: 16 arial;");
+            questText.getChildren().add(text);
+
+            HBox quest = new HBox();
+
+            // quest.setStyle("-fx-background-color: #b7d4cb;");
+            HBox answers = new HBox();
+            Button btn = new Button();
+            // btn.setPrefWidth(100);
+            btn.setText("View all");
+
+            answers.setMaxWidth(feed.getWidth() - 20);
+
+            answers.setAlignment(Pos.BOTTOM_RIGHT);
+            btn.setAlignment(Pos.CENTER_RIGHT);
+
+            answers.getChildren().addAll(btn);
+
+            quest.setMaxWidth(feed.getWidth() - 20);
+
+            quest.setAlignment(Pos.TOP_LEFT);
+
+            quest.getChildren().addAll(questText);
+
+            feed.getItems().add(quest);
+
+            feed.getItems().add(answers);
+    }
 }
+
+ 
+

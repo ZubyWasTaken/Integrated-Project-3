@@ -5,10 +5,8 @@
  */
 package Home;
 
-import Chat.Chat;
-
-import Interests.Interests;
 import LoginRegister.LoginRegister;
+import SQL.SQLHandler;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
@@ -22,6 +20,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -110,14 +110,21 @@ public class homeController implements Initializable {
     private JFXHamburger hamburger;
       @FXML
     private JFXDrawer drawer;
+      
+    private SQLHandler sql = new SQLHandler();
+    int count = 0;
+    Timestamp now = new Timestamp(System.currentTimeMillis());
 
-
-    public void setData(User user) {
+    public void setData(User user) throws SQLException {
         currentUser = user;
+        sql.updateLogin(currentUser.getUserID(), true);
+        Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
+        count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML
-    private void signOut(ActionEvent event) {
+    private void signOut(ActionEvent event) throws SQLException {
+        sql.updateLogin(currentUser.getUserID(), false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
