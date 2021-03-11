@@ -10,6 +10,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +70,8 @@ public class Question {
      public boolean getResolved(){
          return this.resolved;
      }
-     public void createQuestion( String text, int sender) throws SQLException{
-         sql.createQuestion(text, sender);
+     public static void createQuestion( String text, int sender, Timestamp timestamp) throws SQLException{
+         sql.createQuestion(text, sender,timestamp);
      }
 
     /*private void getReplies() {

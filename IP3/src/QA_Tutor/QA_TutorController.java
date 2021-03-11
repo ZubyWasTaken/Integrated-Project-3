@@ -60,11 +60,11 @@ public class QA_TutorController implements Initializable {
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
-    
+    Timestamp now = new Timestamp(System.currentTimeMillis());
     public void setData(User user) throws SQLException {
     currentUser = user;
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    sql.updateLogin(currentUser.getUserID(), timestamp, true);
+    
+    sql.updateLastSeenQ(currentUser.getUserID(), now);
 
     }
   

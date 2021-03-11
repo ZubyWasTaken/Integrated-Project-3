@@ -16,7 +16,11 @@ import SQL.SQLHandler;
 import ip3.Question;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +34,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -60,60 +65,30 @@ public class UserQNAController implements Initializable {
     private ListView feed;
 
     @FXML
-    private Button msgBtn;
+    private Button sendBtn;
 
     @FXML
     private TextArea msgArea;
 
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
-
+     Timestamp now = new Timestamp(System.currentTimeMillis());
     @FXML
     private void goHome(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) btnHome.getScene().getWindow(), new Home(currentUser));
     }
 
     @FXML
-    private void sendMsg(ActionEvent event) {
+    private void sendMsg(ActionEvent event) throws SQLException {
 
         String typeQuest = msgArea.getText().trim();
         if (typeQuest.equals("")) {
             System.out.println("nothing");
 
         } else {
-
+            Question.createQuestion(typeQuest, currentUser.getUserID(), now);
             msgArea.clear();
-            TextFlow questText = new TextFlow();
-            Text text = new Text(typeQuest);
-
-            text.setStyle("-fx-font: 16 arial;");
-            questText.getChildren().add(text);
-
-            HBox quest = new HBox();
-
-            // quest.setStyle("-fx-background-color: #b7d4cb;");
-            HBox answers = new HBox();
-            Button btn = new Button();
-            // btn.setPrefWidth(100);
-            btn.setText("Replies");
-
-            answers.setMaxWidth(feed.getWidth() - 20);
-
-            answers.setAlignment(Pos.BOTTOM_RIGHT);
-            btn.setAlignment(Pos.CENTER_RIGHT);
-
-            answers.getChildren().addAll(btn);
-
-            quest.setMaxWidth(feed.getWidth() - 20);
-
-            quest.setAlignment(Pos.TOP_LEFT);
-
-            quest.getChildren().addAll(questText);
-
-            feed.getItems().add(quest);
-
-            feed.getItems().add(answers);
-
+            SwitchWindow.switchWindow((Stage) sendBtn.getScene().getWindow(), new UserQNA(currentUser));
         }
 
     }
@@ -160,7 +135,19 @@ public class UserQNAController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                try {
+                    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+                    data.forEach((_item) -> {
+                        displayQs(_item);
+                        ;
+                    });
 
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+     
+        
+        
                 username.setText(currentUser.getUsername());
 
                 Drawer newdrawer = new Drawer();
@@ -171,8 +158,43 @@ public class UserQNAController implements Initializable {
         });
     }
 
-    public void setData(User user) {
+    public void setData(User user) throws SQLException {
         currentUser = user;
+        sql.updateLastSeenQ(currentUser.getUserID(), now);
 
+    }
+    
+    private void displayQs(Question question){
+       
+            TextFlow questText = new TextFlow();
+            Text text = new Text(question.getText());
+
+            text.setStyle("-fx-font: 16 arial;");
+            questText.getChildren().add(text);
+
+            HBox quest = new HBox();
+
+            // quest.setStyle("-fx-background-color: #b7d4cb;");
+            HBox answers = new HBox();
+            Button btn = new Button();
+            // btn.setPrefWidth(100);
+            btn.setText("View all");
+
+            answers.setMaxWidth(feed.getWidth() - 20);
+
+            answers.setAlignment(Pos.BOTTOM_RIGHT);
+            btn.setAlignment(Pos.CENTER_RIGHT);
+
+            answers.getChildren().addAll(btn);
+
+            quest.setMaxWidth(feed.getWidth() - 20);
+
+            quest.setAlignment(Pos.TOP_LEFT);
+
+            quest.getChildren().addAll(questText);
+
+            feed.getItems().add(quest);
+
+            feed.getItems().add(answers);
     }
 }

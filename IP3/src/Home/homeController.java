@@ -9,6 +9,7 @@ import Chat.Chat;
 
 import Interests.Interests;
 import LoginRegister.LoginRegister;
+import SQL.SQLHandler;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -20,6 +21,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import static java.time.LocalDate.now;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -107,14 +111,23 @@ public class homeController implements Initializable {
 
     @FXML
     private Hyperlink articleHyperlink5;
+    
+    @FXML 
+    private Label questionsCount;
 
-
-    public void setData(User user) {
+    private SQLHandler sql = new SQLHandler();
+    int count = 0;
+    Timestamp now = new Timestamp(System.currentTimeMillis());
+    public void setData(User user) throws SQLException {
         currentUser = user;
+        sql.updateLogin(currentUser.getUserID(), true);
+        Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
+        count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML
-    private void signOut(ActionEvent event) {
+    private void signOut(ActionEvent event) throws SQLException {
+        sql.updateLogin(currentUser.getUserID(), false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
@@ -723,7 +736,7 @@ public class homeController implements Initializable {
             @Override
             public void run() {
                 username.setText(currentUser.getUsername());
-
+                questionsCount.setText(Integer.toString(count));
                 //Sets feed title to inform user to select a feed
                 feedTitle.setText("Please Select a Feed.");
 
