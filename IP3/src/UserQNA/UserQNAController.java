@@ -14,22 +14,31 @@ import ip3.User;
 import ip3.Drawer;
 import SQL.SQLHandler;
 import ip3.Question;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -65,6 +74,9 @@ public class UserQNAController implements Initializable {
     @FXML
     private TextArea msgArea;
 
+    @FXML
+    private AnchorPane repliesPane;
+
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
 
@@ -94,6 +106,8 @@ public class UserQNAController implements Initializable {
             // quest.setStyle("-fx-background-color: #b7d4cb;");
             HBox answers = new HBox();
             Button btn = new Button();
+            Label replyNo = new Label();
+            replyNo.setText("Number of Replies");
             // btn.setPrefWidth(100);
             btn.setText("Replies");
 
@@ -102,7 +116,7 @@ public class UserQNAController implements Initializable {
             answers.setAlignment(Pos.BOTTOM_RIGHT);
             btn.setAlignment(Pos.CENTER_RIGHT);
 
-            answers.getChildren().addAll(btn);
+            answers.getChildren().addAll(replyNo, btn);
 
             quest.setMaxWidth(feed.getWidth() - 20);
 
@@ -112,10 +126,33 @@ public class UserQNAController implements Initializable {
 
             feed.getItems().add(0, answers);
             feed.getItems().add(0, quest);
+            //  msgArea.requestFocus();
+
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                 repliesPane.setVisible(true);
+                 
+                 
+                 
+                 
+                }
+            });
 
         }
-
     }
+
+//    private void loadUI() throws IOException {
+//
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("userQNAScreen.fxml"));
+//        Parent root = (Parent) loader.load();
+//        repliesController controller = loader.getController();
+//        
+//        controller.setData(currentUser);
+//
+//        borderPane.setCenter(root);
+//
+//    }
 
 //    public synchronized void  addFeed(){
 //         Task<HBox> yourMessages = new Task<HBox>() {
@@ -159,7 +196,7 @@ public class UserQNAController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
+repliesPane.setVisible(false);
                 username.setText(currentUser.getUsername());
                 drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
