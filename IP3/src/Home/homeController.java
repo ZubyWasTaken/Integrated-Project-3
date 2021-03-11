@@ -9,10 +9,11 @@ import Chat.Chat;
 
 import Interests.Interests;
 import LoginRegister.LoginRegister;
-import SQL.SQLHandler;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import ip3.Drawer;
 import ip3.SwitchWindow;
 import ip3.User;
 
@@ -21,24 +22,16 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import static java.time.LocalDate.now;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 /**
@@ -112,22 +105,19 @@ public class homeController implements Initializable {
     @FXML
     private Hyperlink articleHyperlink5;
     
-    @FXML 
-    private Label questionsCount;
+    
+    @FXML
+    private JFXHamburger hamburger;
+      @FXML
+    private JFXDrawer drawer;
 
-    private SQLHandler sql = new SQLHandler();
-    int count = 0;
-    Timestamp now = new Timestamp(System.currentTimeMillis());
-    public void setData(User user) throws SQLException {
+
+    public void setData(User user) {
         currentUser = user;
-        sql.updateLogin(currentUser.getUserID(), true);
-        Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
-        count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML
-    private void signOut(ActionEvent event) throws SQLException {
-        sql.updateLogin(currentUser.getUserID(), false);
+    private void signOut(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
@@ -735,8 +725,11 @@ public class homeController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                 Drawer newdrawer = new Drawer();
+
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
-                questionsCount.setText(Integer.toString(count));
+
                 //Sets feed title to inform user to select a feed
                 feedTitle.setText("Please Select a Feed.");
 
