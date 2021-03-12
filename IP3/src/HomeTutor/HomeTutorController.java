@@ -111,16 +111,18 @@ public class HomeTutorController implements Initializable {
     User currentUser;
     Timestamp now = new Timestamp(System.currentTimeMillis());
     int count;
+    
     public void setData(User user) throws SQLException {
     currentUser = user;
-    Timestamp timestamp = sql.getLastLogin(user.getUserID());
+    Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
+    sql.updateLastSeenQ(currentUser.getUserID(), now);
     count = sql.countQuestions(currentUser.getCatId(), currentUser.getUniId(),now,timestamp);
-   
+    sql.updateLogin(currentUser.getUserID(), true);
     }
     @FXML
     private void signOut(ActionEvent event) throws SQLException{
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        sql.updateLogin(currentUser.getUserID(), timestamp, false);
+        
+        sql.updateLogin(currentUser.getUserID(), false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
     }
     

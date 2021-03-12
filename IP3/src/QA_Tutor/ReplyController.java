@@ -57,11 +57,11 @@ public class ReplyController implements Initializable {
     @FXML
     private JFXButton removeBut;
     ObservableList<Reply> data = FXCollections.observableArrayList();
-    @FXML
-            private ProgressIndicator progressIndicator;
+  
     Question currentQuestion;
     User currentUser;
     SQLHandler sql = new SQLHandler();
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     /**
      * Initializes the controller class.
      */
@@ -113,7 +113,7 @@ public class ReplyController implements Initializable {
             tray.showAndDismiss(Duration.millis(3000));
         }
         else {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        
         sql.addReply(reply, currentQuestion.getId(),currentUser.getUserID(), timestamp);
         SwitchWindow.switchWindow((Stage) sendBut.getScene().getWindow(), new ReplyTutor(currentQuestion,currentUser));
         }

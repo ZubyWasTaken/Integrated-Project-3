@@ -143,11 +143,11 @@ public class SQLHandler {
     //update login//
     //---------////
     
-    public void updateLogin(int id, Timestamp timestamp, boolean online) throws SQLException{
-        String sql = "UPDATE loginData SET lastLogin = ?, online = ? WHERE user_id =\"" + id + "\"";
+    public void updateLogin( int id,boolean online) throws SQLException{
+        String sql = "UPDATE loginData SET online = ? WHERE user_id =\"" + id + "\"";
          query = conn.prepareStatement(sql);
-            query.setTimestamp(1,timestamp);
-            query.setBoolean(2, online);
+
+            query.setBoolean(1, online);
             query.executeUpdate();
         query.close();
     }
@@ -392,11 +392,12 @@ public class SQLHandler {
   //------------------//
    
     
-    public void createQuestion(String text, int sender) throws SQLException {
-        String sql = "INSERT INTO Questions (text, user_id) VALUES(?,?)";
+    public void createQuestion(String text, int sender, Timestamp timestamp) throws SQLException {
+        String sql = "INSERT INTO Questions (text, user_id, timestamp) VALUES(?,?,?)";
         query = conn.prepareStatement(sql);
         query.setString(1, text);
         query.setInt(2, sender);
+        query.setTimestamp(3,timestamp);
         query.executeUpdate();
         query.close();
     }
@@ -416,6 +417,33 @@ public class SQLHandler {
         } 
         return output;   
     }
+    
+    public int countAllReplies(int quest_id) throws SQLException {
+        int count = 0;
+        String sql = "SELECT id FROM Replies WHERE quest_id=\"" + quest_id + "\""; 
+         query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+             count ++;
+        }
+        query.close();
+        return count;
+    }
+    
+    
+    
+        public int countUnseenReplies(int user_id,Timestamp now, Timestamp timestamp) throws SQLException {
+        int count = 0;
+        String sql = " SELECT Replies.id FROM Replies INNER JOIN Questions ON Replies.quest_id=Questions.id WHERE Questions.user_id=\"" + user_id + "\" AND Replies.timestamp < \"" + now +"\" AND Replies.timestamp >\"" + timestamp +"\""; 
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+             count ++;
+        }
+        query.close();
+        return count;
+    }
+    
     
      public List searchReplies(int reply) throws SQLException {
         List output = new ArrayList<>();
@@ -461,8 +489,8 @@ public class SQLHandler {
         return output;
 }
 
-    public void addReply(String replyText, int id, int userID, Timestamp timestamp) throws SQLException {
-       String sql = "INSERT INTO Replies ( quest_id, text, user_id, timestamp) VALUES(?,?,?,?)";
+        public void addReply(String replyText, int id, int userID, Timestamp timestamp) throws SQLException {
+        String sql = "INSERT INTO Replies ( quest_id, text, user_id, timestamp) VALUES(?,?,?,?)";
         query = conn.prepareStatement(sql);
         query.setInt(1, id);
         query.setString(2, replyText);
@@ -479,14 +507,14 @@ public class SQLHandler {
         query.close();   
     }
 
-    public Timestamp getLastLogin(int id ) throws SQLException{
+    public Timestamp getLastSeenQ(int id ) throws SQLException{
         Timestamp timestamp = null;
-        String sql = "SELECT lastLogin FROM loginData WHERE user_id=\"" + id + "\"";
+        String sql = "SELECT lastSeenQ FROM loginData WHERE user_id=\"" + id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
          
         while (rs.next()) {
-         timestamp = rs.getTimestamp("lastLogin");
+         timestamp = rs.getTimestamp("lastSeenQ");
       
     }
         return timestamp;
@@ -495,7 +523,7 @@ public class SQLHandler {
     public int countQuestions(int cat_id, int uni_id, Timestamp now, Timestamp timestamp) throws SQLException{
         int count = 0;
         String sql = "SELECT Questions.id, Users.id FROM Questions INNER JOIN Users ON\n" +
-        "Questions.user_id= Users.id  WHERE Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" AND Questions.timestamp < \"" + now +"\" AND Questions.timestamp >\"" + timestamp +"\"";
+        "Questions.user_id= Users.id  WHERE Questions.user_id =Users.id AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" AND Questions.timestamp < \"" + now +"\" AND Questions.timestamp >\"" + timestamp +"\"";
          query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
@@ -527,6 +555,14 @@ public class SQLHandler {
         query.setTimestamp(2, timestamp);
         query.setInt(3, sender);
         query.executeUpdate();
+        query.close();
+    }
+
+    public void updateLastSeenQ(int userID, Timestamp timestamp) throws SQLException {
+        String sql = "UPDATE loginData SET lastSeenQ = ? WHERE user_id =\"" + userID + "\"";
+         query = conn.prepareStatement(sql);
+            query.setTimestamp(1, timestamp);
+            query.executeUpdate();
         query.close();
     }
     }
