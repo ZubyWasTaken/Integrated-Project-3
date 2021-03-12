@@ -19,6 +19,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -51,8 +52,7 @@ public class UserQNAController implements Initializable {
     @FXML
     private JFXDrawer drawer;
 
-    @FXML
-    private Label labelWelcome;
+
 
     @FXML
     private Button btnHome;
@@ -129,8 +129,7 @@ public class UserQNAController implements Initializable {
 
         final int MAX_CHARS = 280;
 
-        msgArea.setTextFormatter(new TextFormatter<String>(change
-                -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        msgArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
 
         Platform.runLater(new Runnable() {
             @Override
@@ -145,7 +144,6 @@ public class UserQNAController implements Initializable {
                     data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
                     data.forEach((_item) -> {
                         displayQs(_item);
-                        ;
                     });
 
                 } catch (SQLException ex) {

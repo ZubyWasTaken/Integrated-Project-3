@@ -475,7 +475,7 @@ public class SQLHandler {
         output.clear();
 
         String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
-        "Questions.user_id= Users.id WHERE Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\"";
+        "Questions.user_id= Users.id WHERE Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" ORDER BY Questions.id DESC";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
