@@ -16,9 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
    <children>
-      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
+      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1059.0" style="-fx-background-color: #7f948f;">
          <children>
             <HBox prefHeight="69.0" prefWidth="419.0">
                <children>
@@ -70,7 +70,7 @@
             </VBox>
          </children>
       </HBox>
-      <VBox layoutX="-6.0" layoutY="65.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="556.0" prefWidth="646.0">
+      <VBox layoutX="-6.0" layoutY="65.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="556.0" prefWidth="661.0">
          <children>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" VBox.vgrow="NEVER">
                <children>
@@ -89,15 +89,15 @@
                   </Button>
                </children>
             </HBox>
-            <ListView fx:id="feed" fixedCellSize="105.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="512.0" prefWidth="646.0">
+            <ListView fx:id="feed" fixedCellSize="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="512.0" prefWidth="646.0">
                <cursor>
-                  <Cursor fx:constant="HAND" />
+                  <Cursor fx:constant="DEFAULT" />
                </cursor>
             </ListView>
          </children>
       </VBox>
       <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="64.0" prefHeight="556.0" prefWidth="300.0" />
-      <AnchorPane fx:id="repliesPane" layoutX="640.0" layoutY="65.0" prefHeight="555.0" prefWidth="401.0">
+      <AnchorPane fx:id="repliesPane" layoutX="654.0" layoutY="65.0" prefHeight="555.0" prefWidth="401.0">
          <children>
             <ListView layoutY="132.0" prefHeight="423.0" prefWidth="401.0" />
             <HBox layoutY="510.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="43.0" prefWidth="401.0">
@@ -110,7 +110,7 @@
                         <Cursor fx:constant="TEXT" />
                      </cursor>
                   </TextArea>
-                  <Button fx:id="replyBtn" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"  prefHeight="32.0" prefWidth="117.0" scaleShape="false" text="Send" textAlignment="CENTER" HBox.hgrow="NEVER">
+                  <Button fx:id="replyBtn" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="117.0" scaleShape="false" text="Send" textAlignment="CENTER" HBox.hgrow="NEVER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -118,6 +118,15 @@
                </children>
             </HBox>
             <TextFlow layoutX="-1.0" prefHeight="134.0" prefWidth="403.0" />
+            <Button layoutX="356.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Resources/x-mark.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
    </children>

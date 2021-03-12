@@ -14,6 +14,7 @@ import ip3.User;
 import ip3.Drawer;
 import SQL.SQLHandler;
 import ip3.Question;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
@@ -42,6 +43,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javax.swing.BorderFactory;
+import javax.swing.border.MatteBorder;
 
 /**
  *
@@ -93,7 +96,8 @@ public class UserQNAController implements Initializable {
             System.out.println("nothing");
 
         } else {
-
+          //  feed.setMouseTransparent(true);
+            feed.setFocusTraversable(false);
             msgArea.clear();
             TextFlow questText = new TextFlow();
             Text text = new Text(typeQuest);
@@ -106,22 +110,28 @@ public class UserQNAController implements Initializable {
             // quest.setStyle("-fx-background-color: #b7d4cb;");
             HBox answers = new HBox();
             Button btn = new Button();
-            Label replyNo = new Label();
-            replyNo.setText("Number of Replies");
+            Label author = new Label();
+            Label datePosted = new Label();
+            author.setText("Author");
+            datePosted.setText("Date Posted");
+
             // btn.setPrefWidth(100);
-            btn.setText("Replies");
+            btn.setText("Replies (" + 2 + ")");
 
             answers.setMaxWidth(feed.getWidth() - 20);
 
             answers.setAlignment(Pos.BOTTOM_RIGHT);
             btn.setAlignment(Pos.CENTER_RIGHT);
-
-            answers.getChildren().addAll(replyNo, btn);
+            btn.setStyle("-fx-cursor: hand;");
+            author.setStyle("-fx-padding: 0 20 5 0;");
+            datePosted.setStyle("-fx-padding: 0 20 5 0;");
+            answers.getChildren().addAll(author, datePosted,  btn);
 
             quest.setMaxWidth(feed.getWidth() - 20);
 
             quest.setAlignment(Pos.TOP_LEFT);
 
+            author.setAlignment(Pos.BOTTOM_LEFT);
             quest.getChildren().addAll(questText);
 
             feed.getItems().add(0, answers);
@@ -131,15 +141,18 @@ public class UserQNAController implements Initializable {
             btn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                 repliesPane.setVisible(true);
-                 
-                 
-                 
-                 
+                    repliesPane.setVisible(true);
+
                 }
             });
 
         }
+    }
+
+    @FXML
+    private void close(ActionEvent event) {
+
+        repliesPane.setVisible(false);
     }
 
 //    private void loadUI() throws IOException {
@@ -153,7 +166,6 @@ public class UserQNAController implements Initializable {
 //        borderPane.setCenter(root);
 //
 //    }
-
 //    public synchronized void  addFeed(){
 //         Task<HBox> yourMessages = new Task<HBox>() {
 //            @Override
@@ -196,7 +208,7 @@ public class UserQNAController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-repliesPane.setVisible(false);
+                repliesPane.setVisible(false);
                 username.setText(currentUser.getUsername());
                 drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
