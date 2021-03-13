@@ -9,8 +9,24 @@
 .list-view .list-cell:even {
 
 -fx-text-fill: white;
+-fx-text-fill: black;
 }
 .list-view .list-cell:odd {
 -fx-background-color: white;
--fx-text-fill: white;
+-fx-text-fill: black;
+}
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #002b43;
+    
+} 
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #002b43;
+    -fx-tab-min-width:90px;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #8ab9d4;
+    -fx-stroke-width: 7pt;
+}
+.jfx-tab-pane .tab:selected {
+    -fx-background-color: #8ab9d4;
 }

@@ -166,7 +166,7 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
  }
  
   @FXML 
- private void back(MouseEvent event){
+ private void back(ActionEvent event){
     
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your changes will not be saved. Do you wish to proceed? ", ButtonType.YES, ButtonType.CANCEL);
             alert.showAndWait();

@@ -64,7 +64,7 @@ public class UserQNAController implements Initializable {
     private ListView feed;
 
     @FXML
-    private Button msgBtn;
+    private Button sendBtn;
 
     @FXML
     private TextArea msgArea;
@@ -88,7 +88,7 @@ public class UserQNAController implements Initializable {
             else {
              msgArea.clear();
             Question.createQuestion(typeQuest, currentUser.getUserID());
-             SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
+            SwitchWindow.switchWindow((Stage) sendBtn.getScene().getWindow(), new UserQNA(currentUser));
 
     }
     }

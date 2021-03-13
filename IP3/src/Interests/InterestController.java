@@ -17,7 +17,6 @@ import ip3.Shaker;
 import ip3.Uni;
 import ip3.User;
 import ip3.SwitchWindow;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -176,8 +175,6 @@ public class InterestController implements Initializable {
         File image = new File ("src/SQL/files/noPic.png");
         Path path = Paths.get("src/SQL/files/noPic.png");
         byte[] photo = Files.readAllBytes(path);
-
-
          sql.addImage(photo,user.getUserID());
     }
     
@@ -219,7 +216,7 @@ public class InterestController implements Initializable {
     
 };
         // update DatePicker cell factory
-        getdob.setDayCellFactory(dayCellFactory);
+       getdob.setDayCellFactory(dayCellFactory);
        catPopulate();
        
        //Getting the id for the selected cateogry

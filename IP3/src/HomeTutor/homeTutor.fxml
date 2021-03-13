@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeTutor.HomeTutorController">
    <children>
       <Label alignment="CENTER" layoutX="749.0" layoutY="73.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="289.0" text="News Feed" underline="true">
@@ -55,9 +54,9 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="153.0">
                <children>
-                  <JFXButton fx:id="sgnOutBut1" onAction="#signOut" prefHeight="51.0" prefWidth="43.0">
+                  <JFXButton fx:id="sgnOutBut" onAction="#signOut" prefHeight="51.0" prefWidth="35.0">
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                            <image>

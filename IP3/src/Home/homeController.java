@@ -25,19 +25,27 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
  * @author Zuby
  */
-@SuppressWarnings("DuplicatedCode")
+
 public class homeController implements Initializable {
 
     @FXML
@@ -108,13 +116,21 @@ public class homeController implements Initializable {
     
     @FXML
     private JFXHamburger hamburger;
-      @FXML
+    
+    @FXML
     private JFXDrawer drawer;
-      
+    
+    @FXML
+    private TableView<User> usersOnline;
+    
+    @FXML
+    private TableColumn<User, String> user;
+    
     private SQLHandler sql = new SQLHandler();
     int count = 0;
     Timestamp now = new Timestamp(System.currentTimeMillis());
-
+    ObservableList<User> data = FXCollections.observableArrayList();
+    
     public void setData(User user) throws SQLException {
         currentUser = user;
         sql.updateLogin(currentUser.getUserID(), true);
@@ -740,8 +756,14 @@ public class homeController implements Initializable {
 
                 //Sets feed title to inform user to select a feed
                 feedTitle.setText("Please Select a Feed.");
-
-
+                try {
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                usersOnline.setItems(data);
                 //Hides the labels and hyperlinks from the user
                 for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
                     label.setVisible(false);

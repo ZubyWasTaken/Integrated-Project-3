@@ -1,14 +1,10 @@
 package ip3;
 
 import SQL.SQLHandler;
-import com.jfoenix.controls.JFXTextField;
 import static java.lang.Integer.parseInt;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,9 +43,22 @@ public class User {
     }
 
     
+    public User(int userid, String firstname, String surname, String username, String password, String dateOfBirth, String email, int uniId, int catId, int titleId){
+        this.userid=userid;
+        this.firstname=firstname;
+        this.surname=surname;
+        this.username=username;
+        this.password=password;
+        this.dateOfBirth=dateOfBirth;
+        this.email=email;
+        this.uniId=uniId;
+        this.catId=catId;
+        this.titleId=titleId;
+    }
+    
      public User(String username, String password) {
         userid=0;
-         this.username=username;
+        this.username=username;
         this.password=password;
         dateOfBirth = null;
         email=null;

@@ -7,6 +7,8 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
     <children>
         <Label fx:id="labelWelcome" alignment="CENTER" layoutX="528.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="224.0" text="Welcome Back! ">
          <font>
@@ -189,7 +191,13 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="UserQNA" layoutX="210.0" layoutY="284.0" onAction="#userQNA" prefHeight="42.0" prefWidth="78.0" text="QNA" />
+      <JFXButton fx:id="UserQNA" layoutX="329.0" layoutY="232.0" onAction="#userQNA" prefHeight="42.0" prefWidth="50.0" text="QNA" />
       <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
+      <Label layoutX="325.0" layoutY="277.0" text="Users online" />
+      <TableView fx:id="usersOnline" layoutX="290.0" layoutY="369.0" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="user" prefWidth="198.66665649414062" text="Users" />
+        </columns>
+      </TableView>
     </children>
 </AnchorPane>
