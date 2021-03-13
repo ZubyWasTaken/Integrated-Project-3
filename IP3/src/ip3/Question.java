@@ -70,8 +70,8 @@ public class Question {
      public boolean getResolved(){
          return this.resolved;
      }
-     public static void createQuestion( String text, int sender, Timestamp timestamp) throws SQLException{
-         sql.createQuestion(text, sender,timestamp);
+     public static void createQuestion( String text, int sender) throws SQLException{
+         sql.addQuestion(text, sender);
      }
 
     /*private void getReplies() {
