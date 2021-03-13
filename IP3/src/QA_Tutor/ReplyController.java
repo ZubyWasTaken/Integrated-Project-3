@@ -61,7 +61,6 @@ public class ReplyController implements Initializable {
     Question currentQuestion;
     User currentUser;
     SQLHandler sql = new SQLHandler();
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     /**
      * Initializes the controller class.
      */
@@ -114,7 +113,7 @@ public class ReplyController implements Initializable {
         }
         else {
         
-        sql.addReply(reply, currentQuestion.getId(),currentUser.getUserID(), timestamp);
+        sql.addReply(reply, currentQuestion.getId(),currentUser.getUserID());
         SwitchWindow.switchWindow((Stage) sendBut.getScene().getWindow(), new ReplyTutor(currentQuestion,currentUser));
         }
     }

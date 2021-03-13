@@ -87,7 +87,7 @@ public class UserQNAController implements Initializable {
     }
             else {
              msgArea.clear();
-            Question.createQuestion(typeQuest, currentUser.getUserID(), now);
+            Question.createQuestion(typeQuest, currentUser.getUserID());
              SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
 
     }

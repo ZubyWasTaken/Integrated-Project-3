@@ -392,12 +392,11 @@ public class SQLHandler {
   //------------------//
    
     
-    public void createQuestion(String text, int sender, Timestamp timestamp) throws SQLException {
-        String sql = "INSERT INTO Questions (text, user_id, timestamp) VALUES(?,?,?)";
+    public void addQuestion(String text, int sender) throws SQLException {
+        String sql = "INSERT INTO Questions (text, user_id) VALUES(?,?)";
         query = conn.prepareStatement(sql);
         query.setString(1, text);
         query.setInt(2, sender);
-        query.setTimestamp(3,timestamp);
         query.executeUpdate();
         query.close();
     }
@@ -489,13 +488,12 @@ public class SQLHandler {
         return output;
 }
 
-        public void addReply(String replyText, int id, int userID, Timestamp timestamp) throws SQLException {
-        String sql = "INSERT INTO Replies ( quest_id, text, user_id, timestamp) VALUES(?,?,?,?)";
+        public void addReply(String replyText, int id, int userID) throws SQLException {
+        String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
         query = conn.prepareStatement(sql);
         query.setInt(1, id);
         query.setString(2, replyText);
         query.setInt(3, userID);
-        query.setTimestamp(4, timestamp);
         query.executeUpdate();
         query.close();
     }
