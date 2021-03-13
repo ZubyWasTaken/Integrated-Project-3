@@ -117,9 +117,9 @@ public class homeController implements Initializable {
 
     public void setData(User user) throws SQLException {
         currentUser = user;
-        sql.updateLogin(currentUser.getUserID(), true);
-        Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
-        count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
+       // sql.updateLogin(currentUser.getUserID(), true);
+       // Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
+      //  count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML

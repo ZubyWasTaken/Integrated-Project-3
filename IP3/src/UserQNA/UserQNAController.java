@@ -82,7 +82,6 @@ public class UserQNAController implements Initializable {
     @FXML
     private AnchorPane repliesPane;
 
-    
     Timestamp now = new Timestamp(System.currentTimeMillis());
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
@@ -95,65 +94,13 @@ public class UserQNAController implements Initializable {
     @FXML
     private void sendMsg(ActionEvent event) throws SQLException {
 
-     String typeQuest = msgArea.getText().trim();
+        String typeQuest = msgArea.getText().trim();
         if (typeQuest.equals("")) {
             System.out.println("nothing");
-    }
-            else {
-             msgArea.clear();
-            Question.createQuestion(typeQuest, currentUser.getUserID(), now);
-             SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
-
         } else {
-          //  feed.setMouseTransparent(true);
-            feed.setFocusTraversable(false);
             msgArea.clear();
-            TextFlow questText = new TextFlow();
-            Text text = new Text(typeQuest);
-
-            text.setStyle("-fx-font: 16 arial;");
-            questText.getChildren().add(text);
-
-            HBox quest = new HBox();
-
-            // quest.setStyle("-fx-background-color: #b7d4cb;");
-            HBox answers = new HBox();
-            Button btn = new Button();
-            Label author = new Label();
-            Label datePosted = new Label();
-            author.setText("Author");
-            datePosted.setText("Date Posted");
-
-            // btn.setPrefWidth(100);
-            btn.setText("Replies (" + 2 + ")");
-
-            answers.setMaxWidth(feed.getWidth() - 20);
-
-            answers.setAlignment(Pos.BOTTOM_RIGHT);
-            btn.setAlignment(Pos.CENTER_RIGHT);
-            btn.setStyle("-fx-cursor: hand;");
-            author.setStyle("-fx-padding: 0 20 5 0;");
-            datePosted.setStyle("-fx-padding: 0 20 5 0;");
-            answers.getChildren().addAll(author, datePosted,  btn);
-
-            quest.setMaxWidth(feed.getWidth() - 20);
-
-            quest.setAlignment(Pos.TOP_LEFT);
-
-            author.setAlignment(Pos.BOTTOM_LEFT);
-            quest.getChildren().addAll(questText);
-
-            feed.getItems().add(0, answers);
-            feed.getItems().add(0, quest);
-            //  msgArea.requestFocus();
-
-            btn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    repliesPane.setVisible(true);
-
-                }
-            });
+            Question.createQuestion(typeQuest, currentUser.getUserID(), now);
+            SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
 
         }
     }
@@ -163,45 +110,7 @@ public class UserQNAController implements Initializable {
 
         repliesPane.setVisible(false);
     }
-    }
 
-//    private void loadUI() throws IOException {
-//
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("userQNAScreen.fxml"));
-//        Parent root = (Parent) loader.load();
-//        repliesController controller = loader.getController();
-//        
-//        controller.setData(currentUser);
-//
-//        borderPane.setCenter(root);
-//
-//    }
-//    public synchronized void  addFeed(){
-//         Task<HBox> yourMessages = new Task<HBox>() {
-//            @Override
-//            public HBox call() throws Exception {
-//             
-//              Label quest = new Label();
-//               
-//                    quest.setText("This my question g");
-//                  
-//               
-//                HBox hbox = new HBox();
-//                hbox.setMaxWidth(feed.getWidth() - 20);
-//                hbox.setAlignment(Pos.TOP_RIGHT);
-//               
-//                hbox.getChildren().addAll(quest);
-//                return hbox;
-//             }
-//      
-//           
-//      
-//       
-//
-//     };
-//                yourMessages.setOnSucceeded(event -> feed.getItems().add(yourMessages.getValue()));
-//        
-//    }
 //    @FXML
 //    private void viewChats(ActionEvent event){
 //       
@@ -233,7 +142,7 @@ public class UserQNAController implements Initializable {
 
                 } catch (SQLException ex) {
                     Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                }
 
             }
         });
@@ -244,40 +153,59 @@ public class UserQNAController implements Initializable {
         sql.updateLastSeenQ(currentUser.getUserID(), now);
 
     }
-     private void displayQs(Question question){
-       
-            TextFlow questText = new TextFlow();
-            Text text = new Text(question.getText());
 
-            text.setStyle("-fx-font: 16 arial;");
-            questText.getChildren().add(text);
+    private void displayQs(Question question) {
 
-            HBox quest = new HBox();
+        //  feed.setMouseTransparent(true);
+        feed.setFocusTraversable(false);
+        msgArea.clear();
+        TextFlow questText = new TextFlow();
+        Text text = new Text(question.getText());
 
-            // quest.setStyle("-fx-background-color: #b7d4cb;");
-            HBox answers = new HBox();
-            Button btn = new Button();
-            // btn.setPrefWidth(100);
-            btn.setText("View all");
+        text.setStyle("-fx-font: 16 arial;");
+        questText.getChildren().add(text);
 
-            answers.setMaxWidth(feed.getWidth() - 20);
+        HBox quest = new HBox();
 
-            answers.setAlignment(Pos.BOTTOM_RIGHT);
-            btn.setAlignment(Pos.CENTER_RIGHT);
+        // quest.setStyle("-fx-background-color: #b7d4cb;");
+        HBox answers = new HBox();
+        Button btn = new Button();
+        Label author = new Label();
+        Label datePosted = new Label();
+        author.setText("Author");
+        datePosted.setText("Date Posted");
 
-            answers.getChildren().addAll(btn);
+        // btn.setPrefWidth(100);
+        btn.setText("Replies (" + 2 + ")");
 
-            quest.setMaxWidth(feed.getWidth() - 20);
+        answers.setMaxWidth(feed.getWidth() - 20);
 
-            quest.setAlignment(Pos.TOP_LEFT);
+        answers.setAlignment(Pos.BOTTOM_RIGHT);
+        btn.setAlignment(Pos.CENTER_RIGHT);
+        btn.setStyle("-fx-cursor: hand;");
+        author.setStyle("-fx-padding: 0 20 5 0;");
+        datePosted.setStyle("-fx-padding: 0 20 5 0;");
+        answers.getChildren().addAll(author, datePosted, btn);
 
-            quest.getChildren().addAll(questText);
+        quest.setMaxWidth(feed.getWidth() - 20);
 
-            feed.getItems().add(quest);
+        quest.setAlignment(Pos.TOP_LEFT);
 
-            feed.getItems().add(answers);
+        author.setAlignment(Pos.BOTTOM_LEFT);
+        quest.getChildren().addAll(questText);
+
+        feed.getItems().add(0, answers);
+        feed.getItems().add(0, quest);
+        //  msgArea.requestFocus();
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                repliesPane.setVisible(true);
+
+            }
+        });
+
     }
+
 }
-
- 
-
