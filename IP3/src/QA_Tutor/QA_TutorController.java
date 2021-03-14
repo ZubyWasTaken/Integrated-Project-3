@@ -88,11 +88,12 @@ public class QA_TutorController implements Initializable {
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
-            username.setText(currentUser.getUsername());
+                
+                
                 drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
-
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                
                 try {
                     data.clear();
                     feed.getItems().clear();

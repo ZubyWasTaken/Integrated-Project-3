@@ -7,7 +7,10 @@ package QA_Tutor;
 
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextArea;
+import ip3.Drawer;
 import ip3.Question;
 import ip3.SwitchWindow;
 import ip3.User;
@@ -54,8 +57,12 @@ public class ReplyController implements Initializable {
     private TableColumn<Reply, String> col_author;
     @FXML
     private JFXButton removeBut;
+    @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer;
+    
     ObservableList<Reply> data = FXCollections.observableArrayList();
-  
     Question currentQuestion;
     User currentUser;
     SQLHandler sql = new SQLHandler();
@@ -69,6 +76,10 @@ public class ReplyController implements Initializable {
             public void run() {
             removeBut.setVisible(false);
             try {
+                Drawer newdrawer = new Drawer();
+                drawer.setDisable(true);
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                
                 data = sql.showReplies(currentQuestion.getId());
             } catch (SQLException ex) {
             Logger.getLogger(ReplyController.class.getName()).log(Level.SEVERE, null, ex);

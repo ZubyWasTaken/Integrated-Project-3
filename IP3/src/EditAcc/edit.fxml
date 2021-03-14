@@ -2,8 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
@@ -13,11 +16,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="572.0" prefWidth="587.0" style="-fx-background-color: white;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeTutor.EditTutorController">
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="572.0" prefWidth="587.0" style="-fx-background-color: white;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditAcc.EditController">
    <children>
       <HBox prefHeight="67.0" prefWidth="599.0" style="-fx-background-color: #7f948f;">
          <children>
-            <HBox prefHeight="67.0" prefWidth="599.0" />
+            <HBox prefHeight="67.0" prefWidth="599.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
+                     <children>
+                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXHamburger>
+                     </children>
+                  </VBox>
+               </children></HBox>
             <VBox alignment="CENTER" prefHeight="67.0" prefWidth="283.0">
                <children>
                   <JFXButton fx:id="backBut" onAction="#back" prefHeight="41.0" prefWidth="142.0" text="Back">
@@ -47,8 +61,8 @@
       <JFXTabPane fx:id="tp" layoutX="54.0" layoutY="113.0" prefHeight="390.0" prefWidth="525.0" style="-fx-background-color: white; -fx-tab-min-height: 60px;" stylesheets="@../Resources/css.css">
          <tabs>
             <Tab fx:id="accTab" onSelectionChanged="#returnToAcc" text="Account Details">
-               <content>
-                  <AnchorPane fx:id="accDet" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="jfx-tab-pane">
+              <content>
+                <AnchorPane fx:id="accDet" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="jfx-tab-pane">
                      <children>
                         <JFXTextField fx:id="username" layoutX="180.0" layoutY="197.0" prefHeight="25.0" prefWidth="203.0" />
                         <JFXButton fx:id="changePass" buttonType="RAISED" layoutX="172.0" layoutY="247.0" onAction="#passEdit" prefHeight="32.0" prefWidth="203.0" style="-fx-background-color: a4a4a4;" text="CHANGE PASSWORD" textAlignment="CENTER" textFill="#002b43" wrapText="true">
@@ -64,11 +78,11 @@
                         </Label>
                      </children>
                   </AnchorPane>
-               </content>
+              </content>
             </Tab>
             <Tab fx:id="personalTab" onSelectionChanged="#returnToPersonal" text="Personal Details">
-               <content>
-                  <AnchorPane fx:id="personalDet" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <content>
+                <AnchorPane fx:id="personalDet" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <JFXTextField fx:id="fname" layoutX="31.0" layoutY="64.0" prefHeight="25.0" prefWidth="166.0" />
                         <JFXTextField fx:id="surname" layoutX="316.0" layoutY="64.0" prefHeight="25.0" prefWidth="166.0" />
@@ -76,29 +90,26 @@
                         <Label layoutX="31.0" layoutY="45.0" text="First name">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
+                           </font></Label>
                         <Label layoutX="316.0" layoutY="45.0" prefHeight="17.0" prefWidth="53.0" text="Surname">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
+                           </font></Label>
                         <Label layoutX="34.0" layoutY="129.0" prefHeight="17.0" prefWidth="53.0" text="Email">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
+                           </font></Label>
                         <Label layoutX="316.0" layoutY="120.0" prefHeight="17.0" prefWidth="96.0" text="Interest">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
+                           </font></Label>
                         <JFXComboBox fx:id="catSelect" layoutX="315.0" layoutY="152.0" prefHeight="25.0" prefWidth="168.0" />
                      </children>
                   </AnchorPane>
-               </content>
+              </content>
             </Tab>
          </tabs>
       </JFXTabPane>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="66.0" prefHeight="525.0" prefWidth="300.0" />
    </children>
 </AnchorPane>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Home;
+package EditAcc;
 
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
@@ -32,7 +32,7 @@ import tray.notification.TrayNotification;
  *
  * @author stani
  */
-public class EditPassController implements Initializable {
+public class PasswordEditController implements Initializable {
     
     @FXML
     private JFXButton cancelBut;

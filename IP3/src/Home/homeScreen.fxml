@@ -36,6 +36,15 @@
          <children>
             <HBox prefHeight="69.0" prefWidth="419.0">
                <children>
+                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
+                     <children>
+                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXHamburger>
+                     </children>
+                  </VBox>
                   <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome,">
                      <font>
                         <Font size="24.0" />
@@ -49,15 +58,6 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
-                     <children>
-                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXHamburger>
-                     </children>
-                  </VBox>
                </children>
             </HBox>
             <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
@@ -191,13 +191,35 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="UserQNA" layoutX="329.0" layoutY="232.0" onAction="#userQNA" prefHeight="42.0" prefWidth="50.0" text="QNA" />
       <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
-      <Label layoutX="325.0" layoutY="277.0" text="Users online" />
-      <TableView fx:id="usersOnline" layoutX="290.0" layoutY="369.0" prefHeight="200.0" prefWidth="200.0">
+      <Label layoutX="299.0" layoutY="92.0" text="Users online">
+         <font>
+            <Font size="27.0" />
+         </font></Label>
+      <TableView fx:id="usersOnline" editable="true" layoutX="299.0" layoutY="151.0" prefHeight="231.0" prefWidth="200.0">
         <columns>
           <TableColumn fx:id="user" prefWidth="198.66665649414062" text="Users" />
         </columns>
       </TableView>
+      <JFXButton fx:id="qa" layoutX="375.0" layoutY="498.0" onAction="#qaSwitch" prefHeight="7.0" prefWidth="102.0" text="View all" underline="true">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="299.0" layoutY="443.0" text="new replies">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="299.0" layoutY="396.0" text="You have">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="repliesCount" layoutX="418.0" layoutY="396.0" prefHeight="17.0" prefWidth="32.0">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

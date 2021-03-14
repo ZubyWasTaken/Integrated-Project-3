@@ -132,12 +132,12 @@ public class InterestController implements Initializable {
 
         }
         if(dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty() ){
-            String tilte = "Register";
+            
             TrayNotification tray = new TrayNotification();
             AnimationType type = AnimationType.POPUP;
 
             tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            tray.setTitle("Register");
             tray.setMessage("Please enter all details");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -149,6 +149,21 @@ public class InterestController implements Initializable {
          else
          {
             uniId=User.fetchUniId(email);
+            if (uniId==0){
+                TrayNotification tray = new TrayNotification();
+                AnimationType type = AnimationType.POPUP;
+
+                tray.setAnimationType(type);
+                tray.setTitle("Register");
+                tray.setMessage("Please use a valid university email");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+                registerFailed();
+                
+            }
+            else{
+                
+            
             User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
             String message = username;
             TrayNotification tray = new TrayNotification();
@@ -162,6 +177,7 @@ public class InterestController implements Initializable {
             User user = new User(username);
             setImage(username);
             SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
+            }
          }
 }
     private void registerFailed() {

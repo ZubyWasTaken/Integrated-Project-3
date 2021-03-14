@@ -93,7 +93,7 @@ public class User {
 
     }
     public static int fetchUniId(String email){
-        int uniID=0;
+        int uniID;
         String emailGcu = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@caledonian.ac.uk"; 
         String emailStrath = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@uni.strath.ac.uk";
         Pattern pat = Pattern.compile(emailGcu); 
@@ -103,6 +103,9 @@ public class User {
         }
         else if (pat2.matcher(email).matches()) {
             uniID=2;
+        }
+        else{
+            uniID=0;
         }
            return uniID;
     }

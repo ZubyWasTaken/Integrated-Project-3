@@ -6,6 +6,7 @@
 package Home;
 
 import LoginRegister.LoginRegister;
+import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
@@ -126,6 +127,12 @@ public class homeController implements Initializable {
     @FXML
     private TableColumn<User, String> user;
     
+    @FXML
+    private Label repliesCount;
+    
+    @FXML
+    private JFXButton qa;
+    
     private SQLHandler sql = new SQLHandler();
     int count = 0;
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -144,11 +151,12 @@ public class homeController implements Initializable {
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
-    @FXML
-    private void userQNA(ActionEvent event) {
-        SwitchWindow.switchWindow((Stage) UserQNA.getScene().getWindow(), new UserQNA(currentUser));
-    }
+    
 
+    @FXML
+    private void qaSwitch(ActionEvent event){
+          SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
+    }
     @FXML
     private void UKFeed(ActionEvent event) {
         //Unhides all other buttons and hides this button
@@ -748,7 +756,7 @@ public class homeController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                 Drawer newdrawer = new Drawer();
+                Drawer newdrawer = new Drawer();
 
                 drawer.setDisable(true);
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
@@ -762,6 +770,7 @@ public class homeController implements Initializable {
                     Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
+                repliesCount.setText(Integer.toString(count));
                 user.setCellValueFactory(new PropertyValueFactory<>("username"));
                 usersOnline.setItems(data);
                 //Hides the labels and hyperlinks from the user
