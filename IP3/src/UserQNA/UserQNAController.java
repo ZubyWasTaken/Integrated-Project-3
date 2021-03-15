@@ -52,8 +52,6 @@ public class UserQNAController implements Initializable {
     @FXML
     private JFXDrawer drawer;
 
-
-
     @FXML
     private Button btnHome;
 
