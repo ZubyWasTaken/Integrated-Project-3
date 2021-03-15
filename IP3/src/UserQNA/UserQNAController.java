@@ -14,9 +14,11 @@ import ip3.User;
 import ip3.Drawer;
 import SQL.SQLHandler;
 import ip3.Question;
+import ip3.Reply;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -62,8 +64,6 @@ public class UserQNAController implements Initializable {
     @FXML
     private JFXDrawer drawer;
 
-
-
     @FXML
     private Button btnHome;
 
@@ -74,13 +74,27 @@ public class UserQNAController implements Initializable {
     private ListView feed;
 
     @FXML
+    private ListView repliesView;
+
+    @FXML
     private Button msgBtn;
+
+    @FXML
+    private Button replyBtn;
 
     @FXML
     private TextArea msgArea;
 
     @FXML
+    private TextArea replyArea;
+
+    @FXML
     private AnchorPane repliesPane;
+
+    @FXML
+    private TextFlow repliesQ;
+
+    public int questionid;
 
     Timestamp now = new Timestamp(System.currentTimeMillis());
     ObservableList<Question> data = FXCollections.observableArrayList();
@@ -97,11 +111,10 @@ public class UserQNAController implements Initializable {
         String typeQuest = msgArea.getText().trim();
         if (typeQuest.equals("")) {
             System.out.println("nothing");
-    }
-            else {
-             msgArea.clear();
+        } else {
+            msgArea.clear();
             Question.createQuestion(typeQuest, currentUser.getUserID());
-             SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
+            SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
 
         }
     }
@@ -110,6 +123,7 @@ public class UserQNAController implements Initializable {
     private void close(ActionEvent event) {
 
         repliesPane.setVisible(false);
+       
     }
 
 //    @FXML
@@ -136,7 +150,11 @@ public class UserQNAController implements Initializable {
                 try {
                     data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
                     data.forEach((_item) -> {
-                        displayQs(_item);
+                        try {
+                            displayQs(_item);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     });
 
                 } catch (SQLException ex) {
@@ -153,8 +171,8 @@ public class UserQNAController implements Initializable {
 
     }
 
-    private void displayQs(Question question) {
-
+    private void displayQs(Question question) throws SQLException {
+  int replyCount = sql.countAllReplies(question.getId());
         //  feed.setMouseTransparent(true);
         feed.setFocusTraversable(false);
         msgArea.clear();
@@ -164,18 +182,30 @@ public class UserQNAController implements Initializable {
         text.setStyle("-fx-font: 16 arial;");
         questText.getChildren().add(text);
 
+        int questId = question.getId();
+        String usersId =  question.getSender();
+        
+        
+        
+        String questionId = String.valueOf(questId);
+
         HBox quest = new HBox();
+
+        Button btn = new Button();
 
         // quest.setStyle("-fx-background-color: #b7d4cb;");
         HBox answers = new HBox();
-        Button btn = new Button();
+
+        btn.setId(questionId);
+
         Label author = new Label();
+        author.setText(usersId);
         Label datePosted = new Label();
-        author.setText("Author");
+        
         datePosted.setText("Date Posted");
 
         // btn.setPrefWidth(100);
-        btn.setText("Replies (" + 2 + ")");
+        btn.setText("Replies (" + replyCount + ")");
 
         answers.setMaxWidth(feed.getWidth() - 20);
 
@@ -197,14 +227,111 @@ public class UserQNAController implements Initializable {
         feed.getItems().add(0, quest);
         //  msgArea.requestFocus();
 
+        loadReplies(btn);
+    }
+
+    @FXML
+    private void sendReply(ActionEvent event) throws SQLException {
+
+        String newReply = replyArea.getText().trim();
+        if (newReply.equals("")) {
+            System.out.println("nothing");
+        } else {
+            replyArea.clear();
+
+            Reply.createReply(newReply, questionid, currentUser.getUserID());
+            // SwitchWindow.switchWindow((Stage) replyBtn.getScene().getWindow(), new UserQNA(currentUser));
+
+            TextFlow replyText = new TextFlow();
+            Text text = new Text(newReply);
+System.out.println(newReply);
+            text.setStyle("-fx-font: 16 arial;");
+            replyText.getChildren().add(text);
+            
+            HBox replies = new HBox();
+            
+            replies.setMaxWidth(feed.getWidth() - 20);
+
+            replies.setAlignment(Pos.TOP_RIGHT);
+             replies.getChildren().addAll(replyText);
+            repliesView.getItems().add(replies);
+
+        }
+    }
+
+    @FXML
+    private void loadReplies(Button btn) {
+
+        questionid = parseInt(btn.getId());
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                repliesPane.setVisible(true);
 
+                repliesQ.getChildren().clear();
+                repliesView.getItems().clear();
+                questionid = parseInt(btn.getId());
+                try {
+                    Question currentQuestion = Question.search(questionid);
+                    Text text = new Text(currentQuestion.getText());
+                    repliesQ.getChildren().add(text);
+                    System.out.println(currentQuestion.getText());
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                ObservableList<Reply> replies = FXCollections.observableArrayList();
+
+                try {
+                    replies = sql.showReplies(questionid);
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                replies.forEach((_item) -> {
+                    displayReplies(_item);
+                });
+
+                repliesPane.setVisible(true);
             }
         });
 
+    }
+
+    @FXML
+    private void displayReplies(Reply reply) {
+
+        //  feed.setMouseTransparent(true);
+        repliesView.setFocusTraversable(false);
+        replyArea.clear();
+        TextFlow replyText = new TextFlow();
+        Text text = new Text(reply.getText());
+
+        text.setStyle("-fx-font: 16 arial;");
+        replyText.getChildren().add(text);
+
+        HBox replies = new HBox();
+
+        // quest.setStyle("-fx-background-color: #b7d4cb;");
+        Label author = new Label();
+        Label datePosted = new Label();
+        author.setText("Author");
+        datePosted.setText("Date Posted");
+
+        replies.setMaxWidth(feed.getWidth() - 20);
+
+        replies.setAlignment(Pos.TOP_RIGHT);
+
+        //  author.setStyle("-fx-padding: 0 20 5 0;");
+        //  datePosted.setStyle("-fx-padding: 0 20 5 0;");
+        //   answers.getChildren().addAll(author, datePosted, btn);
+        //  quest.setMaxWidth(feed.getWidth() - 20);
+        //quest.setAlignment(Pos.TOP_LEFT);
+        // author.setAlignment(Pos.BOTTOM_LEFT);
+        replies.getChildren().addAll(replyText);
+
+        repliesView.getItems().add(replies);
+        //  feed.getItems().add(0, quest);
     }
 
 }

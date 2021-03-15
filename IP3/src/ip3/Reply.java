@@ -17,6 +17,8 @@ import java.util.List;
  * @author stani
  */
 public class Reply {
+
+    
     /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -66,8 +68,14 @@ public class Reply {
      public String getSender(){
          return this.sender;
      }
+     
+     public static void createReply(String replyText, int questionid, int userID) throws SQLException {
+       sql.addReply(replyText, questionid, userID);
+       
+    }
      /*
-     public void createQuestion(int cat_id, String text, int sender) throws SQLException{
+     
+     public void createReply(int cat_id, String text, int sender) throws SQLException{
          sql.createQuestion(cat_id, text, sender);
      }
      */
