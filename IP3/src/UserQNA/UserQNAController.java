@@ -7,6 +7,7 @@ package UserQNA;
 
 import Home.Home;
 import LoginRegister.LoginRegister;
+import QA_Tutor.ReplyTutor;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import ip3.SwitchWindow;
@@ -46,8 +47,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import javax.swing.BorderFactory;
 import javax.swing.border.MatteBorder;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  *
@@ -105,6 +110,7 @@ public class UserQNAController implements Initializable {
 
         }
     }
+
 
     @FXML
     private void close(ActionEvent event) {
