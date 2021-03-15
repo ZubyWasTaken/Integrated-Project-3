@@ -222,9 +222,9 @@ public class UserQNAController implements Initializable {
 
         author.setAlignment(Pos.BOTTOM_LEFT);
         quest.getChildren().addAll(questText);
-
-        feed.getItems().add(0, answers);
-        feed.getItems().add(0, quest);
+feed.getItems().add( quest);
+        feed.getItems().add( answers);
+        
         //  msgArea.requestFocus();
 
         loadReplies(btn);
