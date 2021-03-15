@@ -516,6 +516,7 @@ public class SQLHandler {
          timestamp = rs.getTimestamp("lastSeenQ");
       
     }
+        
         return timestamp;
     }
     
