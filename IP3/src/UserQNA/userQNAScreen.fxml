@@ -5,7 +5,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
@@ -16,25 +15,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
    <children>
       <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1059.0" style="-fx-background-color: #7f948f;">
          <children>
             <HBox prefHeight="69.0" prefWidth="419.0">
                <children>
-                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome,">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets left="2.0" />
-                     </opaqueInsets>
-                  </Label>
-                  <Label fx:id="username" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="143.0">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
                   <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
                      <children>
                         <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">

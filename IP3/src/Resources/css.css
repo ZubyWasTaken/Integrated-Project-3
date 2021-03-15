@@ -25,6 +25,21 @@
 .list-view .scroll-bar:horizontal {
     -fx-scale-x: 0;
 }
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #002b43;
+    
+} 
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #002b43;
+    -fx-tab-min-width:90px;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #8ab9d4;
+    -fx-stroke-width: 7pt;
+}
+.jfx-tab-pane .tab:selected {
+    -fx-background-color: #8ab9d4;
+}
 .list-view .scroll-bar:vertical {
     -fx-scale-x: 0;
     -fx-padding: -10; 

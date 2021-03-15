@@ -68,13 +68,13 @@ public class UserQNAController implements Initializable {
     private Button btnHome;
 
     @FXML
-    private Label username;
-
-    @FXML
     private ListView feed;
 
     @FXML
-    private Button msgBtn;
+    private Label username;
+    
+    @FXML
+    private Button sendBtn;
 
     @FXML
     private TextArea msgArea;
@@ -101,7 +101,7 @@ public class UserQNAController implements Initializable {
             else {
              msgArea.clear();
             Question.createQuestion(typeQuest, currentUser.getUserID());
-             SwitchWindow.switchWindow((Stage) msgBtn.getScene().getWindow(), new UserQNA(currentUser));
+            SwitchWindow.switchWindow((Stage) sendBtn.getScene().getWindow(), new UserQNA(currentUser));
 
         }
     }
@@ -131,7 +131,6 @@ public class UserQNAController implements Initializable {
                 username.setText(currentUser.getUsername());
                 drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
-
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 try {
                     data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());

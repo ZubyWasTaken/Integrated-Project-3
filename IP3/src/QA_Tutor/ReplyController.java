@@ -7,7 +7,10 @@ package QA_Tutor;
 
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextArea;
+import ip3.Drawer;
 import ip3.Question;
 import ip3.SwitchWindow;
 import ip3.User;
@@ -15,7 +18,6 @@ import ip3.Reply;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +27,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
@@ -56,8 +57,12 @@ public class ReplyController implements Initializable {
     private TableColumn<Reply, String> col_author;
     @FXML
     private JFXButton removeBut;
+    @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer;
+    
     ObservableList<Reply> data = FXCollections.observableArrayList();
-  
     Question currentQuestion;
     User currentUser;
     SQLHandler sql = new SQLHandler();
@@ -69,26 +74,32 @@ public class ReplyController implements Initializable {
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
-         removeBut.setVisible(false);
-        try {
-            data = sql.showReplies(currentQuestion.getId());
-        } catch (SQLException ex) {
+            removeBut.setVisible(false);
+            try {
+                Drawer newdrawer = new Drawer();
+                drawer.setDisable(true);
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                
+                data = sql.showReplies(currentQuestion.getId());
+            } catch (SQLException ex) {
             Logger.getLogger(ReplyController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            }
      
         
-        col_reply.setCellValueFactory(new PropertyValueFactory<>("text"));
-        col_author.setCellValueFactory(new PropertyValueFactory<>("sender"));
-        table.setItems(data);
+             col_reply.setCellValueFactory(new PropertyValueFactory<>("text"));
+             col_author.setCellValueFactory(new PropertyValueFactory<>("sender"));
+             table.setItems(data);
                 
          
     }   
          });
     }
+    
     void setData(Question currentQuestion, User currentUser) {
         this.currentQuestion=currentQuestion;
         this.currentUser=currentUser;
     }
+    
     private int getTablePos() {
         TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
