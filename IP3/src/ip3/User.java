@@ -1,10 +1,14 @@
 package ip3;
 
 import SQL.SQLHandler;
+import com.jfoenix.controls.JFXTextField;
 import static java.lang.Integer.parseInt;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,22 +47,9 @@ public class User {
     }
 
     
-    public User(int userid, String firstname, String surname, String username, String password, String dateOfBirth, String email, int uniId, int catId, int titleId){
-        this.userid=userid;
-        this.firstname=firstname;
-        this.surname=surname;
-        this.username=username;
-        this.password=password;
-        this.dateOfBirth=dateOfBirth;
-        this.email=email;
-        this.uniId=uniId;
-        this.catId=catId;
-        this.titleId=titleId;
-    }
-    
      public User(String username, String password) {
         userid=0;
-        this.username=username;
+         this.username=username;
         this.password=password;
         dateOfBirth = null;
         email=null;
@@ -93,7 +84,7 @@ public class User {
 
     }
     public static int fetchUniId(String email){
-        int uniID;
+        int uniID=0;
         String emailGcu = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@caledonian.ac.uk"; 
         String emailStrath = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@uni.strath.ac.uk";
         Pattern pat = Pattern.compile(emailGcu); 
@@ -103,9 +94,6 @@ public class User {
         }
         else if (pat2.matcher(email).matches()) {
             uniID=2;
-        }
-        else{
-            uniID=0;
         }
            return uniID;
     }

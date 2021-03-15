@@ -88,12 +88,11 @@ public class QA_TutorController implements Initializable {
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
-                
-                
+            username.setText(currentUser.getUsername());
                 drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
+
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                
                 try {
                     data.clear();
                     feed.getItems().clear();
@@ -152,8 +151,8 @@ public class QA_TutorController implements Initializable {
 
             HBox quest = new HBox();
            quest.setStyle("-fx-border-style: solid inside;"
-        + "-fx-border-width: 1;" + "-fx-border-insets: 5;"
-        + "-fx-border-radius: 5;" + "-fx-border-color: gray;");
+        + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+        + "-fx-border-radius: 5;" + "-fx-border-color: blue;");
             quest.setId(String.valueOf(question.getId()));
             // quest.setStyle("-fx-background-color: #b7d4cb;");
            HBox answers = new HBox();

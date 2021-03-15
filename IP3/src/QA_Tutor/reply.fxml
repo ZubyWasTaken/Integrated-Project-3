@@ -1,49 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextArea?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.ReplyController">
    <children>
-      <JFXTextArea fx:id="replyText" layoutX="68.0" layoutY="305.0" prefHeight="104.0" prefWidth="417.0" promptText="Type your reply:" />
-      <JFXButton fx:id="sendBut" layoutX="474.0" layoutY="396.0" onAction="#send" prefHeight="25.0" prefWidth="77.0" text="Send" />
-      <TableView fx:id="table" layoutX="68.0" layoutY="79.0" onMouseClicked="#clickItem" prefHeight="187.0" prefWidth="491.0">
+      <JFXTextArea fx:id="replyText" layoutX="68.0" layoutY="265.0" prefHeight="104.0" prefWidth="417.0" promptText="Type your reply:" />
+      <JFXButton fx:id="sendBut" layoutX="474.0" layoutY="356.0" onAction="#send" prefHeight="25.0" prefWidth="77.0" text="Send" />
+      <TableView fx:id="table" layoutX="68.0" layoutY="36.0" onMouseClicked="#clickItem" prefHeight="187.0" prefWidth="491.0">
         <columns>
           <TableColumn fx:id="col_reply" prefWidth="354.6666946411133" text="Reply" />
           <TableColumn fx:id="col_author" minWidth="0.0" prefWidth="135.99996948242188" text="By" />
         </columns>
       </TableView>
-      <JFXButton fx:id="removeBut" layoutX="540.0" layoutY="393.0" onAction="#remove" text="Remove" underline="true" />
-      <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXHamburger>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-3.0" layoutY="60.0" prefHeight="431.0" prefWidth="255.0" />
-      <HBox layoutX="-4.0" layoutY="-3.0" prefHeight="67.0" prefWidth="607.0" style="-fx-background-color: #7f948f;">
-         <children>
-            <HBox prefHeight="133.0" prefWidth="601.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
-                     <children>
-                        <JFXHamburger fx:id="hamburger1" alignment="BOTTOM_CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXHamburger>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </HBox>
+      <JFXButton fx:id="removeBut" layoutX="540.0" layoutY="356.0" onAction="#remove" text="Remove" underline="true" />
    </children>
 </AnchorPane>

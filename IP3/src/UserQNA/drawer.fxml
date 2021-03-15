@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="556.0" prefWidth="300.0" spacing="30.0" style="-fx-background-color: #7f948f;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
+<VBox prefHeight="556.0" prefWidth="300.0" spacing="30.0" style="-fx-background-color: #7f948f;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
    <children>
-      <HBox fx:id="homeBut" alignment="CENTER_LEFT" onMouseClicked="#home" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                
+                  <FontAwesomeIcon glyphName="HOME" size="3em" wrappingWidth="31.0" />
                </children>
             </VBox>
-            <Label text="Home">
+            <Label text="UserQNA">
                <font>
                   <Font size="24.0" />
                </font>
@@ -25,17 +26,17 @@
             </Label>
          </children>
       </HBox>
-      <HBox fx:id="qaBut" alignment="CENTER_LEFT" onMouseClicked="#qa" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                 
+                  <FontAwesomeIcon glyphName="USER" size="3em" wrappingWidth="31.0" />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <Label text="Q &amp; A">
+            <Label text="Account">
                <font>
                   <Font size="24.0" />
                </font>
@@ -48,10 +49,14 @@
             </Label>
          </children>
       </HBox>
-      <HBox fx:id="chatBut" alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-            <Label prefHeight="35.0" prefWidth="86.0" text="Chats" textAlignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <FontAwesomeIcon glyphName="QUESTION" size="3em" wrappingWidth="31.0" />
+               </children>
+            </VBox>
+            <Label contentDisplay="CENTER" text="Teacher QnA">
                <font>
                   <Font size="24.0" />
                </font>
@@ -61,17 +66,16 @@
             </Label>
          </children>
       </HBox>
-      <HBox fx:id="accBut" alignment="CENTER_LEFT" onMouseClicked="#acc" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-            <Label prefHeight="35.0" prefWidth="265.0" text="My account" textAlignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Label>
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+            <Label text="Label" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="325.0" spacing="50.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="95.0" />
+            <Label text="Label" />
          </children>
       </HBox>
    </children>
