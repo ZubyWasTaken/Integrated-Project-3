@@ -11,6 +11,7 @@ import ip3.Categories;
 import ip3.Question;
 import ip3.Reply;
 import ip3.Uni;
+import ip3.User;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -563,6 +564,32 @@ public class SQLHandler {
             query.setTimestamp(1, timestamp);
             query.executeUpdate();
         query.close();
+    }
+
+    public ObservableList<User> showUsersOnline(int uniId, int catId) throws SQLException {
+        ObservableList<User> output = FXCollections.observableArrayList();
+       String sql = "SELECT * FROM Users INNER JOIN loginData on Users.id=loginData.user_id WHERE Users.uniid =\"" + uniId + "\" AND Users.catid=\"" + catId +"\" AND loginData.online=TRUE ";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            
+            int userId = rs.getInt("id");
+            String username = rs.getString("username");
+            String password = rs.getString("password");
+            String firstname = rs.getString("firstname");
+            String surname = rs.getString ("surname");
+            String dateOfBirth = rs.getString("dob");
+            String email = rs.getString("email");
+            int uniid = rs.getInt("uniid");
+            int catid = rs.getInt("catid");
+            int titleid = rs.getInt("title_id");
+            
+       output.add(new User(userId, firstname, surname, username,password, email,dateOfBirth, uniid, catid, titleid ));
+
+        }
+        query.close();
+        return output;
     }
     }
     

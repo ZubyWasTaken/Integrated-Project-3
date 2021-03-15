@@ -5,6 +5,7 @@
  */
 package HomeTutor;
 
+import EditAcc.Edit;
 import Home.Feed;
 import Home.FeedMessage;
 import Home.RSSFeedParser;
@@ -12,6 +13,9 @@ import LoginRegister.LoginRegister;
 import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import ip3.Drawer;
 import ip3.SwitchWindow;
 import ip3.User;
 import java.awt.Desktop;
@@ -39,10 +43,8 @@ import javafx.stage.Stage;
  */
 public class HomeTutorController implements Initializable {
   
-
-    
     @FXML
-    private Label labelWelcome;
+    private Label username;
     
     @FXML
     private JFXButton sgnOutBut;
@@ -105,6 +107,12 @@ public class HomeTutorController implements Initializable {
     private Hyperlink articleHyperlink5;
     
     @FXML
+    private JFXHamburger hamburger;
+
+    @FXML
+    private JFXDrawer drawer;
+    
+    @FXML
     private Label questionsCount;
     
     private SQLHandler sql = new SQLHandler();
@@ -128,7 +136,7 @@ public class HomeTutorController implements Initializable {
     
      @FXML
     private void edit(ActionEvent event){
-        SwitchWindow.switchWindow((Stage) editBut.getScene().getWindow(), new EditTutor(currentUser)); 
+        SwitchWindow.switchWindow((Stage) editBut.getScene().getWindow(), new Edit(currentUser)); 
     }
     
     @FXML
@@ -731,9 +739,14 @@ public class HomeTutorController implements Initializable {
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
+                Drawer newdrawer = new Drawer();
+                drawer.setDisable(true);
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                
                 questionsCount.setText(Integer.toString(count));
+                username.setText(currentUser.getUsername());
     for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
-                    label.setVisible(false);
+                    //label.setVisible(false);
                 }
 
                 for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
