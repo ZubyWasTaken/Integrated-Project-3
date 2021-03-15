@@ -5,10 +5,9 @@
  */
 package Home;
 
-import Chat.Chat;
-
-import Interests.Interests;
 import LoginRegister.LoginRegister;
+import QA_Tutor.QA_Tutor;
+import SQL.SQLHandler;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
@@ -22,22 +21,32 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
  * @author Zuby
  */
-@SuppressWarnings("DuplicatedCode")
+
 public class homeController implements Initializable {
 
     @FXML
@@ -108,24 +117,46 @@ public class homeController implements Initializable {
     
     @FXML
     private JFXHamburger hamburger;
-      @FXML
+    
+    @FXML
     private JFXDrawer drawer;
-
-
-    public void setData(User user) {
+    
+    @FXML
+    private TableView<User> usersOnline;
+    
+    @FXML
+    private TableColumn<User, String> user;
+    
+    @FXML
+    private Label repliesCount;
+    
+    @FXML
+    private JFXButton qa;
+    
+    private SQLHandler sql = new SQLHandler();
+    int count = 0;
+    Timestamp now = new Timestamp(System.currentTimeMillis());
+    ObservableList<User> data = FXCollections.observableArrayList();
+    
+    public void setData(User user) throws SQLException {
         currentUser = user;
+       // sql.updateLogin(currentUser.getUserID(), true);
+       // Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
+      //  count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML
-    private void signOut(ActionEvent event) {
+    private void signOut(ActionEvent event) throws SQLException {
+        sql.updateLogin(currentUser.getUserID(), false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
-    @FXML
-    private void userQNA(ActionEvent event) {
-        SwitchWindow.switchWindow((Stage) UserQNA.getScene().getWindow(), new UserQNA(currentUser));
-    }
+    
 
+    @FXML
+    private void qaSwitch(ActionEvent event){
+          SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
+    }
     @FXML
     private void UKFeed(ActionEvent event) {
         //Unhides all other buttons and hides this button
@@ -725,15 +756,23 @@ public class homeController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                 Drawer newdrawer = new Drawer();
+                Drawer newdrawer = new Drawer();
 
+                drawer.setDisable(true);
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
                 //Sets feed title to inform user to select a feed
                 feedTitle.setText("Please Select a Feed.");
-
-
+                try {
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                repliesCount.setText(Integer.toString(count));
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                usersOnline.setItems(data);
                 //Hides the labels and hyperlinks from the user
                 for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
                     label.setVisible(false);

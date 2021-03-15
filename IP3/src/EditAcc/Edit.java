@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HomeTutor;
+package EditAcc;
 
 /**
  *
@@ -27,25 +27,25 @@ import javafx.stage.Stage;
  *
  * @author Zuby
  */
-public class EditTutor extends Application{
+public class Edit extends Application{
 
     User currentUser;
 
     public void start(Stage stage) throws Exception {
       
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("editTutor.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("edit.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
-        EditTutorController controller = loader.getController();
+        EditController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("Home");
+        stage.setTitle("Edit");
         stage.show();        
         stage.centerOnScreen();
     }
   
- public EditTutor(User user) {
+ public Edit(User user) {
         currentUser=user;
     }
 

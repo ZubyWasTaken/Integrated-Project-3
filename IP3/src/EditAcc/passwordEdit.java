@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HomeTutor;
+package EditAcc;
 
 /**
  *
@@ -16,6 +16,7 @@ package HomeTutor;
  */
 
 
+import HomeTutor.*;
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HomeTutor;
+package EditAcc;
 
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
@@ -121,7 +121,7 @@ public class PasswordEditController implements Initializable {
             currentUser.setPassword(passNew);
             currentUser.editPassword(currentUser);
 
-               SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new EditTutor(currentUser));
+               SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new Edit(currentUser));
 
         }
 }
@@ -134,7 +134,7 @@ public class PasswordEditController implements Initializable {
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
-            SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new EditTutor(currentUser));   
+            SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new Edit(currentUser));   
               
             }
  }

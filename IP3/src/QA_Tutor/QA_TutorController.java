@@ -7,11 +7,14 @@ package QA_Tutor;
 
 import HomeTutor.HomeTutor;
 import SQL.SQLHandler;
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import ip3.Drawer;
 import ip3.Question;
 import ip3.SwitchWindow;
 import ip3.User;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -24,16 +27,16 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 /**
@@ -46,25 +49,31 @@ public class QA_TutorController implements Initializable {
     /**
      * Initializes the controller class.
      */
-     @FXML
-    private TableView<Question> table;
-     @FXML
-    private TableColumn<Question, String> col_quest;
     @FXML
-    private TableColumn<Question, String> col_author;
+    private JFXHamburger hamburger;
+
     @FXML
-    private TableColumn<Question, Boolean> col_resolved;
+    private JFXDrawer drawer;
+
     @FXML
-    private JFXButton backBut;
+    private Button btnHome;
+
+    @FXML
+    private Label username;
+
+    @FXML
+    private ListView feed;
+
+
    
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
-    
+    Timestamp now = new Timestamp(System.currentTimeMillis());
     public void setData(User user) throws SQLException {
     currentUser = user;
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    sql.updateLogin(currentUser.getUserID(), timestamp, true);
+    
+    sql.updateLastSeenQ(currentUser.getUserID(), now);
 
     }
   
@@ -75,24 +84,28 @@ public class QA_TutorController implements Initializable {
         timer.scheduleAtFixedRate(new TimerTask(){
      @Override
             public void run() {
-               
-            
+           
          Platform.runLater(new Runnable() {
     @Override
             public void run() {
-         try {
-            data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
-     
-        
-        col_quest.setCellValueFactory(new PropertyValueFactory<>("text"));
-        col_author.setCellValueFactory(new PropertyValueFactory<>("sender"));
-        col_resolved.setCellValueFactory(new PropertyValueFactory<>("resolved"));
-        table.setItems(data);
-      
-            } catch (SQLException ex) {
-            Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
+                
+                
+                drawer.setDisable(true);
+                Drawer newdrawer = new Drawer();
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                
+                try {
+                    data.clear();
+                    feed.getItems().clear();
+                    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+                    data.forEach((_item) -> {
+                        displayQs(_item);
+                    });
+               
+            }
+                catch (SQLException ex) {
+                    Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
          });
     }
@@ -102,14 +115,14 @@ public class QA_TutorController implements Initializable {
     },0,10000); 
                 }
     
-     private int getTablePos() {
+     /*private int getTablePos() {
         TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         Question item = table.getItems().get(index);
         return item.getId();
     }
-     
-     @FXML
+     */
+    /* @FXML
      private void clickItem(MouseEvent event) {
     table.setOnMouseClicked((MouseEvent event1) -> {
         if(event1.getClickCount()==2){
@@ -123,10 +136,60 @@ public class QA_TutorController implements Initializable {
        
     });
     
-}
+}*/
      @FXML 
- private void back(ActionEvent event){
+ private void goHome(ActionEvent event){
 
-            SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));   
+             SwitchWindow.switchWindow((Stage) btnHome.getScene().getWindow(), new HomeTutor(currentUser));
          }
-}
+ private void displayQs(Question question){
+       
+            TextFlow questText = new TextFlow();
+            Text text = new Text(question.getText());
+
+            text.setStyle("-fx-font: 16 arial;");
+            questText.getChildren().add(text);
+
+            HBox quest = new HBox();
+           quest.setStyle("-fx-border-style: solid inside;"
+        + "-fx-border-width: 1;" + "-fx-border-insets: 5;"
+        + "-fx-border-radius: 5;" + "-fx-border-color: gray;");
+            quest.setId(String.valueOf(question.getId()));
+            // quest.setStyle("-fx-background-color: #b7d4cb;");
+           HBox answers = new HBox();
+           Button btn = new Button();
+           btn.setPrefWidth(100);
+           btn.setText("View all");
+
+            answers.setMaxWidth(feed.getWidth() - 20);
+
+            answers.setAlignment(Pos.BOTTOM_RIGHT);
+            btn.setAlignment(Pos.CENTER_RIGHT);
+
+           answers.getChildren().addAll(btn);
+
+            quest.setMaxWidth(feed.getWidth() - 20);
+            quest.getChildren().addAll(questText);
+
+            feed.getItems().add(quest);
+
+            feed.getItems().add(answers);
+    }
+
+@FXML
+         private void clickItem (MouseEvent event){
+             feed.setOnMouseClicked((MouseEvent event1) -> {
+             if(event1.getClickCount()==2){
+                 try{
+                     HBox hbox =  (HBox) feed.getSelectionModel().selectedItemProperty().getValue();
+                     int id = parseInt(hbox.getId());
+                     Question currentQuestion = Question.search(id);  
+                     SwitchWindow.switchWindow((Stage) feed.getScene().getWindow(), new ReplyTutor(currentQuestion,currentUser));
+                 } catch (SQLException | IOException ex) {
+                     Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         });
+         }
+ }
+
