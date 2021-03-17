@@ -205,10 +205,10 @@ public class UserQNAController implements Initializable {
         btn.setId(questionId);
 
         Label author = new Label();
-        author.setText(usersId);
+        author.setText("By: " + usersId);
         Label datePosted = new Label();
         
-        datePosted.setText("Date Posted");
+        datePosted.setText("Date posted: " + question.getDate());
 
         // btn.setPrefWidth(100);
         btn.setText("Replies (" + replyCount + ")");
@@ -317,26 +317,29 @@ System.out.println(newReply);
         replyText.getChildren().add(text);
 
         HBox replies = new HBox();
-
+        HBox details = new HBox();
         // quest.setStyle("-fx-background-color: #b7d4cb;");
         Label author = new Label();
         Label datePosted = new Label();
-        author.setText("Author");
-        datePosted.setText("Date Posted");
+        author.setText("By: " + reply.getSender() );
+        datePosted.setText("Date Posted: " + reply.getDate());
 
+        details.setMaxWidth(feed.getWidth()-20);
+        details.setAlignment(Pos.BOTTOM_RIGHT);
+        details.getChildren().addAll(author, datePosted);
         replies.setMaxWidth(feed.getWidth() - 20);
 
         replies.setAlignment(Pos.TOP_RIGHT);
 
-        //  author.setStyle("-fx-padding: 0 20 5 0;");
-        //  datePosted.setStyle("-fx-padding: 0 20 5 0;");
-        //   answers.getChildren().addAll(author, datePosted, btn);
-        //  quest.setMaxWidth(feed.getWidth() - 20);
-        //quest.setAlignment(Pos.TOP_LEFT);
-        // author.setAlignment(Pos.BOTTOM_LEFT);
+        author.setStyle("-fx-padding: 0 20 5 0;");
+        datePosted.setStyle("-fx-padding: 0 20 5 0;");
+      
+        author.setAlignment(Pos.BOTTOM_RIGHT);
         replies.getChildren().addAll(replyText);
 
         repliesView.getItems().add(replies);
+        repliesView.getItems().add(details);
+        
         //  feed.getItems().add(0, quest);
     }
 

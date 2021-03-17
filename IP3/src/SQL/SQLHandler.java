@@ -374,7 +374,7 @@ public class SQLHandler {
    
     public List searchQuestions(int quest) throws SQLException {
         List output = new ArrayList<>();
-       String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
+       String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Questions.timestamp, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
         "Questions.user_id= Users.id WHERE Questions.id = \"" + quest + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
@@ -383,6 +383,7 @@ public class SQLHandler {
             output.add((rs.getString("text")));
             output.add((rs.getString("username")));
             output.add(rs.getBoolean("resolved"));
+            output.add((rs.getTimestamp("timestamp")).toString());
         }
         return output;
         
@@ -404,7 +405,7 @@ public class SQLHandler {
 
     public ObservableList showReplies(int quest_id) throws SQLException {
         ObservableList<Reply> output = FXCollections.observableArrayList();
-        String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Users.username FROM Replies INNER JOIN Users ON Replies.user_id=Users.id WHERE Replies.quest_id = \"" + quest_id + "\"";
+        String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Replies.timestamp, Users.username FROM Replies INNER JOIN Users ON Replies.user_id=Users.id WHERE Replies.quest_id = \"" + quest_id + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {
@@ -412,8 +413,8 @@ public class SQLHandler {
             int question_id = rs.getInt("quest_id");
             String text = rs.getString("text");
             String replier = rs.getString("username");
-            //Timestamp timestamp=rs.getTimestamp("timestamp");
-            output.add(new Reply(id,question_id, text, replier));
+            String date = rs.getTimestamp("timestamp").toString();
+            output.add(new Reply(id,question_id, text, replier, date));
         } 
         return output;   
     }
@@ -447,7 +448,7 @@ public class SQLHandler {
     
      public List searchReplies(int reply) throws SQLException {
         List output = new ArrayList<>();
-       String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Replies.user_id, Users.id, Users.username FROM Replies INNER JOIN Users ON\n" +
+       String sql = "SELECT Replies.id,Replies.quest_id, Replies.text, Replies.user_id, Replies.timestamp, Users.id, Users.username FROM Replies INNER JOIN Users ON\n" +
         "Replies.user_id= Users.id WHERE Replies.id = \"" + reply + "\"";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
@@ -456,6 +457,7 @@ public class SQLHandler {
             output.add((rs.getInt("quest_id")));
             output.add((rs.getString("text")));
             output.add((rs.getString("username")));
+            output.add((rs.getTimestamp("timestamp")).toString());
 
         }
         return output;
@@ -474,7 +476,7 @@ public class SQLHandler {
         ObservableList<Question> output = FXCollections.observableArrayList();
         output.clear();
 
-        String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
+        String sql = "SELECT Questions.id, Questions.text, Questions.user_id, Questions.resolved, Questions.timestamp, Users.id, Users.username FROM Questions INNER JOIN Users ON\n" +
         "Questions.user_id= Users.id WHERE Questions.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" ORDER BY Questions.id DESC";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
@@ -483,7 +485,8 @@ public class SQLHandler {
             String question = rs.getString("text");
             String sender = rs.getString("username");
             boolean resolved = rs.getBoolean("resolved");
-            output.add(new Question(question_id, question, sender, resolved));
+            String date = rs.getTimestamp("timestamp").toString().trim();
+            output.add(new Question(question_id, question, sender, resolved,date));
         }
         query.close();
         return output;
