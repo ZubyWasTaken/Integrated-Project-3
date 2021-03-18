@@ -594,6 +594,20 @@ public class SQLHandler {
         query.close();
         return output;
     }
+
+    public void setResolved(int parseInt) throws SQLException {
+        String sql = "UPDATE Questions SET resolved = true WHERE id =\"" + parseInt + "\"";
+         query = conn.prepareStatement(sql);
+         query.executeUpdate();
+        query.close();
+    }
+
+    public void removeQuestion(int id) throws SQLException {
+      String sql = "DELETE FROM Questions WHERE id =\"" +id + "\"";
+        query = conn.prepareStatement(sql);
+        query.executeUpdate();
+        query.close();   
+    }
     }
     
 
