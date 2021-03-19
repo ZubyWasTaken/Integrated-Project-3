@@ -9,10 +9,10 @@ import ip3.User;
 import ip3.Drawer;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
 import ip3.Question;
 import ip3.Reply;
 import java.io.IOException;
+import java.io.InputStream;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.SQLException;
@@ -41,10 +41,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import tray.animations.AnimationType;
@@ -67,8 +71,7 @@ public class UserQNAController implements Initializable {
     @FXML
     private Button btnHome;
 
-    @FXML
-    private Label username;
+  
 
     @FXML
     private ListView feed;
@@ -77,10 +80,10 @@ public class UserQNAController implements Initializable {
     private ListView repliesView;
 
     @FXML
-    private Button sendBtn;
+    private JFXButton sendBtn;
 
     @FXML
-    private Button replyBtn;
+    private JFXButton replyBtn;
 
     @FXML
     private TextArea msgArea;
@@ -178,8 +181,6 @@ public class UserQNAController implements Initializable {
      @Override
             public void run() {
         Platform.runLater(() -> {
-            
-        username.setText(currentUser.getUsername());
         drawer.setDisable(true);
         Drawer newdrawer = new Drawer();
             
@@ -198,87 +199,102 @@ public class UserQNAController implements Initializable {
     private void loadReplies(Button btn) {
 
         btn.setOnAction((ActionEvent event) -> {
-            loadR(parseInt(btn.getId()));
+            try {
+                loadR(parseInt(btn.getId()));
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
     }
 
-    @FXML
-    private void displayReplies(Reply reply) {
-
-        //  feed.setMouseTransparent(true);
+     @FXML
+    private void displayReplies(Reply reply) throws SQLException  {
+        
         repliesView.setFocusTraversable(false);
         replyArea.clear();
+        
+        
+        //Setting the current question
+        User sender = reply.getSender();
         TextFlow replyText = new TextFlow();
         Text text = new Text(reply.getText());
-
         text.setStyle("-fx-font: 16 arial;");
         replyText.getChildren().add(text);
-
-        HBox replies = new HBox();
-        replies.setId(String.valueOf(reply.getId()));
-        HBox details = new HBox();
-        // quest.setStyle("-fx-background-color: #b7d4cb;");
+        replyText.setTextAlignment(TextAlignment.RIGHT);
+        
+        //Getting profile pics
+        ImageView profilePic = new ImageView();
+        InputStream fs= sql.getImage(sender.getUserID());
+        Image image = new Image(fs);
+        profilePic.setImage(image);
+        profilePic.setFitHeight(20);
+        profilePic.setFitWidth(20);
+        profilePic.setStyle("-fx-padding: 0 20 5 0;");
+        
+        //Getting author
         Label author = new Label();
+        author.setText("By: " + sender.getUsername() );
+        author.setAlignment(Pos.BOTTOM_RIGHT);
+        author.setStyle("-fx-padding: 0 20 5 0;");
+      
+        //Getting date
         Label datePosted = new Label();
-        author.setText("By: " + reply.getSender() );
         datePosted.setText("Date Posted: " + reply.getDate());
-
+        datePosted.setStyle("-fx-padding: 0 20 5 0;");
+        
+        //Setting the boxes
+        HBox replies = new HBox();
+        replies.getChildren().addAll(replyText); 
+        replies.setId(String.valueOf(reply.getId()));
+        replies.setAlignment(Pos.TOP_LEFT);
+        replies.setMaxWidth(feed.getWidth());
+        
+        HBox details = new HBox();
         details.setMaxWidth(feed.getWidth()-20);
         details.setAlignment(Pos.BOTTOM_RIGHT);
-        details.getChildren().addAll(author, datePosted);
-        replies.setMaxWidth(feed.getWidth() - 20);
-
-        replies.setAlignment(Pos.TOP_RIGHT);
-
-        author.setStyle("-fx-padding: 0 20 5 0;");
-        datePosted.setStyle("-fx-padding: 0 20 5 0;");
-      
-        author.setAlignment(Pos.BOTTOM_RIGHT);
-        replies.getChildren().addAll(replyText);
-
-        repliesView.getItems().add(replies);
-        repliesView.getItems().add(details);
-        
-        //  feed.getItems().add(0, quest);
+        details.getChildren().addAll(author, profilePic,datePosted);
+       
+        //Adding them to the pane
+        repliesView.getItems().addAll(replies,details);
     }
     
    
     @FXML
-         private void clickItem (javafx.scene.input.MouseEvent event){
-             repliesView.setOnMouseClicked((javafx.scene.input.MouseEvent event1) -> {
-             if(event1.getButton()==MouseButton.SECONDARY){
-                 try{
-                     HBox hbox =  (HBox) repliesView.getSelectionModel().selectedItemProperty().getValue();
-                     int id = parseInt(hbox.getId());
-                     Reply currentReply = Reply.search(id); 
-                     User sender = new User(currentReply.getSender());
-                    if (sender.getUserID()==currentUser.getUserID()){
-                     
-                       ContextMenu context = new ContextMenu();
-                      
-                       MenuItem remove = new MenuItem("Remove");
-                       context.getItems().addAll( remove);
-                       repliesView.setContextMenu(context);
-                       context.show(repliesView, Side.BOTTOM, repliesView.getLayoutX(), repliesView.getLayoutY());
-                        
-                       remove.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                        try {
-                        sql.deleteReply(currentReply.getId());
-                        loadR(questionid);
-                        } catch (SQLException ex) {
-                        Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-            }
-        });
-                   
-        } 
-             }   catch (SQLException | IOException ex) {
-                     Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+         private void clickItem (MouseEvent event){
+             repliesView.setOnMouseClicked((MouseEvent event1) -> {
+                 if(event1.getButton()==MouseButton.SECONDARY){
+                     try{
+                         HBox hbox =  (HBox) repliesView.getSelectionModel().selectedItemProperty().getValue();
+                         int id = parseInt(hbox.getId());
+                         Reply currentReply = Reply.search(id);
+                         User sender = currentReply.getSender();
+                         if (sender.getUserID()==currentUser.getUserID()){
+                             
+                             ContextMenu context = new ContextMenu();
+                             
+                             MenuItem remove = new MenuItem("Remove");
+                             context.getItems().addAll( remove);
+                             repliesView.setContextMenu(context);
+                             context.show(repliesView, Side.BOTTOM, repliesView.getLayoutX(), repliesView.getLayoutY());
+                             
+                             remove.setOnAction((ActionEvent event2) -> {
+                                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this ", ButtonType.YES, ButtonType.CANCEL);
+                                 alert.showAndWait();
+                                 if (alert.getResult() == ButtonType.YES) {
+                                     try {
+                                         sql.deleteReply(currentReply.getId());
+                                         loadR(questionid);
+                                     } catch (SQLException ex) {
+                                         Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                                     }
+                                 }          });
+                                    
+                         }
+                     }   catch (SQLException | IOException ex) {
+                         Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                     }
                  }
-         }       
              });
          
 }
@@ -287,34 +303,29 @@ public class UserQNAController implements Initializable {
              feed.setOnMouseClicked((javafx.scene.input.MouseEvent event1) -> {
              if(event1.getButton()==MouseButton.SECONDARY){
                  try{
-                     HBox hbox =  (HBox) feed.getSelectionModel().selectedItemProperty().getValue();
-                     int id = parseInt(hbox.getId());
-                     Question currentQuestion = Question.search(id); 
-                     User sender = new User(currentQuestion.getSender());
+                    HBox hbox =  (HBox) feed.getSelectionModel().selectedItemProperty().getValue();
+                    int id = parseInt(hbox.getId());
+                    Question currentQuestion = Question.search(id); 
+                    User sender = currentQuestion.getSender();
                     if (sender.getUserID()==currentUser.getUserID()){
                      
                        ContextMenu context = new ContextMenu();
-                      
                        MenuItem remove = new MenuItem("Remove");
                        context.getItems().add( remove);
                        if (currentQuestion.getResolved()==false){
                            MenuItem edit = new MenuItem ("Mark as resolved");
                            context.getItems().add(edit);
-                           edit.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    try {
-                                    sql.setResolved(currentQuestion.getId());
-                                    loadQs();
-                                    } catch (SQLException ex) {
-                                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+                           edit.setOnAction((ActionEvent event2) -> {
+                               try {
+                                   sql.setResolved(currentQuestion.getId());
+                                   loadQs();
+                               } catch (SQLException ex) {
+                                   Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                               }          });
                        }
                        feed.setContextMenu(context);
                        context.show(repliesView, Side.BOTTOM, repliesView.getLayoutX(), repliesView.getLayoutY());
-                        
+
                        remove.setOnAction((ActionEvent event2) -> {
                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this ", ButtonType.YES, ButtonType.CANCEL);
                            alert.showAndWait();
@@ -368,42 +379,45 @@ public class UserQNAController implements Initializable {
     //creating a box for each question//
     
    private void displayQs(Question question) throws SQLException {
-   int replyCount = sql.countAllReplies(question.getId());
-        //  feed.setMouseTransparent(true);
-        feed.setFocusTraversable(false);
-        
+  
+       feed.setFocusTraversable(false);
+      
+      //Getting the Question
+        int replyCount = sql.countAllReplies(question.getId());
         TextFlow questText = new TextFlow();
         Text text = new Text(question.getText());
-
         text.setStyle("-fx-font: 16 arial;");
         questText.getChildren().add(text);
+        User sender = question.getSender();
+   
+        //Getting the image
+        ImageView profilePic = new ImageView();
+        InputStream fs= sql.getImage(sender.getUserID());
+        Image image = new Image(fs,16,16,false,false);
+        profilePic.setImage(image);
 
-        int questId = question.getId();
-        String usersId =  question.getSender();
+       // profilePic.setFitHeight(20);
+      //  profilePic.setFitWidth(20);
         
-        
-        
-        String questionId = String.valueOf(questId);
-
-        HBox quest = new HBox();
-        quest.setId(String.valueOf(question.getId()));
-
-        Button btn = new Button();
-
-        // quest.setStyle("-fx-background-color: #b7d4cb;");
-        HBox answers = new HBox();
-
-       
+        //Getting the author
         Label author = new Label();
-        author.setText("By: " + usersId);
+        author.setText("By: " + sender.getUsername());
+        author.setStyle("-fx-padding: 0 20 5 0;");
+        author.setAlignment(Pos.BOTTOM_LEFT);
+        
+        //Getting the date
         Label datePosted = new Label();
-        
         datePosted.setText("Date posted: " + question.getDate());
-
-        // btn.setPrefWidth(100);
-        btn.setText("Replies (" + replyCount + ")");
+        datePosted.setStyle("-fx-padding: 0 20 5 0;");
         
-         btn.setId(questionId);
+        //Adding reply button
+        Button btn = new Button();
+        btn.setText("Replies (" + replyCount + ")");
+        btn.setId(String.valueOf(question.getId()));
+        btn.setAlignment(Pos.CENTER_RIGHT);
+        btn.setStyle("-fx-cursor: hand;");
+        
+        //Adding resolved status
         Label resolved = new Label();
         if (question.getResolved() == true ){
             resolved.setText("(Resolved)");
@@ -411,39 +425,34 @@ public class UserQNAController implements Initializable {
         else{
             resolved.setText("(Not resolved)");
         }
-                
-        
-        
         resolved.setAlignment(Pos.CENTER_RIGHT);
-        
-        answers.setMaxWidth(feed.getWidth() - 20);
-
-        answers.setAlignment(Pos.BOTTOM_RIGHT);
-        btn.setAlignment(Pos.CENTER_RIGHT);
-        btn.setStyle("-fx-cursor: hand;");
-        author.setStyle("-fx-padding: 0 20 5 0;");
-        datePosted.setStyle("-fx-padding: 0 20 5 0;");
-        
-        answers.getChildren().addAll(author, datePosted, btn);
-
+       
+        //Setting the bozes
+        HBox quest = new HBox();
         quest.setMaxWidth(feed.getWidth() - 20);
-
         quest.setAlignment(Pos.TOP_LEFT);
-
-        author.setAlignment(Pos.BOTTOM_LEFT);
+        quest.setId(String.valueOf(question.getId()));
         quest.getChildren().addAll(questText, resolved);
-        feed.getItems().add( quest);
-        feed.getItems().add( answers);
         
+        HBox answers = new HBox();
+        answers.setMaxWidth(feed.getWidth() - 20);
+        answers.setAlignment(Pos.BOTTOM_RIGHT);
+        answers.getChildren().addAll(author, profilePic,datePosted,btn);
+
+        //Adding them to the feed
+        feed.getItems().addAll(quest, answers);
+
         msgArea.requestFocus();
 
         loadReplies(btn);
     }
 
+
 //retrieving replies from database//
    
-    private void loadR(int questId){
-        repliesQ.getChildren().clear();
+    private void loadR(int questId)throws SQLException{
+          sql.updateLastSeenQ(currentUser.getUserID(), now);
+            repliesQ.getChildren().clear();
                 repliesView.getItems().clear();
                 questionid = questId;
                 try {
@@ -463,12 +472,86 @@ public class UserQNAController implements Initializable {
                     Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 replies.forEach((_item) -> {
-                    displayReplies(_item);
+                    try {
+                        displayReplies(_item);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 });
 
                 repliesPane.setVisible(true);
     }
     
-    
+@FXML
+private void showResolvedQs (ActionEvent event) throws SQLException{
+              
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    data.forEach((_item) -> {
+        try {
+            if (_item.getResolved()==true){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
+}
+
+@FXML
+private void showUnresolvedQs (ActionEvent event) throws SQLException{
+              
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    data.forEach((_item) -> {
+        try {
+            if (_item.getResolved()==false){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
+}
+
+@FXML
+private void showAllQs (ActionEvent event) throws SQLException{
+    loadQs();
+}
+
+@FXML
+private void showMyQs(ActionEvent event) throws SQLException{
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    data.forEach((_item) -> {
+        try {
+            if (currentUser.equals(_item.getSender())==true){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
+}
+
+@FXML
+private void sortAsc(ActionEvent event) throws SQLException{
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    FXCollections.reverse(data);
+    data.forEach((_item) -> {
+        try {
+            if (_item.getResolved()==false){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
+}
 }
 

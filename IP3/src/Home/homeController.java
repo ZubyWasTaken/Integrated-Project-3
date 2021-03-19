@@ -140,9 +140,9 @@ public class homeController implements Initializable {
     
     public void setData(User user) throws SQLException {
         currentUser = user;
-       // sql.updateLogin(currentUser.getUserID(), true);
-       // Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
-      //  count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
+        sql.updateLogin(currentUser.getUserID(), true);
+        Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
+        count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML
@@ -151,12 +151,50 @@ public class homeController implements Initializable {
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
-    
-
     @FXML
     private void qaSwitch(ActionEvent event){
           SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
     }
+ 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Drawer newdrawer = new Drawer();
+
+                drawer.setDisable(true);
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                username.setText(currentUser.getUsername());
+
+                //Sets feed title to inform user to select a feed
+                feedTitle.setText("Please Select a Feed.");
+                try {
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                repliesCount.setText(Integer.toString(count));
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                usersOnline.setItems(data);
+                //Hides the labels and hyperlinks from the user
+                for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+                    label.setVisible(false);
+                }
+
+                for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+                    hyperlink.setVisible(false);
+                }
+
+
+            }
+        });
+    }
+    
+    //FEEDS//
     @FXML
     private void UKFeed(ActionEvent event) {
         //Unhides all other buttons and hides this button
@@ -746,45 +784,6 @@ public class homeController implements Initializable {
         for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
             hyperlink.setVisible(true);
         }
-    }
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Drawer newdrawer = new Drawer();
-
-                drawer.setDisable(true);
-                newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                username.setText(currentUser.getUsername());
-
-                //Sets feed title to inform user to select a feed
-                feedTitle.setText("Please Select a Feed.");
-                try {
-                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
-                } catch (SQLException ex) {
-                    Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                repliesCount.setText(Integer.toString(count));
-                user.setCellValueFactory(new PropertyValueFactory<>("username"));
-                usersOnline.setItems(data);
-                //Hides the labels and hyperlinks from the user
-                for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
-                    label.setVisible(false);
-                }
-
-                for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
-                    hyperlink.setVisible(false);
-                }
-
-
-            }
-        });
     }
 }
 

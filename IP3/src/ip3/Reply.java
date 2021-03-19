@@ -29,7 +29,7 @@ public class Reply {
     private int id;
     private int quest_id;
     private final String text;
-    private final String sender;
+    private final User sender;
     private final String date;
     
     private static SQLHandler sql = new SQLHandler();
@@ -46,11 +46,11 @@ public class Reply {
                 
     }
     
-     public Reply(int id, int quest_id, String text, String sender, String date){
+     public Reply(int id, int quest_id, String text, String sender, String date) throws SQLException{
          this.id=id;
          this.quest_id=quest_id;
          this.text=text;
-         this.sender=sender;  
+         this.sender= new User(sender);
          this.date=date;
      }
      
@@ -66,7 +66,7 @@ public class Reply {
          return this.text;
      }
      
-     public String getSender(){
+     public User getSender(){
          return this.sender;
      }
      

@@ -17,10 +17,10 @@ import java.util.List;
 public class Question {
     private int id;
     private String text;
-    private String sender;
+    
     private boolean resolved;
     private String date;
-    
+    private User sender;
     private static SQLHandler sql = new SQLHandler();
     
      /*public Question(int category) throws SQLException {
@@ -42,10 +42,10 @@ public class Question {
 
         return currentQuestion;
     }
-    public Question(int id, String text, String sender, boolean resolved, String date){
+    public Question(int id, String text, String sender, boolean resolved, String date) throws SQLException{
          this.id=id;
          this.text=text;
-         this.sender=sender;  
+         this.sender = new User(sender); 
          this.resolved=resolved;
          this.date=date;
          //getReplies();
@@ -61,7 +61,7 @@ public class Question {
          return this.text;
      }
      
-     public String getSender(){
+     public User getSender(){
          return this.sender;
      }
      

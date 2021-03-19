@@ -40,6 +40,7 @@ public class User {
         uniId=parseInt(userInfo.get(7));
         catId = parseInt(userInfo.get(8));
         titleId=parseInt(userInfo.get(9));
+        
     }
 
     
@@ -199,5 +200,7 @@ public class User {
        this.catId=catId;
     }
 
-    
+    public boolean equals(Object obj) {
+        return (this == obj);
+}
 }

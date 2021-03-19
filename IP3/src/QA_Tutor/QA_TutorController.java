@@ -8,7 +8,6 @@ package QA_Tutor;
 import HomeTutor.HomeTutor;
 import SQL.SQLHandler;
 import UserQNA.UserQNAController;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import ip3.Drawer;
@@ -17,6 +16,7 @@ import ip3.Reply;
 import ip3.SwitchWindow;
 import ip3.User;
 import java.io.IOException;
+import java.io.InputStream;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,7 +30,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -41,8 +40,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -75,8 +77,11 @@ public class QA_TutorController implements Initializable {
     @FXML
     private Button btnHome;
 
+    @FXML 
+    private MenuButton showMenu;
+    
     @FXML
-    private Label username;
+    private MenuButton sortMenu;
 
     @FXML
     private ListView feed;
@@ -92,6 +97,12 @@ public class QA_TutorController implements Initializable {
     
     @FXML
     private ListView repliesView;
+    
+    @FXML
+    private MenuItem resolvedQs;
+    
+    @FXML
+    private MenuItem unresolvedQs;
    
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
@@ -101,8 +112,6 @@ public class QA_TutorController implements Initializable {
     
     public void setData(User user) throws SQLException {
     currentUser = user;
-
-
     }
   
 
@@ -113,29 +122,21 @@ public class QA_TutorController implements Initializable {
      @Override
             public void run() {
            
-         Platform.runLater(new Runnable() {
-    @Override
-            public void run() {
-                
-                
-                drawer.setDisable(true);
-                Drawer newdrawer = new Drawer();
-                newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                
-                try {
-                    loadQs();
-                } catch (SQLException ex) {
-                    Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+         Platform.runLater(() -> {
+             drawer.setDisable(true);
+             Drawer newdrawer = new Drawer();
+             newdrawer.drawerPullout(drawer, currentUser, hamburger);
+             
+             try {
+                 loadAllQs();
+             } catch (SQLException ex) {
+                 Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+             }
          });
-    }
-
-
-         
+    }     
     },0,10000); 
                 }
-    private void loadQs() throws SQLException{
+    private void loadAllQs() throws SQLException{
         data.clear();
         feed.getItems().clear(); 
         data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
@@ -164,41 +165,44 @@ public class QA_TutorController implements Initializable {
          }
  
   private void displayQs(Question question) throws SQLException {
-  int replyCount = sql.countAllReplies(question.getId());
-        //  feed.setMouseTransparent(true);
-        feed.setFocusTraversable(false);
-        
+  
+       feed.setFocusTraversable(false);
+      
+      //Getting the Question
+        int replyCount = sql.countAllReplies(question.getId());
         TextFlow questText = new TextFlow();
         Text text = new Text(question.getText());
-
         text.setStyle("-fx-font: 16 arial;");
         questText.getChildren().add(text);
-
-        int questId = question.getId();
-        String usersId =  question.getSender();
+        User sender = question.getSender();
+   
+        //Getting the image
+        ImageView profilePic = new ImageView();
+        InputStream fs= sql.getImage(sender.getUserID());
+        Image image = new Image(fs);
+        profilePic.setImage(image);
+        profilePic.setFitHeight(20);
+        profilePic.setFitWidth(20);
         
-        
-        
-        String questionId = String.valueOf(questId);
-
-        HBox quest = new HBox();
-
-        Button btn = new Button();
-
-        // quest.setStyle("-fx-background-color: #b7d4cb;");
-        HBox answers = new HBox();
-
-       
+        //Getting the author
         Label author = new Label();
-        author.setText("By: " + usersId);
+        author.setText("By: " + sender.getUsername());
+        author.setStyle("-fx-padding: 0 20 5 0;");
+        author.setAlignment(Pos.BOTTOM_LEFT);
+        
+        //Getting the date
         Label datePosted = new Label();
-        
         datePosted.setText("Date posted: " + question.getDate());
-
-        // btn.setPrefWidth(100);
-        btn.setText("Replies (" + replyCount + ")");
+        datePosted.setStyle("-fx-padding: 0 20 5 0;");
         
-         btn.setId(questionId);
+        //Adding reply button
+        Button btn = new Button();
+        btn.setText("Replies (" + replyCount + ")");
+        btn.setId(String.valueOf(question.getId()));
+        btn.setAlignment(Pos.CENTER_RIGHT);
+        btn.setStyle("-fx-cursor: hand;");
+        
+        //Adding resolved status
         Label resolved = new Label();
         if (question.getResolved() == true ){
             resolved.setText("(Resolved)");
@@ -207,26 +211,21 @@ public class QA_TutorController implements Initializable {
             resolved.setText("(Not resolved)");
         }
         resolved.setAlignment(Pos.CENTER_RIGHT);
-        
-        answers.setMaxWidth(feed.getWidth() - 20);
-
-        answers.setAlignment(Pos.BOTTOM_RIGHT);
-        btn.setAlignment(Pos.CENTER_RIGHT);
-        btn.setStyle("-fx-cursor: hand;");
-        author.setStyle("-fx-padding: 0 20 5 0;");
-        datePosted.setStyle("-fx-padding: 0 20 5 0;");
-        
-        answers.getChildren().addAll(author, datePosted, btn);
-
+       
+        //Setting the bozes
+        HBox quest = new HBox();
         quest.setMaxWidth(feed.getWidth() - 20);
-
         quest.setAlignment(Pos.TOP_LEFT);
-
-        author.setAlignment(Pos.BOTTOM_LEFT);
         quest.getChildren().addAll(questText, resolved);
-        feed.getItems().add( quest);
-        feed.getItems().add( answers);
         
+        HBox answers = new HBox();
+        answers.setMaxWidth(feed.getWidth() - 20);
+        answers.setAlignment(Pos.BOTTOM_RIGHT);
+        answers.getChildren().addAll(author, profilePic,datePosted,btn);
+
+        //Adding them to the feed
+        feed.getItems().addAll(quest, answers);
+
         //  msgArea.requestFocus();
 
         loadReplies(btn);
@@ -264,10 +263,8 @@ public class QA_TutorController implements Initializable {
                     Question currentQuestion = Question.search(questionid);
                     Text text = new Text(currentQuestion.getText());
                     repliesQ.getChildren().add(text);
-                    System.out.println(currentQuestion.getText());
-                } catch (SQLException ex) {
-                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
+                    
+                } catch (SQLException | IOException ex) {
                     Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
@@ -292,16 +289,11 @@ public class QA_TutorController implements Initializable {
     @FXML
     private void loadReplies(Button btn) {
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    load(parseInt(btn.getId()));
-                } catch (SQLException ex) {
-                    Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                
+        btn.setOnAction((ActionEvent event) -> {
+            try {
+                load(parseInt(btn.getId()));
+            } catch (SQLException ex) {
+                Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
@@ -309,43 +301,53 @@ public class QA_TutorController implements Initializable {
 
     @FXML
     private void displayReplies(Reply reply) throws SQLException, IOException {
-
-        //  feed.setMouseTransparent(true);
+        
         repliesView.setFocusTraversable(false);
         replyArea.clear();
         
         
-        
+        //Setting the current question
+        User sender = reply.getSender();
         TextFlow replyText = new TextFlow();
         Text text = new Text(reply.getText());
-
         text.setStyle("-fx-font: 16 arial;");
         replyText.getChildren().add(text);
-         
+        replyText.setTextAlignment(TextAlignment.RIGHT);
+        
+        //Getting profile pics
+        ImageView profilePic = new ImageView();
+        InputStream fs= sql.getImage(sender.getUserID());
+        Image image = new Image(fs);
+        profilePic.setImage(image);
+        profilePic.setFitHeight(20);
+        profilePic.setFitWidth(20);
+        profilePic.setStyle("-fx-padding: 0 20 5 0;");
+        
+        //Getting author
+        Label author = new Label();
+        author.setText("By: " + sender.getUsername() );
+        author.setAlignment(Pos.BOTTOM_RIGHT);
+        author.setStyle("-fx-padding: 0 20 5 0;");
       
+        //Getting date
+        Label datePosted = new Label();
+        datePosted.setText("Date Posted: " + reply.getDate());
+        datePosted.setStyle("-fx-padding: 0 20 5 0;");
+        
+        //Setting the boxes
         HBox replies = new HBox();
         replies.getChildren().addAll(replyText); 
         replies.setId(String.valueOf(reply.getId()));
+        replies.setAlignment(Pos.TOP_LEFT);
+        replies.setMaxWidth(feed.getWidth());
+        
         HBox details = new HBox();
-        // quest.setStyle("-fx-background-color: #b7d4cb;");
-        Label author = new Label();
-        Label datePosted = new Label();
-        author.setText("By: " + reply.getSender() );
-        datePosted.setText("Date Posted: " + reply.getDate());
-       
         details.setMaxWidth(feed.getWidth()-20);
         details.setAlignment(Pos.BOTTOM_RIGHT);
-        details.getChildren().addAll(author, datePosted);
-        replies.setMaxWidth(feed.getWidth());
-
-        replies.setAlignment(Pos.TOP_LEFT);
-        replyText.setTextAlignment(TextAlignment.RIGHT);
-        author.setStyle("-fx-padding: 0 20 5 0;");
-        datePosted.setStyle("-fx-padding: 0 20 5 0;");
-      
-        author.setAlignment(Pos.BOTTOM_RIGHT);
-        repliesView.getItems().add(replies);
-        repliesView.getItems().add(details);
+        details.getChildren().addAll(author, profilePic,datePosted);
+       
+        //Adding them to the pane
+        repliesView.getItems().addAll(replies,details);
     }
 
    
@@ -353,44 +355,96 @@ public class QA_TutorController implements Initializable {
     @FXML
          private void clickItem (MouseEvent event){
              repliesView.setOnMouseClicked((MouseEvent event1) -> {
-             if(event1.getButton()==MouseButton.SECONDARY){
-                 try{
-                     HBox hbox =  (HBox) repliesView.getSelectionModel().selectedItemProperty().getValue();
-                     int id = parseInt(hbox.getId());
-                     Reply currentReply = Reply.search(id); 
-                     User sender = new User(currentReply.getSender());
-                    if (sender.getUserID()==currentUser.getUserID()){
-                     
-                       ContextMenu context = new ContextMenu();
-                      
-                       MenuItem remove = new MenuItem("Remove");
-                       context.getItems().addAll( remove);
-                       repliesView.setContextMenu(context);
-                       context.show(repliesView, Side.BOTTOM, repliesView.getLayoutX(), repliesView.getLayoutY());
-                        
-                       remove.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this ", ButtonType.YES, ButtonType.CANCEL);
-                            alert.showAndWait();
-                            if (alert.getResult() == ButtonType.YES) {
-                                 try {
-                                    sql.deleteReply(currentReply.getId());
-                                    load(questionid);
-                                    } catch (SQLException ex) {
-                                    Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-            }
-                        }
-        });
-                   
-        } 
-             }   catch (SQLException | IOException ex) {
-                     Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                 if(event1.getButton()==MouseButton.SECONDARY){
+                     try{
+                         HBox hbox =  (HBox) repliesView.getSelectionModel().selectedItemProperty().getValue();
+                         int id = parseInt(hbox.getId());
+                         Reply currentReply = Reply.search(id);
+                         User sender = currentReply.getSender();
+                         if (sender.getUserID()==currentUser.getUserID()){
+                             
+                             ContextMenu context = new ContextMenu();
+                             
+                             MenuItem remove = new MenuItem("Remove");
+                             context.getItems().addAll( remove);
+                             repliesView.setContextMenu(context);
+                             context.show(repliesView, Side.BOTTOM, repliesView.getLayoutX(), repliesView.getLayoutY());
+                             
+                             remove.setOnAction((ActionEvent event2) -> {
+                                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this ", ButtonType.YES, ButtonType.CANCEL);
+                                 alert.showAndWait();
+                                 if (alert.getResult() == ButtonType.YES) {
+                                     try {
+                                         sql.deleteReply(currentReply.getId());
+                                         load(questionid);
+                                     } catch (SQLException ex) {
+                                         Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                                     }
+                                 }          });
+                                    
+                         }
+                     }   catch (SQLException | IOException ex) {
+                         Logger.getLogger(QA_TutorController.class.getName()).log(Level.SEVERE, null, ex);
+                     }
                  }
-         }       
              });
          
 }
+@FXML
+private void showResolvedQs (ActionEvent event) throws SQLException{
+              
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    data.forEach((_item) -> {
+        try {
+            if (_item.getResolved()==true){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
 }
+
+@FXML
+private void showUnresolvedQs (ActionEvent event) throws SQLException{
+              
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    data.forEach((_item) -> {
+        try {
+            if (_item.getResolved()==false){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
+}
+
+@FXML
+private void showAllQs (ActionEvent event) throws SQLException{
+    loadAllQs();
+}
+
+@FXML
+private void sortAsc(ActionEvent event) throws SQLException{
+    data.clear();
+    feed.getItems().clear(); 
+    data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+    FXCollections.reverse(data);
+    data.forEach((_item) -> {
+        try {
+            if (_item.getResolved()==false){
+                displayQs(_item);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
+}
+}
+
 
