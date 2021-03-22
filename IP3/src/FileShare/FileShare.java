@@ -3,46 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package QA_Tutor;
+package FileShare;
 
-import ip3.Question;
+
 import ip3.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
  *
  * @author stani
  */
-public class ReplyTutor extends Application {
+public class FileShare extends Application{
+     User currentUser;
 
-    Question currentQuestion;
-    User currentUser;
-    ReplyTutor(Question currentQuestion, User currentUser) {
-        this.currentQuestion=currentQuestion;
-        this.currentUser=currentUser;
-    }
-
-    @Override
     public void start(Stage stage) throws Exception {
-   
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("reply.fxml"));
+      
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fileShare.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
-        ReplyController controller = loader.getController();
-        controller.setData(currentQuestion, currentUser);
-        
+        FileShareController controller = loader.getController();
+        controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("Q & A");
+        stage.setTitle("Edit");
         stage.show();        
         stage.centerOnScreen();
     }
+  
+ public FileShare(User user) {
+        currentUser=user;
     }
-
-   
-    
-
+}

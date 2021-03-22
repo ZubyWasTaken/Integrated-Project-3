@@ -9,6 +9,7 @@ import EditAcc.Edit;
 import Home.Feed;
 import Home.FeedMessage;
 import Home.RSSFeedParser;
+import Home.homeController;
 import LoginRegister.LoginRegister;
 import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
@@ -20,6 +21,7 @@ import ip3.SwitchWindow;
 import ip3.User;
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -28,12 +30,24 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -115,6 +129,22 @@ public class HomeTutorController implements Initializable {
     @FXML
     private Label questionsCount;
     
+    @FXML
+    private TableView<User> usersOnline;
+    
+    @FXML
+    private TableColumn<User,String> user;
+    
+    @FXML
+    private AnchorPane userDetails;
+    
+    @FXML
+    private ImageView profilePic;
+    
+    @FXML
+    private Label userUsername;
+    
+    ObservableList<User> data = FXCollections.observableArrayList();
     private SQLHandler sql = new SQLHandler();
     User currentUser;
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -127,6 +157,25 @@ public class HomeTutorController implements Initializable {
     count = sql.countQuestions(currentUser.getCatId(), currentUser.getUniId(),now,timestamp);
     sql.updateLogin(currentUser.getUserID(), true);
     }
+    
+    
+    @FXML
+    private void getOnlineUser(MouseEvent event) throws SQLException {
+        
+        TablePosition pos = (TablePosition) usersOnline.getSelectionModel().getSelectedCells().get(0);
+        int index = pos.getRow();
+        User item = usersOnline.getItems().get(index);
+
+        String username = (String) user.getCellObservableValue(item).getValue();
+        User user = new User(username);
+        userDetails.setVisible(true);
+        userUsername.setText(user.getUsername());
+        InputStream fs= sql.getImage(user.getUserID());
+        Image image = new Image(fs);
+        profilePic.setImage(image);
+    }
+
+    
     @FXML
     private void signOut(ActionEvent event) throws SQLException{
         
@@ -142,6 +191,11 @@ public class HomeTutorController implements Initializable {
     @FXML
     private void qaSwitch(ActionEvent event){
          SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new QA_Tutor(currentUser)); 
+    }
+    
+    @FXML
+    private void close(ActionEvent event){
+        userDetails.setVisible(false);
     }
     @FXML
     private void UKFeed(ActionEvent event) {
@@ -160,7 +214,7 @@ public class HomeTutorController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+       //feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -259,7 +313,7 @@ public class HomeTutorController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        //feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -358,7 +412,7 @@ public class HomeTutorController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        //feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -457,7 +511,7 @@ public class HomeTutorController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        //feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -555,7 +609,7 @@ public class HomeTutorController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        //feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -653,7 +707,7 @@ public class HomeTutorController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        //feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -745,6 +799,15 @@ public class HomeTutorController implements Initializable {
                 
                 questionsCount.setText(Integer.toString(count));
                 username.setText(currentUser.getUsername());
+                try {
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
+                    data.removeAll(currentUser);
+                } catch (SQLException ex) {
+                    Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                usersOnline.setItems(data);
     for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
                     //label.setVisible(false);
                 }

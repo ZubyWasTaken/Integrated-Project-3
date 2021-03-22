@@ -130,7 +130,7 @@ public class PasswordEditController implements Initializable {
    
     @FXML 
  private void back(ActionEvent event){
-     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your changes will not be saved. Do you wish to proceed? ", ButtonType.YES, ButtonType.CANCEL);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your changes will not be saved. Do you wish to proceed? ", ButtonType.YES, ButtonType.CANCEL);
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {

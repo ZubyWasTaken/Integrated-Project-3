@@ -6,12 +6,8 @@
 package ip3;
 
 import SQL.SQLHandler;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.IOException;
-import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +17,10 @@ import java.util.List;
 public class Question {
     private int id;
     private String text;
-    private String sender;
-    private boolean resolved;
-    private int replies;
     
+    private boolean resolved;
+    private String date;
+    private User sender;
     private static SQLHandler sql = new SQLHandler();
     
      /*public Question(int category) throws SQLException {
@@ -41,15 +37,17 @@ public class Question {
         String text = (String) questionInfo.get(1);
         String sender = (String) questionInfo.get(2);
         boolean resolved = (boolean) questionInfo.get(3);
-        Question currentQuestion = new Question(id, text, sender, resolved);
+        String date = (String) questionInfo.get(4).toString();
+        Question currentQuestion = new Question(id, text, sender, resolved, date);
 
         return currentQuestion;
     }
-    public Question(int id, String text, String sender, boolean resolved){
+    public Question(int id, String text, String sender, boolean resolved, String date) throws SQLException{
          this.id=id;
          this.text=text;
-         this.sender=sender;  
+         this.sender = new User(sender); 
          this.resolved=resolved;
+         this.date=date;
          //getReplies();
      }
      
@@ -63,13 +61,18 @@ public class Question {
          return this.text;
      }
      
-     public String getSender(){
+     public User getSender(){
          return this.sender;
      }
      
      public boolean getResolved(){
          return this.resolved;
      }
+     
+     public String getDate(){
+         return this.date;
+     }
+     
      public static void createQuestion( String text, int sender) throws SQLException{
          sql.addQuestion(text, sender);
      }
