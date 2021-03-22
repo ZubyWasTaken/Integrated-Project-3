@@ -80,7 +80,6 @@
             </VBox>
          </children>
       </HBox>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
       <Label layoutX="299.0" layoutY="92.0" text="Users online">
          <font>
             <Font size="27.0" />
@@ -244,7 +243,7 @@
             </Label>
          </children>
       </Pane>
-      <AnchorPane fx:id="userDetails" layoutX="458.0" layoutY="168.0" prefHeight="269.0" prefWidth="354.0" style="-fx-background-color: white;">
+      <AnchorPane fx:id="userDetails" layoutX="458.0" layoutY="168.0" prefHeight="269.0" prefWidth="354.0" style="-fx-background-color: white;" visible="false">
          <children>
             <ImageView fx:id="profilePic" fitHeight="117.0" fitWidth="171.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
             <Button layoutX="300.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
@@ -263,5 +262,7 @@
             </Label>
          </children>
       </AnchorPane>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
+      <JFXButton fx:id="chat" layoutX="519.0" layoutY="526.0" onAction="#chat" text="Chat" />
     </children>
 </AnchorPane>
