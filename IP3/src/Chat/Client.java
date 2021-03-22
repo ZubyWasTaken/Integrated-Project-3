@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ip3;
+package Chat;
 
 /**
  *
  * @author stani
  */
-public class AppFile {
-    public int Id;
-
-    public String location;
-
-    public byte[] FileToByte;
+public class Client {
     
-  
 }

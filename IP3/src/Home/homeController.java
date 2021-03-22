@@ -5,6 +5,8 @@
  */
 package Home;
 
+import Chat.Chat;
+import FileShare.FileShare;
 import LoginRegister.LoginRegister;
 import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
@@ -18,6 +20,7 @@ import ip3.User;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -38,9 +41,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -133,6 +140,21 @@ public class homeController implements Initializable {
     @FXML
     private JFXButton qa;
     
+    @FXML
+    private JFXButton fileShare;
+    
+    @FXML
+    private JFXButton chat;
+    
+    @FXML
+    private AnchorPane userDetails;
+    
+    @FXML
+    private ImageView profilePic;
+    
+    @FXML
+    private Label userUsername;
+    
     private SQLHandler sql = new SQLHandler();
     int count = 0;
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -156,6 +178,35 @@ public class homeController implements Initializable {
           SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
     }
  
+    @FXML
+    private void fileShare(ActionEvent event){
+          SwitchWindow.switchWindow((Stage) fileShare.getScene().getWindow(), new FileShare(currentUser));
+    }
+    @FXML
+    private void chat(ActionEvent event){
+          SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser));
+    }
+    
+     @FXML
+    private void getOnlineUser(MouseEvent event) throws SQLException {
+        
+        TablePosition pos = (TablePosition) usersOnline.getSelectionModel().getSelectedCells().get(0);
+        int index = pos.getRow();
+        User item = usersOnline.getItems().get(index);
+
+        String username = (String) user.getCellObservableValue(item).getValue();
+        User user = new User(username);
+        userDetails.setVisible(true);
+        userUsername.setText(user.getUsername());
+        InputStream fs= sql.getImage(user.getUserID());
+        javafx.scene.image.Image image = new javafx.scene.image.Image(fs);
+        profilePic.setImage(image);
+    }
+     @FXML
+    private void close(ActionEvent event){
+        userDetails.setVisible(false);
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -173,6 +224,7 @@ public class homeController implements Initializable {
                 feedTitle.setText("Please Select a Feed.");
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
+                    data.removeAll(currentUser);
                 } catch (SQLException ex) {
                     Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
                 }

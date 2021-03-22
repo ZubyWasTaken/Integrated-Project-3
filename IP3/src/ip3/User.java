@@ -5,8 +5,10 @@ import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -27,6 +29,7 @@ public class User {
     private  int catId;
     private final int titleId;
     private static final SQLHandler sql = new SQLHandler();
+    
 
     public User(String user) throws SQLException {
         ArrayList<String> userInfo = sql.searchUsersTable(user);
@@ -42,7 +45,7 @@ public class User {
         titleId=parseInt(userInfo.get(9));
         
     }
-
+ 
     
     public User(int userid, String firstname, String surname, String username, String password, String dateOfBirth, String email, int uniId, int catId, int titleId){
         this.userid=userid;
@@ -203,4 +206,5 @@ public class User {
     public boolean equals(Object obj) {
         return (this == obj);
 }
+    
 }

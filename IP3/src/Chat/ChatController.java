@@ -61,7 +61,7 @@ public class ChatController implements Initializable {
 
             @Override
             public void run() {
-System.out.println("Working?");
+            System.out.println("Working?");
                  username = currentUser.getUsername();
                  String name = currentUser.getFirstname();
                  nameDisplay.setText(name);

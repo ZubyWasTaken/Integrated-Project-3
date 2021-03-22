@@ -6,7 +6,7 @@
 package SQL;
 
 
-import com.jfoenix.controls.JFXTextArea;
+import ip3.AppFiles;
 import ip3.Categories;
 import ip3.Question;
 import ip3.Reply;
@@ -14,6 +14,7 @@ import ip3.Uni;
 import ip3.User;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -136,8 +137,8 @@ public class SQLHandler {
     public  void updateImage(byte[] photo, int tutorid) throws SQLException {
       String sql = "UPDATE  profile_pics SET filetobyte=? WHERE  user_id=\""+tutorid+"\"";
         query = conn.prepareStatement(sql);
-            query.setBytes(1,photo);
-            query.executeUpdate();
+        query.setBytes(1,photo);
+        query.executeUpdate();
         query.close();
     }
     //----------///
@@ -604,6 +605,45 @@ public class SQLHandler {
 
     public void removeQuestion(int id) throws SQLException {
       String sql = "DELETE FROM Questions WHERE id =\"" +id + "\"";
+        query = conn.prepareStatement(sql);
+        query.executeUpdate();
+        query.close();   
+    }
+
+    public void uploadFile(byte[] file, int userID, String filename, String size) throws SQLException {
+        String sql = "INSERT INTO Files (filetobyte, name, user_id, size) VALUES (?,?,?,?)";
+        query = conn.prepareStatement(sql);
+        query.setBytes(1,file);
+        query.setString(2, filename);
+        query.setInt(3, userID);
+        query.setString(4,size);
+        query.executeUpdate();
+        query.close();
+    }
+    
+     public ObservableList showFiles(int cat_id, int uni_id) throws SQLException {
+
+        ObservableList<AppFiles> output = FXCollections.observableArrayList();
+        output.clear();
+        String sql = "SELECT Files.id, Files.name, Files.filetobyte, Files.size, Users.username FROM Files INNER JOIN Users ON\n" +
+        "Files.user_id= Users.id WHERE Files.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" ORDER BY Files.id DESC";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            int fileId = rs.getInt("id");
+            String name = rs.getString("name");
+            Blob blob2 = rs.getBlob("filetobyte");
+            //InputStream blob = rs.getBinaryStream("filetobyte");
+            String size = rs.getString("size");
+            String author = rs.getString("username");
+            output.add(new AppFiles(fileId,name, blob2, size, author));
+        }
+        query.close();
+        return output;
+}
+
+    public void deleteFile(int id) throws SQLException {
+        String sql = "DELETE FROM Files WHERE id =\"" +id + "\"";
         query = conn.prepareStatement(sql);
         query.executeUpdate();
         query.close();   

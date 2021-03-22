@@ -121,7 +121,7 @@
             </ListView>
          </children>
       </VBox>
-      <AnchorPane fx:id="repliesPane" layoutX="655.0" layoutY="65.0" prefHeight="556.0" prefWidth="402.0">
+      <AnchorPane fx:id="repliesPane" layoutX="655.0" layoutY="65.0" prefHeight="556.0" prefWidth="402.0" visible="false">
          <children>
             <ListView fx:id="repliesView" fixedCellSize="60.0" layoutY="132.0" onMouseClicked="#clickItem" prefHeight="423.0" prefWidth="401.0" />
             <HBox layoutY="510.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="43.0" prefWidth="401.0">
