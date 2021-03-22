@@ -262,7 +262,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
       <JFXButton fx:id="chat" layoutX="519.0" layoutY="526.0" onAction="#chat" text="Chat" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="67.0" prefHeight="657.0" prefWidth="300.0" />
     </children>
 </AnchorPane>
