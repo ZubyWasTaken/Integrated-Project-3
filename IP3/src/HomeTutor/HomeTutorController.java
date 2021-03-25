@@ -800,8 +800,7 @@ public class HomeTutorController implements Initializable {
                 questionsCount.setText(Integer.toString(count));
                 username.setText(currentUser.getUsername());
                 try {
-                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
-                    data.removeAll(currentUser);
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
                 } catch (SQLException ex) {
                     Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -79,6 +79,9 @@ public class LoginRegisterController implements Initializable {
     //Other variables declaration
     ArrayList<String> allUsers = new ArrayList<>();
     SQLHandler sql = new SQLHandler();
+    TrayNotification tray = new TrayNotification();
+    AnimationType type = AnimationType.POPUP;
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,6 +98,7 @@ public class LoginRegisterController implements Initializable {
             
             regusername.setVisible(true);
             regpassword.setVisible(true);
+            tray.setAnimationType(type);
         
     }
 
@@ -110,12 +114,8 @@ public class LoginRegisterController implements Initializable {
         //Checking if username is available (both in tutors and student)
         if (allUsers.contains(username)) {
 
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+        
+            tray.setTitle("Register");
             tray.setMessage("This username is taken. Please select a new one");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -125,7 +125,7 @@ public class LoginRegisterController implements Initializable {
         }
 
         //Validation for special characters
-        if (User.match(password) == true) {
+        /*if (User.match(password) == true) {
             String tilte = "Register";
             TrayNotification tray = new TrayNotification();
             AnimationType type = AnimationType.POPUP;
@@ -139,15 +139,11 @@ public class LoginRegisterController implements Initializable {
             registerFailed();
             return;
 
-        }
+        }*/
 
         if (User.match(username) == true) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+          
+            tray.setTitle("Register");
             tray.setMessage("Username cannot contain special characters.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -160,12 +156,8 @@ public class LoginRegisterController implements Initializable {
         //Validation for password length
         if ((password.length() < 8 || password.length() > 32) && (!username.isEmpty() && !password.isEmpty())) {
 
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+           
+            tray.setTitle("Register");
             tray.setMessage("Password must be between 8-32 characters.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -212,12 +204,8 @@ public class LoginRegisterController implements Initializable {
         
            
             if (allUsers.size() < 6){
-                String tilte = "Login";
-                TrayNotification tray = new TrayNotification();
-                AnimationType type = AnimationType.POPUP;
-
-                tray.setAnimationType(type);
-                tray.setTitle(tilte);
+                
+                tray.setTitle("Login");
                 tray.setMessage("Username is incorrect.");
                 tray.setNotificationType(NotificationType.ERROR);
                 tray.showAndDismiss(Duration.millis(3000));
@@ -226,12 +214,8 @@ public class LoginRegisterController implements Initializable {
 
                 return;
             } else if (!h.verifyHash(password, allUsers.get(2))) {
-                String tilte = "Login";
-                TrayNotification tray = new TrayNotification();
-                AnimationType type = AnimationType.POPUP;
-
-                tray.setAnimationType(type);
-                tray.setTitle(tilte);
+                
+                tray.setTitle("Login");
                 tray.setMessage("Password incorrect.");
                 tray.setNotificationType(NotificationType.ERROR);
                 tray.showAndDismiss(Duration.millis(3000));
@@ -243,23 +227,15 @@ public class LoginRegisterController implements Initializable {
             } else {
              
                 login(username);
-                System.out.println("Success");  
-                String tilte = "Login";
-                TrayNotification tray = new TrayNotification();
-                AnimationType type = AnimationType.POPUP;
-                tray.setAnimationType(type);
-                tray.setTitle(tilte);
+   
+                tray.setTitle("Login");
                 tray.setMessage("Welcome Back, " + username);
                 tray.setNotificationType(NotificationType.SUCCESS);
                 tray.showAndDismiss(Duration.millis(3000));
                 }
-     
-            
-    
     }
  
-   
-    
+
     private void login(String user) throws SQLException {
         
         User currentUser = new User(user);
@@ -281,12 +257,8 @@ public class LoginRegisterController implements Initializable {
     @FXML
     private void checkEmpty(String username, String password) {
         if (username.isEmpty()) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+          
+            tray.setTitle("Register");
             tray.setMessage("Username and password are empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -298,12 +270,8 @@ public class LoginRegisterController implements Initializable {
         }
 
         if (username.isEmpty()) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            
+            tray.setTitle("Register");
             tray.setMessage("Username is empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -314,12 +282,8 @@ public class LoginRegisterController implements Initializable {
         }
 
         if (password.isEmpty()) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            
+            tray.setTitle("Register");
             tray.setMessage("Password is empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));

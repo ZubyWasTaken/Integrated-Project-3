@@ -14,7 +14,6 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import ip3.Categories;
 import ip3.Shaker;
-import ip3.Uni;
 import ip3.User;
 import ip3.SwitchWindow;
 import java.io.File;
@@ -69,19 +68,20 @@ public class InterestController implements Initializable {
     
     //Variables//
     LocalDate date = LocalDate.now();
-    ObservableList<Uni> data = FXCollections.observableArrayList();
     ObservableList<Categories> data2 = FXCollections.observableArrayList();
-    ObservableList<String> names = FXCollections.observableArrayList();
     ObservableList<String> namesCat = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
-     String firstname, surname, username, password, email, dob;
+    String firstname, surname, username, password, email, dob;
     int uniId;
     int catId;
     int title_id = 1;
     User currentUser;
+    TrayNotification tray = new TrayNotification();
+    AnimationType type = AnimationType.POPUP;
     
     public void setData(User user) {
     currentUser = user;
+    tray.setAnimationType(type);
     }
     
     @FXML
@@ -101,12 +101,9 @@ public class InterestController implements Initializable {
            
 
          if (User.isValid(email) == false) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
 
             tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            tray.setTitle("Register");
             tray.setMessage("Email Invalid");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -117,12 +114,8 @@ public class InterestController implements Initializable {
         }
 
           if (User.matchName(firstname) == true || User.matchName(surname) == true  ) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            
+            tray.setTitle("Register");
             tray.setMessage("Name invalid.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -132,10 +125,7 @@ public class InterestController implements Initializable {
 
         }
         if(dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty() ){
-            
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
+          
             tray.setAnimationType(type);
             tray.setTitle("Register");
             tray.setMessage("Please enter all details");
@@ -150,10 +140,7 @@ public class InterestController implements Initializable {
          {
             uniId=User.fetchUniId(email);
             if (uniId==0){
-                TrayNotification tray = new TrayNotification();
-                AnimationType type = AnimationType.POPUP;
-
-                tray.setAnimationType(type);
+              
                 tray.setTitle("Register");
                 tray.setMessage("Please use a valid university email");
                 tray.setNotificationType(NotificationType.ERROR);
@@ -165,13 +152,9 @@ public class InterestController implements Initializable {
                 
             
             User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
-            String message = username;
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
+        
             tray.setTitle("Register");
-            tray.setMessage("Welcome to StudyBudz, " + message + "!");
+            tray.setMessage("Welcome to StudyBudz, " + username + "!");
             tray.setNotificationType(NotificationType.SUCCESS);
             tray.showAndDismiss(Duration.millis(3000));
             User user = new User(username);
@@ -191,7 +174,7 @@ public class InterestController implements Initializable {
         File image = new File ("src/SQL/files/noPic.png");
         Path path = Paths.get("src/SQL/files/noPic.png");
         byte[] photo = Files.readAllBytes(path);
-         sql.addImage(photo,user.getUserID());
+        sql.addImage(photo,user.getUserID());
     }
     
     @FXML

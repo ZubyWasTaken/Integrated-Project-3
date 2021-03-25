@@ -223,14 +223,13 @@ public class homeController implements Initializable {
                 //Sets feed title to inform user to select a feed
                 feedTitle.setText("Please Select a Feed.");
                 try {
-                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId());
-                    data.removeAll(currentUser);
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
                 } catch (SQLException ex) {
                     Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 repliesCount.setText(Integer.toString(count));
-                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));  
                 usersOnline.setItems(data);
                 //Hides the labels and hyperlinks from the user
                 for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {

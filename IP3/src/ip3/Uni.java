@@ -18,6 +18,7 @@ public class Uni {
     private final String uniName;
     private final String uniLoc;
     private static final SQLHandler sql = new SQLHandler();
+    
         public Uni(int uniId, String uniName, String uniLoc) {
         this.uniId = uniId;
         this.uniName = uniName;
