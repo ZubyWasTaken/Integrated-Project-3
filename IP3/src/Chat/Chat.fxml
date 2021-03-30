@@ -54,7 +54,7 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXTextArea fx:id="viewMsg" prefHeight="511.0" prefWidth="822.0" />
+            <JFXTextArea fx:id="viewMsg" editable="false" prefHeight="511.0" prefWidth="822.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <JFXTextArea fx:id="messageArea" prefHeight="142.0" prefWidth="639.0" />
