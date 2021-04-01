@@ -89,9 +89,6 @@ public class homeController implements Initializable {
     private Label username;
 
     @FXML
-    private Label feedTitle;
-
-    @FXML
     private Label lblArticle1;
 
     @FXML
@@ -141,12 +138,6 @@ public class homeController implements Initializable {
     private JFXButton qa;
     
     @FXML
-    private JFXButton fileShare;
-    
-    @FXML
-    private JFXButton chat;
-    
-    @FXML
     private AnchorPane userDetails;
     
     @FXML
@@ -162,14 +153,14 @@ public class homeController implements Initializable {
     
     public void setData(User user) throws SQLException {
         currentUser = user;
-        sql.updateLogin(currentUser.getUserID(), true);
+        currentUser.updateLogin(true);
         Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
         count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
     }
 
     @FXML
     private void signOut(ActionEvent event) throws SQLException {
-        sql.updateLogin(currentUser.getUserID(), false);
+        currentUser.updateLogin(false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
@@ -178,14 +169,7 @@ public class homeController implements Initializable {
           SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
     }
  
-    @FXML
-    private void fileShare(ActionEvent event){
-          SwitchWindow.switchWindow((Stage) fileShare.getScene().getWindow(), new FileShare(currentUser));
-    }
-    @FXML
-    private void chat(ActionEvent event){
-          SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser));
-    }
+   
     
      @FXML
     private void getOnlineUser(MouseEvent event) throws SQLException {
@@ -198,7 +182,7 @@ public class homeController implements Initializable {
         User user = new User(username);
         userDetails.setVisible(true);
         userUsername.setText(user.getUsername());
-        InputStream fs= sql.getImage(user.getUserID());
+        InputStream fs= user.getImage();
         javafx.scene.image.Image image = new javafx.scene.image.Image(fs);
         profilePic.setImage(image);
     }
@@ -215,13 +199,10 @@ public class homeController implements Initializable {
             @Override
             public void run() {
                 Drawer newdrawer = new Drawer();
-
                 drawer.setDisable(true);
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
-                //Sets feed title to inform user to select a feed
-                feedTitle.setText("Please Select a Feed.");
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
                 } catch (SQLException ex) {
@@ -263,7 +244,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        
 
         //------------------//
         //First Article     //
@@ -362,7 +343,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        
 
         //------------------//
         //First Article     //
@@ -461,7 +442,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        
 
         //------------------//
         //First Article     //
@@ -560,7 +541,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+       
 
         //------------------//
         //First Article     //
@@ -658,7 +639,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -756,7 +736,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+        
 
         //------------------//
         //First Article     //

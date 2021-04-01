@@ -155,6 +155,17 @@ public class SQLHandler {
     }
     
     //------------------//
+   //DELETE USER ACCOUNT  //
+  //------------------//
+   public void deleteAccount( int id) throws SQLException{
+         String sql = "DELETE FROM Users WHERE id =\"" +id + "\"";
+        query = conn.prepareStatement(sql);
+        query.executeUpdate();
+        query.close(); 
+    }
+    
+    
+    //------------------//
    //LOAD PROFILE PIC  //
   //------------------//
    
@@ -162,6 +173,21 @@ public class SQLHandler {
     public InputStream getImage(int tutorid) throws SQLException{
        InputStream blob = null;
        String sql = "SELECT filetobyte FROM profile_pics WHERE user_id = \"" + tutorid + "\"";
+       query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            blob = rs.getBinaryStream("filetobyte");
+           
+    }
+       
+        System.out.println("Success");
+        return blob;
+    }
+    
+    
+     public InputStream getResource(int resourceId) throws SQLException{
+       InputStream blob = null;
+       String sql = "SELECT filetobyte FROM resources WHERE id = \"" + resourceId + "\"";
        query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
         while (rs.next()) {

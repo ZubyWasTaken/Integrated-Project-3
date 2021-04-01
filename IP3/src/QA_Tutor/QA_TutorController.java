@@ -167,13 +167,13 @@ public class QA_TutorController implements Initializable {
         int replyCount = sql.countAllReplies(question.getId());
         TextFlow questText = new TextFlow();
         Text text = new Text(question.getText());
-        text.setStyle("-fx-font: 16 arial;");
+        text.setStyle("-fx-font: 16 Sans-Serif;");
         questText.getChildren().add(text);
         User sender = question.getSender();
    
         //Getting the image
         ImageView profilePic = new ImageView();
-        InputStream fs= sql.getImage(sender.getUserID());
+        InputStream fs= sender.getImage();
         Image image = new Image(fs);
         profilePic.setImage(image);
         profilePic.setFitHeight(20);
@@ -311,7 +311,7 @@ public class QA_TutorController implements Initializable {
         
         //Getting profile pics
         ImageView profilePic = new ImageView();
-        InputStream fs= sql.getImage(sender.getUserID());
+        InputStream fs= sender.getImage();
         Image image = new Image(fs);
         profilePic.setImage(image);
         profilePic.setFitHeight(20);

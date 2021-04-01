@@ -155,7 +155,7 @@ public class HomeTutorController implements Initializable {
     Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
     sql.updateLastSeenQ(currentUser.getUserID(), now);
     count = sql.countQuestions(currentUser.getCatId(), currentUser.getUniId(),now,timestamp);
-    sql.updateLogin(currentUser.getUserID(), true);
+    currentUser.updateLogin(true);
     }
     
     
@@ -170,7 +170,7 @@ public class HomeTutorController implements Initializable {
         User user = new User(username);
         userDetails.setVisible(true);
         userUsername.setText(user.getUsername());
-        InputStream fs= sql.getImage(user.getUserID());
+        InputStream fs= user.getImage();
         Image image = new Image(fs);
         profilePic.setImage(image);
     }
@@ -179,9 +179,9 @@ public class HomeTutorController implements Initializable {
     @FXML
     private void signOut(ActionEvent event) throws SQLException{
         
-        sql.updateLogin(currentUser.getUserID(), false);
+        currentUser.updateLogin(false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
-    }
+    } 
     
      @FXML
     private void edit(ActionEvent event){

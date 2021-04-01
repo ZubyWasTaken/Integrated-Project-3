@@ -15,247 +15,129 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
-    <children>
-        <Label fx:id="labelWelcome" alignment="CENTER" layoutX="528.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="224.0" text="Welcome Back! ">
-         <font>
-            <Font size="28.0" />
-         </font></Label>
-      <Label alignment="CENTER" layoutX="749.0" layoutY="73.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="289.0" text="News Feed" underline="true">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="feedTitle" alignment="CENTER" layoutX="749.0" layoutY="132.0" minHeight="16" minWidth="69" prefHeight="38.0" prefWidth="289.0" text="Please Select a Feed">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <HBox layoutX="-4.0" prefHeight="67.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
+<AnchorPane id="AnchorPane" prefWidth="1026.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
+   <children>
+      <VBox alignment="CENTER" layoutX="218.0" layoutY="174.0" prefHeight="486.0" prefWidth="303.0" spacing="30" style="-fx-border-color: black; -fx-background-color: white;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="218.0" AnchorPane.topAnchor="174.0">
          <children>
-            <HBox prefHeight="69.0" prefWidth="419.0">
+            <VBox spacing="5.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
-                     <children>
-                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXHamburger>
-                     </children>
-                  </VBox>
-                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome,">
+                  <Label fx:id="lblArticle1" alignment="TOP_LEFT" style="-fx-padding: 5;" text="Article 1" textFill="#4a4a4a" wrapText="true">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="SansSerif Bold" size="18.0" />
                      </font>
-                     <opaqueInsets>
-                        <Insets left="2.0" />
-                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets right="20.0" top="5.0" />
+                     </VBox.margin>
                   </Label>
-                  <Label fx:id="username" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="143.0">
+                  <Hyperlink fx:id="articleHyperlink1" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 1" underline="true">
                      <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
-               <children>
-                  <JFXButton fx:id="sgnOutBut" onAction="#signOut">
-                     <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/logout.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-               </children>
-               <HBox.margin>
-                  <Insets left="550.0" />
-               </HBox.margin>
-            </VBox>
-         </children>
-      </HBox>
-      <Label layoutX="299.0" layoutY="92.0" text="Users online">
-         <font>
-            <Font size="27.0" />
-         </font></Label>
-      <JFXButton fx:id="fileShare" layoutX="511.0" layoutY="494.0" onAction="#fileShare" text="File Share" />
-      <TableView fx:id="usersOnline" layoutX="814.0" layoutY="66.0" onMouseClicked="#getOnlineUser" prefHeight="608.0" prefWidth="224.0" stylesheets="@../Resources/css.css">
-         <placeholder>
-            <Label text="No users online" />
-         </placeholder>
-          <columns>
-            <TableColumn fx:id="user" maxWidth="231.0" prefWidth="229.33333333333334" resizable="false" text="Online" />
-         </columns>
-         <styleClass>
-            <String fx:value="table-row-cell" />
-            <String fx:value="table" />
-         </styleClass>
-      </TableView>
-      <Pane layoutX="-1.0" layoutY="67.0" prefHeight="99.0" prefWidth="461.0" style="-fx-background-color: #002b43;">
-         <children>
-            <Label alignment="CENTER" layoutX="-3.0" layoutY="-4.0" minHeight="16" minWidth="69" prefHeight="97.0" prefWidth="463.0" text="News Feed" textFill="#fff9f9" underline="true">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <VBox alignment="CENTER" layoutX="141.0" layoutY="166.0" prefHeight="509.0" prefWidth="316.0" spacing="30" style="-fx-border-color: black; -fx-background-color: white;">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-               <children>
-                  <Label fx:id="lblArticle1" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" style="-fx-padding: 5;" text="Article 1" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Hyperlink fx:id="articleHyperlink1" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 1">
-                     <font>
-                        <Font size="16.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                      </font>
                   </Hyperlink>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+            <VBox prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle2" alignment="TOP_LEFT" prefHeight="38" prefWidth="244.0" style="-fx-padding: 5;" text="Article 2" wrapText="true">
+                  <Label fx:id="lblArticle2" alignment="TOP_LEFT" style="-fx-padding: 5;" text="Article 2" textFill="#4a4a4a" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Hyperlink fx:id="articleHyperlink2" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 2">
+                  <Hyperlink fx:id="articleHyperlink2" prefWidth="244.0" text="Hyperlink 2" underline="true">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                      </font>
                   </Hyperlink>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+            <VBox spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle3" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" style="-fx-padding: 5;" text="Article 3" wrapText="true">
+                  <Label fx:id="lblArticle3" alignment="TOP_LEFT" prefHeight="32.0" prefWidth="96.0" style="-fx-padding: 5;" text="Article 3" textFill="#4a4a4a" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </Label>
-                  <Hyperlink fx:id="articleHyperlink3" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 3">
+                  <Hyperlink fx:id="articleHyperlink3" prefWidth="244.0" text="Hyperlink 3" underline="true">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                      </font>
                   </Hyperlink>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="236.0" spacing="5.0">
+            <VBox spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle4" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="244.0" style="-fx-padding: 5;" text="Article 4" wrapText="true">
+                  <Label fx:id="lblArticle4" alignment="TOP_LEFT" style="-fx-padding: 5;" text="Article 4" textFill="#4a4a4a" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </Label>
-                  <Hyperlink fx:id="articleHyperlink4" prefHeight="25.0" prefWidth="244.0" text="Hyperlink 4">
+                  <Hyperlink fx:id="articleHyperlink4" text="Hyperlink 4" underline="true">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                      </font>
                   </Hyperlink>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+            <VBox prefHeight="200.0" spacing="5.0">
                <children>
-                  <Label fx:id="lblArticle5" alignment="TOP_LEFT" prefHeight="74.0" prefWidth="314.0" style="-fx-padding: 5;" text="Article 5">
+                  <Label fx:id="lblArticle5" alignment="TOP_LEFT" prefHeight="74.0" prefWidth="314.0" style="-fx-padding: 5;" text="Article 5" textFill="#4a4a4a">
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Hyperlink fx:id="articleHyperlink5" prefHeight="33.0" prefWidth="171.0" text="Article 5">
+                  <Hyperlink fx:id="articleHyperlink5" prefHeight="33.0" prefWidth="171.0" text="Article 5" underline="true">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                      </font>
                   </Hyperlink>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
          </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
       </VBox>
-      <Pane layoutX="458.0" layoutY="67.0" prefHeight="99.0" prefWidth="354.0" style="-fx-background-color: #002b43;">
+      <TableView fx:id="usersOnline" editable="true" layoutX="810.0" layoutY="67.0" onMouseClicked="#getOnlineUser" stylesheets="@../Resources/css.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
+         <placeholder>
+            <Label text="No users online" />
+         </placeholder>
+         <columns>
+            <TableColumn fx:id="user" maxWidth="245.99999996026358" prefWidth="245.99999996026358" resizable="false" text="Online" />
+         </columns>
+         <styleClass>
+            <String fx:value="table" />
+            <String fx:value="table-row-cell" />
+         </styleClass>
+      </TableView>
+      <AnchorPane fx:id="userDetails" layoutX="521.0" layoutY="171.0" prefHeight="230.0" prefWidth="256.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="261.0" AnchorPane.leftAnchor="521.0" AnchorPane.rightAnchor="249.0" AnchorPane.topAnchor="171.0">
          <children>
-            <Label layoutX="198.0" layoutY="1.0" prefHeight="39.0" prefWidth="140.0" text="new replies" textFill="WHITE">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label layoutX="17.0" layoutY="1.0" prefHeight="39.0" prefWidth="125.0" text="You have" textFill="WHITE">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <JFXButton fx:id="qa" layoutX="247.0" layoutY="52.0" onAction="#qaSwitch" prefHeight="7.0" prefWidth="102.0" text="View all" textFill="WHITE" underline="true">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </JFXButton>
-            <Label fx:id="repliesCount" layoutX="144.0" layoutY="1.0" prefHeight="17.0" prefWidth="32.0" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Pane layoutY="170.0" prefHeight="503.0" prefWidth="140.0" style="-fx-background-color: white;">
-         <children>
-            <VBox alignment="CENTER" layoutY="1.0" prefHeight="332.0" prefWidth="142.0" spacing="5">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="4.0" prefWidth="139.0" styleClass="categories" text="Categories" underline="true">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="btnUK" buttonType="RAISED" onAction="#UKFeed" prefHeight="37.0" prefWidth="107.0" styleClass="categories-button" stylesheets="@../Resources/css.css" text="UK" textFill="WHITE">
-                     <font>
-                        <Font name="SansSerif Regular" size="16.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="btnWorld" buttonType="RAISED" onAction="#worldFeed" prefHeight="37.0" prefWidth="109.0" styleClass="categories-button" text="World" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="btnBusiness" buttonType="RAISED" onAction="#businessFeed" prefHeight="37.0" prefWidth="109.0" styleClass="categories-button" text="Business" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="btnPolitics" buttonType="RAISED" onAction="#politicsFeed" prefHeight="37.0" prefWidth="110.0" styleClass="categories-button" text="Politics" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="btnTech" buttonType="RAISED" onAction="#techFeed" prefHeight="37.0" prefWidth="112.0" styleClass="categories-button" text="Technology" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="btnScience" buttonType="RAISED" onAction="#scienceFeed" prefHeight="37.0" prefWidth="114.0" styleClass="categories-button" text="Science" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </VBox>
-         </children>
-      </Pane>
-      <AnchorPane fx:id="userDetails" layoutX="458.0" layoutY="168.0" prefHeight="269.0" prefWidth="354.0" style="-fx-background-color: white;" visible="false">
-         <children>
-            <ImageView fx:id="profilePic" fitHeight="117.0" fitWidth="171.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-            <Button layoutX="300.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+            <ImageView fx:id="profilePic" fitHeight="124.0" fitWidth="201.0" layoutX="40.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
+            <Button layoutX="202.0" layoutY="20.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <graphic>
                   <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -264,17 +146,201 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label fx:id="userUsername" layoutX="216.0" layoutY="60.0" prefHeight="26.0" prefWidth="125.0">
+            <Label fx:id="userUsername" layoutX="18.0" layoutY="26.0" prefHeight="26.0" prefWidth="125.0" textFill="#4a4a4a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
                <font>
-                  <Font name="System Bold" size="17.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
          </children>
          <effect>
-            <DropShadow radius="8.225" width="13.9" />
+            <DropShadow radius="8.0225" width="13.09" />
          </effect>
       </AnchorPane>
-      <JFXButton fx:id="chat" layoutX="519.0" layoutY="526.0" onAction="#chat" text="Chat" />
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutY="67.0" prefHeight="608.0" prefWidth="300.0" />
-    </children>
+      <AnchorPane layoutX="1.0" layoutY="-2.0" prefHeight="73.0" prefWidth="1039.0" styleClass="navigation-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="25.0" AnchorPane.leftAnchor="40.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXHamburger>
+            <Label fx:id="labelWelcome1" alignment="CENTER" layoutX="92.0" layoutY="5.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome," AnchorPane.leftAnchor="92.0">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets left="2.0" />
+               </opaqueInsets>
+            </Label>
+            <Label fx:id="username" layoutX="217.0" layoutY="9.0" minHeight="16" minWidth="69" prefHeight="48.0" prefWidth="150.0">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="sgnOutBut" layoutX="837.0" layoutY="14.0" onAction="#signOut" prefWidth="183.0" text="Sign Out" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Resources/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="-2.0" layoutY="73.0" prefHeight="100.0" prefWidth="791.0" style="-fx-background-color: #a8d6c9;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="248.0">
+         <children>
+            <Label alignment="CENTER" minHeight="16" minWidth="69" prefHeight="97.0" prefWidth="521.0" text="News Feed" textFill="#4a4a4a" underline="true" AnchorPane.leftAnchor="0.0">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="qa" layoutX="686.0" layoutY="53.0" onAction="#qaSwitch" prefHeight="29.0" prefWidth="94.0" text="View all" textFill="#4a4a4a" underline="true" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </JFXButton>
+            <Label fx:id="repliesCount" layoutX="634.0" layoutY="15.0" prefHeight="39.0" prefWidth="70.0" textFill="WHITE" AnchorPane.leftAnchor="634.0" AnchorPane.rightAnchor="87.0">
+               <font>
+                  <Font name="SansSerif Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="516.0" layoutY="53.0" prefHeight="39.0" prefWidth="190.0" text="new replies" textFill="#4a4a4a" AnchorPane.leftAnchor="524.0">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="524.0" layoutY="15.0" prefHeight="39.0" prefWidth="125.0" text="You have" textFill="#4a4a4a" AnchorPane.leftAnchor="524.0">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Line endX="0.33331298828125" endY="-15.0" layoutX="521.0" layoutY="15.0" startX="0.33331298828125" startY="82.33332824707031" stroke="#fffcfc" AnchorPane.leftAnchor="520.8333129882812" />
+         </children>
+      </AnchorPane>
+      <VBox layoutY="173.0" prefHeight="538.0" prefWidth="219.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="231.0" styleClass="categories" text="Categories" textFill="#4a4a4a" underline="true">
+                     <font>
+                        <Font name="SansSerif Regular" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <children>
+                  <JFXButton fx:id="btnUK" buttonType="RAISED" onAction="#UKFeed" prefHeight="105.0" prefWidth="376.0" styleClass="categories-button" stylesheets="@../Resources/css.css" text="UK" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <children>
+                  <JFXButton fx:id="btnWorld" buttonType="RAISED" onAction="#worldFeed" prefHeight="92.0" prefWidth="362.0" styleClass="categories-button" text="World" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <children>
+                  <JFXButton fx:id="btnBusiness" buttonType="RAISED" onAction="#businessFeed" prefHeight="116.0" prefWidth="324.0" styleClass="categories-button" text="Business" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <children>
+                  <JFXButton fx:id="btnPolitics" buttonType="RAISED" onAction="#politicsFeed" prefHeight="208.0" prefWidth="622.0" styleClass="categories-button" text="Politics" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <children>
+                  <JFXButton fx:id="btnTech" buttonType="RAISED" onAction="#techFeed" prefHeight="131.0" prefWidth="355.0" styleClass="categories-button" text="Technology" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <children>
+                  <JFXButton fx:id="btnScience" buttonType="RAISED" onAction="#scienceFeed" prefHeight="124.0" prefWidth="453.0" styleClass="categories-button" text="Science" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-1.0" layoutY="72.0" prefHeight="635.0" prefWidth="341.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="73.0" />
+   </children>
 </AnchorPane>

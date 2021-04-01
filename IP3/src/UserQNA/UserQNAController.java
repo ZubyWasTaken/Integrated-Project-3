@@ -214,7 +214,7 @@ public class UserQNAController implements Initializable {
         
         //Getting profile pics
         ImageView profilePic = new ImageView();
-        InputStream fs= sql.getImage(sender.getUserID());
+        InputStream fs= sender.getImage();
         Image image = new Image(fs);
         profilePic.setImage(image);
         profilePic.setFitHeight(20);
@@ -381,7 +381,7 @@ public class UserQNAController implements Initializable {
    
         //Getting the image
         ImageView profilePic = new ImageView();
-        InputStream fs= sql.getImage(sender.getUserID());
+        InputStream fs= sender.getImage();
         Image image = new Image(fs,16,16,false,false);
         profilePic.setImage(image);
 

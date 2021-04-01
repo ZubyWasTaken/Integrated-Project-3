@@ -118,7 +118,7 @@ public class ChatController implements Initializable {
             output.flush();
 
             //clear the textfield
-           messageArea.clear();
+            messageArea.clear();
         } catch (IOException ex) {
             System.err.println(ex);
         }

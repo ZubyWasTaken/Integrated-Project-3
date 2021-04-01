@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="556.0" prefWidth="300.0" styleClass="navigation-bar2" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
+<VBox prefHeight="556.0" prefWidth="300.0" styleClass="navigation-bar2" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeTutor.drawerTutorController">
    <children>
       <HBox prefHeight="132.0" prefWidth="300.0" style="-fx-border-color: #4a4a4a;">
          <children>
@@ -25,7 +25,14 @@
                               <Image url="@../Resources/logout.png" />
                            </image>
                            <effect>
-                              <Lighting bumpInput="$null" diffuseConstant="0.0" specularConstant="2.0" specularExponent="0.0" surfaceScale="0.0">
+                              <Lighting specularConstant="2.0" specularExponent="0.0" surfaceScale="10.0">
+                                 <bumpInput>
+                                    <Lighting bumpInput="$null">
+                                       <light>
+                                          <Light.Distant />
+                                       </light>
+                                    </Lighting>
+                                 </bumpInput>
                                  <light>
                                     <Light.Distant />
                                  </light>
@@ -61,27 +68,17 @@
             </BorderPane>
          </children>
       </HBox>
-      <HBox fx:id="homeBut" onMouseClicked="#home" prefHeight="79.0" prefWidth="300.0" styleClass="drawer-item">
+      <HBox fx:id="homeBut" onMouseClicked="#home" prefHeight="193.0" prefWidth="300.0" styleClass="drawer-item">
          <children>
-            <Label alignment="CENTER" prefHeight="121.0" prefWidth="329.0" text="Home" textFill="WHITE" />
+            <Label alignment="CENTER" prefHeight="155.0" prefWidth="298.0" text="Home" textFill="WHITE" />
          </children>
       </HBox>
-      <HBox fx:id="qaBut" onMouseClicked="#qa" prefHeight="79.0" prefWidth="300.0" styleClass="drawer-item">
+      <HBox fx:id="qaBut" onMouseClicked="#qa" prefHeight="183.0" prefWidth="300.0" styleClass="drawer-item">
          <children>
-            <Label alignment="CENTER" prefHeight="121.0" prefWidth="329.0" text="Q &amp; A" textFill="WHITE" />
+            <Label alignment="CENTER" prefHeight="169.0" prefWidth="298.0" text="Q &amp; A" textFill="WHITE" />
          </children>
       </HBox>
-      <HBox fx:id="fileBut" onMouseClicked="#chat" prefHeight="79.0" prefWidth="300.0" styleClass="drawer-item">
-         <children>
-            <Label alignment="CENTER" prefHeight="121.0" prefWidth="329.0" text="Messages" textFill="WHITE" />
-         </children>
-      </HBox>
-      <HBox fx:id="chatBut" onMouseClicked="#fileShare" prefHeight="79.0" prefWidth="300.0" styleClass="drawer-item">
-         <children>
-            <Label alignment="CENTER" prefHeight="121.0" prefWidth="329.0" text="Group Files" textFill="WHITE" />
-         </children>
-      </HBox>
-      <HBox fx:id="accBut" onMouseClicked="#acc" prefHeight="79.0" prefWidth="300.0" styleClass="drawer-item">
+      <HBox fx:id="accBut" onMouseClicked="#acc" prefHeight="178.0" prefWidth="300.0" styleClass="drawer-item">
          <children>
             <Label alignment="CENTER" prefHeight="121.0" prefWidth="329.0" text="My Account" textFill="WHITE" />
          </children>

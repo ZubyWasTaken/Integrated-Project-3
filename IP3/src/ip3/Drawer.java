@@ -5,6 +5,7 @@
  */
 package ip3;
 
+import HomeTutor.drawerTutorController;
 import UserQNA.UserQNAController;
 import UserQNA.drawerController;
 import com.jfoenix.controls.JFXDrawer;
@@ -24,13 +25,24 @@ import javafx.scene.layout.VBox;
 public class Drawer {
     public void drawerPullout(JFXDrawer drawer, User currentUser, JFXHamburger hamburger){
      try {
+               
+                if(currentUser.getTitleId()==1){
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserQNA/drawer.fxml"));
                 VBox box = loader.load();
                 drawer.setSidePane(box);
                 drawerController controller = loader.getController();
 
                 controller.setData(currentUser);
+                }
+                else{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomeTutor/drawerTutor.fxml"));
+                VBox box = loader.load();
+                drawer.setSidePane(box);
+                drawerTutorController controller = loader.getController();
 
+                controller.setData(currentUser);
+                }
                 HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
                 transition.setRate(-1);
                 hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {

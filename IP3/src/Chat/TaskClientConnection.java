@@ -5,10 +5,14 @@
  */
 package Chat;
 
+import SQL.SQLHandler;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
@@ -22,7 +26,7 @@ public  class TaskClientConnection implements Runnable {
     // Create data input and output streams
     DataInputStream input;
     DataOutputStream output;
-
+    
     public TaskClientConnection(Socket socket, ServerJavaFX server) {
         this.socket = socket;
         this.server = server;
@@ -41,10 +45,10 @@ public  class TaskClientConnection implements Runnable {
             while (true) {
                 // Get message from the client
                 String message = input.readUTF();
-
-                //send message via server broadcast
-                server.broadcast(message);
                 
+                //send message via server broadcast
+                server.broadcast(message);  
+           
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {                    
                     server.txtAreaDisplay.appendText(message + "\n");
@@ -55,6 +59,8 @@ public  class TaskClientConnection implements Runnable {
 
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(TaskClientConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 socket.close();
@@ -71,7 +77,6 @@ public  class TaskClientConnection implements Runnable {
           try {
             output.writeUTF(message);
             output.flush();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         } 

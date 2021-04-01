@@ -1,6 +1,7 @@
 package ip3;
 
 import SQL.SQLHandler;
+import java.io.InputStream;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -206,5 +207,13 @@ public class User {
     public boolean equals(Object obj) {
         return (this == obj);
 }
+    public void updateLogin(boolean login) throws SQLException{
+        sql.updateLogin(userid, login);
+    }
+    
+    public InputStream getImage() throws SQLException{
+        InputStream blob = sql.getImage(userid);
+        return blob;
+    }
     
 }

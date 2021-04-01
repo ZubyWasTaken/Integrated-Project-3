@@ -8,16 +8,21 @@ package EditAcc;
 import Home.Home;
 import HomeTutor.*;
 import Interests.InterestController;
+import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import ip3.Categories;
 import ip3.Drawer;
+import ip3.Hash;
+import ip3.Shaker;
 import ip3.SwitchWindow;
 import ip3.User;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +32,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,14 +44,18 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -82,16 +92,25 @@ private JFXTextField email;
 @FXML
 private JFXButton backBut;
 @FXML 
-private Tab accTab;
+private JFXButton accTab;
 @FXML
-private Tab personalTab;
-@FXML
-private TabPane tp;
+private JFXButton personalTab;
 @FXML
 private JFXHamburger hamburger; 
 @FXML
 private JFXDrawer drawer;
-
+@FXML
+private JFXPasswordField oldPass;
+@FXML
+private JFXPasswordField newPass1;
+@FXML
+private JFXPasswordField newPass2;
+@FXML
+private AnchorPane personalDet;
+@FXML
+private AnchorPane accDet;
+@FXML
+private JFXButton deleteBut;
 
 SQLHandler sql=new SQLHandler();       
 byte[] photo=null;
@@ -128,7 +147,8 @@ AnimationType type = AnimationType.POPUP;
     fnameSave();
     surnameSave();
     catSave();
-
+    passSave();
+    
     tray.setTitle("Success");
     tray.setMessage("All changes are successfully saved.");
     tray.setNotificationType(NotificationType.SUCCESS);
@@ -137,10 +157,6 @@ AnimationType type = AnimationType.POPUP;
     SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new Edit(currentUser));   
  }
  
- @FXML 
- private void passEdit(ActionEvent event){
-    SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new passwordEdit(currentUser));   
- }
  
  @FXML 
  private void cancel(ActionEvent event){
@@ -156,12 +172,19 @@ AnimationType type = AnimationType.POPUP;
  }
  
  @FXML
- private void returnToAcc(Event event) throws SQLException{
-  tp.getSelectionModel().select(accTab);
+ private void returnToAcc(ActionEvent event) throws SQLException{
+    personalDet.setVisible(false);
+    accDet.setVisible(true);
+    personalTab.setDisable(false);
+    accTab.setDisable(true);
  }
   @FXML
- private void returnToPersonal(Event event){
-    tp.getSelectionModel().select(personalTab);
+ private void returnToPersonal(ActionEvent event){
+    personalDet.setVisible(true);
+    accDet.setVisible(false);
+    personalTab.setDisable(true);
+    accTab.setDisable(false);
+    
  }
  
   @FXML 
@@ -195,8 +218,8 @@ public void initialize(URL url, ResourceBundle rb) {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 
                 username.setText(currentUser.getUsername());
-                tp.getSelectionModel().select(accTab);
-                InputStream fs= sql.getImage(currentUser.getUserID());
+                accTab.setDisable(true);
+                InputStream fs= currentUser.getImage();
                 Image image = new Image(fs);
         
                 imageShow.setImage(image);
@@ -227,7 +250,50 @@ public void initialize(URL url, ResourceBundle rb) {
 }
     });
             }
+
+@FXML
+private void deleteAccount(ActionEvent event) throws SQLException{
+    delete();
+
+}
   
+private void delete(){
+    Dialog<String> dialog = new Dialog<>();
+    dialog.setTitle("Confirmation");
+    dialog.setHeaderText("Are you sure? Your account and all related data will be deleted. Enter password to confirm.");
+   
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+    PasswordField pwd = new PasswordField();
+    HBox content = new HBox();
+    content.setAlignment(Pos.CENTER_LEFT);
+    content.setSpacing(10);
+    content.getChildren().addAll(new Label("Password:"), pwd);
+    dialog.getDialogPane().setContent(content);
+    dialog.setResultConverter(dialogButton -> {
+        if (dialogButton == ButtonType.OK) {
+            Hash h = new Hash();
+            if(h.verifyHash(pwd.getText(), currentUser.getPassword())){
+                try {
+                    sql.deleteAccount(currentUser.getUserID());
+                    SwitchWindow.switchWindow((Stage) deleteBut.getScene().getWindow(), new LoginRegister());
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(EditController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+                tray.setTitle("Password");
+                tray.setMessage("Password is incorrect. Please try again.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+                delete();
+            }
+        }
+        return null;
+    });
+    dialog.showAndWait();
+}
 private void catPopulate(){
           try {
             data2 = sql.showCategories();
@@ -283,6 +349,60 @@ private void fnameSave() throws SQLException{
 }
 
 
+    private void passSave() throws SQLException{
+        ArrayList<String> allUsers = new ArrayList<>();
+        Hash h = new Hash();
+        SQLHandler sql = new SQLHandler();
+        String pass = oldPass.getText();
+        String passNew = newPass1.getText();
+        String passNew2 = newPass2.getText();
+        if (!h.verifyHash(pass, currentUser.getPassword())) {
+           
+     
+            tray.setTitle("Password");
+            tray.setMessage("Old password is invalid. Please re-enter");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+            return;
+        }
+         
+         if (pass.isEmpty()||passNew.isEmpty()) {
+
+            changePasswordFailed();
+            }
+     
+        if (passNew.length() < 8 || passNew.length() > 32) {
+            
+            
+            tray.setTitle("Password");
+            tray.setMessage("Password must be between 8-32 characters");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+            return;
+        }
+        
+
+        if (!passNew.equals(passNew2)){
+            
+            tray.setTitle("Password");
+            tray.setMessage("Passwords do not match. Please try again.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+            return;
+        }
+        
+         else {
+            passNew = h.hash(passNew);
+            currentUser.setPassword(passNew);
+            currentUser.editPassword(currentUser);
+        }
+}
+ private void changePasswordFailed() {
+        Shaker shake = new Shaker(saveBut);
+        shake.shake();
+        oldPass.requestFocus();
+}
+    
 private void surnameSave() throws SQLException{
     if(!surname.getText().equals(currentUser.getSurname())){
      if (User.matchName(fname.getText()) == true)

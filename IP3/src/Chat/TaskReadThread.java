@@ -5,9 +5,13 @@
  */
 package Chat;
 
+import SQL.SQLHandler;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
@@ -19,9 +23,10 @@ import javafx.application.Platform;
 public class TaskReadThread implements Runnable {
     //private variables
     Socket socket;
+    
     ChatController client;
     DataInputStream input;
-
+    SQLHandler sql = new SQLHandler();
     //constructor
     public TaskReadThread(Socket socket, ChatController client) {
         this.socket = socket;
@@ -38,11 +43,12 @@ public class TaskReadThread implements Runnable {
 
                 //get input from the client
                 String message = input.readUTF();
-
+                
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {
                     //display the message in the textarea
                     client.viewMsg.appendText(message + "\n");
+                    
                 });
             } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());

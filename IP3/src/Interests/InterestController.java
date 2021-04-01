@@ -16,13 +16,11 @@ import ip3.Categories;
 import ip3.Shaker;
 import ip3.User;
 import ip3.SwitchWindow;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -171,9 +169,13 @@ public class InterestController implements Initializable {
     
     private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
         User user = new User(username);
-        File image = new File ("src/SQL/files/noPic.png");
-        Path path = Paths.get("src/SQL/files/noPic.png");
-        byte[] photo = Files.readAllBytes(path);
+        InputStream fs= sql.getResource(1);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        for (int readNum; (readNum=fs.read(buf))!=-1;){
+             bos.write(buf,0,readNum);
+         }
+        byte[] photo=bos.toByteArray();
         sql.addImage(photo,user.getUserID());
     }
     

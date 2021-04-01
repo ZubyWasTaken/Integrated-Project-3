@@ -1,12 +1,9 @@
-package UserQNA;
+package HomeTutor;
 
-import Chat.Chat;
 import EditAcc.Edit;
-import FileShare.FileShare;
-import Home.Home;
-
-import HomeTutor.drawerTutorController;
 import LoginRegister.LoginRegister;
+
+import QA_Tutor.QA_Tutor;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
 import ip3.User;
@@ -28,7 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class drawerController implements Initializable {
+public class drawerTutorController implements Initializable {
     User currentUser;
 
     @FXML
@@ -36,56 +33,36 @@ public class drawerController implements Initializable {
     @FXML
     private HBox qaBut;
     @FXML
-    private HBox chatBut;
-    @FXML
     private HBox accBut;
-    @FXML
-    private HBox fileBut;
     @FXML
     private JFXButton sgnOutBut;
     @FXML
     private Label userUsername;
-    @FXML 
+    @FXML
     private ImageView profilePic;
-    
-
-
     @FXML
     private void home(MouseEvent event){
-        
-         SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new Home(currentUser)); 
-    
+     
+            SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new HomeTutor(currentUser));
+       
     }
     
-    @FXML
-    private void chat(MouseEvent event){
-          SwitchWindow.switchWindow((Stage) chatBut.getScene().getWindow(), new Chat(currentUser));
-    }
+   
     @FXML
     private void qa(MouseEvent event){
-     
-            SwitchWindow.switchWindow((Stage) qaBut.getScene().getWindow(), new UserQNA(currentUser)); 
-    
-         
+           SwitchWindow.switchWindow((Stage) qaBut.getScene().getWindow(), new QA_Tutor(currentUser));
     } 
 
     @FXML
     private void acc (MouseEvent event){
-    
-            SwitchWindow.switchWindow((Stage) accBut.getScene().getWindow(), new Edit(currentUser)); 
-    
-    }
-    
-    @FXML
-    private void fileShare (MouseEvent event){
-    
-            SwitchWindow.switchWindow((Stage) fileBut.getScene().getWindow(), new FileShare(currentUser)); 
+           SwitchWindow.switchWindow((Stage) accBut.getScene().getWindow(), new Edit(currentUser)); 
     
     }
     
+   
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-         Platform.runLater(new Runnable() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
         userUsername.setText(currentUser.getUsername());
@@ -99,14 +76,15 @@ public class drawerController implements Initializable {
         profilePic.setImage(image);
     }
         });
-    }
+    }         
     
     @FXML
     private void signOut(ActionEvent event) throws SQLException{
         
         currentUser.updateLogin(false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
-    }    
+    }
+        
 
     public void setData(User user) {
         this.currentUser = user;
