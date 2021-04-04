@@ -108,6 +108,7 @@
 
 .menu-button {
     -fx-background-color:  -fx-darkblue;
+    -fx-cursor: hand;
     
 }
 .menu-button.label {
