@@ -5,28 +5,25 @@
  */
 package Chat;
 
-import SQL.SQLHandler;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
  *
  * @author erino
  */
-public  class TaskClientConnection implements Runnable {
+public class TaskClientConnection implements Runnable {
 
     Socket socket;
     ServerJavaFX server;
     // Create data input and output streams
     DataInputStream input;
+
     DataOutputStream output;
-    
+String username;
     public TaskClientConnection(Socket socket, ServerJavaFX server) {
         this.socket = socket;
         this.server = server;
@@ -39,30 +36,32 @@ public  class TaskClientConnection implements Runnable {
             // Create data input and output streams
             input = new DataInputStream(
                     socket.getInputStream());
+
             output = new DataOutputStream(
                     socket.getOutputStream());
 
             while (true) {
                 // Get message from the client
-                String message = input.readUTF();
-                
-                //send message via server broadcast
-                server.broadcast(message);  
-           
-                //append message of the Text Area of UI (GUI Thread)
-                Platform.runLater(() -> {                    
-                    server.txtAreaDisplay.appendText(message + "\n");
-                });
-            }
-            
-            
 
+                String message = input.readUTF();
+                 username = input.readUTF();
+                //send message via server broadcast
+                server.broadcast(message, username);
+           //     server.broadcastonline(username);
+                //append message of the Text Area of UI (GUI Thread)
+                Platform.runLater(() -> {
+                    server.txtAreaDisplay.appendText(message + "\n");
+                      
+                });
+               
+            }
+
+            
         } catch (IOException ex) {
             ex.printStackTrace();
-        } catch (SQLException ex) {
-            Logger.getLogger(TaskClientConnection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
+              
                 socket.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -71,16 +70,21 @@ public  class TaskClientConnection implements Runnable {
         }
 
     }
+    
+    
 
     //send message back to client
-    public void sendMessage(String message) {
-          try {
+    public void sendMessage(String message, String username) {
+        try {
+           // output.writeUTF(username);
             output.writeUTF(message);
+            output.writeUTF(username);
             output.flush();
+
         } catch (IOException ex) {
             ex.printStackTrace();
-        } 
-       
+        }
+
     }
 
 }

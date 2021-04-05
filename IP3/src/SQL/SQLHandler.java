@@ -429,6 +429,19 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
+            //------------------//
+   //ADD A NEW MESSAGE//
+  //------------------//
+   
+      public void addMessage(String text, int sender) throws SQLException {
+        String sql = "INSERT INTO Questions (text, user_id) VALUES(?,?)";
+        query = conn.prepareStatement(sql);
+        query.setString(1, text);
+        query.setInt(2, sender);
+        query.executeUpdate();
+        query.close();
+    }
 
     public ObservableList showReplies(int quest_id) throws SQLException {
         ObservableList<Reply> output = FXCollections.observableArrayList();

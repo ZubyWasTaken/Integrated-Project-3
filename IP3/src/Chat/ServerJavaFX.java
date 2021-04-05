@@ -5,10 +5,8 @@
  */
 package Chat;
 
-import SQL.SQLHandler;
 import java.io.*;
 import java.net.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +30,7 @@ import javafx.stage.Stage;
 public class ServerJavaFX extends Application {
     public TextArea txtAreaDisplay;
     List<TaskClientConnection> connectionList = new ArrayList<TaskClientConnection>();
-    SQLHandler sql = new SQLHandler();
+ArrayList <String> users = new ArrayList(); 
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         // Text area for displaying contents
@@ -88,13 +86,29 @@ public class ServerJavaFX extends Application {
     }
 
     //send message to all connected clients
-    public void broadcast(String message) throws SQLException {
-        sql.addQuestion(message,27);
+    public void broadcast(String message, String username) {
         for (TaskClientConnection clientConnection : this.connectionList) {
-            clientConnection.sendMessage(message);
+            clientConnection.sendMessage(message,username);
         }
         
+        
     }
-
+    
+//    public void broadcastonline(String username) {
+//       
+//        for (TaskClientConnection clientConnection : this.connectionList) {
+//            clientConnection.sendMessage(username + " has connected!");
+//      
+//           for (String string : users) {
+//               if(string.matches(username)){
+//                   users.add(string);
+//                    clientConnection.sendMessage(username + " has connected!");
+//                   
+//               }
+//           }
+//           
+//        }
+//        
+//        
+//    }
 }
-

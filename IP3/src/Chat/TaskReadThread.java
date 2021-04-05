@@ -5,35 +5,31 @@
  */
 package Chat;
 
-import SQL.SQLHandler;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
  *
  * @author erino
- * 
+ *
  * It is used to get input from server simultaneously
  */
 public class TaskReadThread implements Runnable {
+
     //private variables
     Socket socket;
-    
     ChatController client;
     DataInputStream input;
-    SQLHandler sql = new SQLHandler();
+
     //constructor
     public TaskReadThread(Socket socket, ChatController client) {
         this.socket = socket;
         this.client = client;
     }
 
-    @Override 
+    @Override
     public void run() {
         //continuously loop it
         while (true) {
@@ -43,12 +39,16 @@ public class TaskReadThread implements Runnable {
 
                 //get input from the client
                 String message = input.readUTF();
-                
+                String username = input.readUTF();
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {
                     //display the message in the textarea
+
                     client.viewMsg.appendText(message + "\n");
-                    
+                    if (!client.onlineUsers.getItems().contains(username)) {
+                        client.onlineUsers.getItems().add(username);
+                    }
+
                 });
             } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());
