@@ -21,6 +21,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -32,7 +33,7 @@ public class HomeTutor extends Application{
     User currentUser;
 
     public void start(Stage stage) throws Exception {
-      
+          stage.getIcons().add(new Image("/Resources/icon.png"));
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("homeTutor.fxml"));
         Parent root = (Parent) loader.load();

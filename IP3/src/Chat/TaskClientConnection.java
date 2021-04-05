@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import javafx.application.Platform;
 
 /**
@@ -21,18 +22,21 @@ public class TaskClientConnection implements Runnable {
     ServerJavaFX server;
     // Create data input and output streams
     DataInputStream input;
-
+Integer room;
     DataOutputStream output;
 String username;
+
     public TaskClientConnection(Socket socket, ServerJavaFX server) {
         this.socket = socket;
         this.server = server;
+   
     }
 
     @Override
     public void run() {
 
         try {
+      
             // Create data input and output streams
             input = new DataInputStream(
                     socket.getInputStream());

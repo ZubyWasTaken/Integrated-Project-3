@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -18,7 +19,7 @@ import javafx.stage.Stage;
 public class LoginRegister extends Application {
     
     public void start(Stage stage) throws Exception {
-      
+          stage.getIcons().add(new Image("/Resources/icon.png"));
         Parent root = FXMLLoader.load(getClass().getResource("LoginRegister.fxml"));
         
         Scene scene = new Scene(root);

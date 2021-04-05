@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Chat extends Application {
         User currentUser;
        
         public void start(Stage stage) throws Exception {
-      
+          stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);

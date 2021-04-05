@@ -1,64 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="720.0" maxWidth="1140.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Chat.ChatController">
-   <top>
-      <BorderPane prefHeight="106.0" prefWidth="1140.0" BorderPane.alignment="CENTER">
-         <left>
-            <HBox prefHeight="106.0" prefWidth="256.0" BorderPane.alignment="CENTER">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="617.0" prefWidth="727.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Chat.ChatController">
+   <children>
+      <HBox layoutX="-2.0" prefHeight="49.0" prefWidth="729.0" style="-fx-background-color: #7f948f;">
+         <children>
+            <HBox prefHeight="67.0" prefWidth="374.0">
                <children>
-                  <VBox prefHeight="106.0" prefWidth="147.0">
+                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
                      <children>
-                        <Label fx:id="nameDisplay" prefHeight="25.0" prefWidth="61.0" text="Name">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
-                        </Label>
+                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXHamburger>
                      </children>
                   </VBox>
+                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="98.0" text="Chat">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets left="2.0" />
+                     </opaqueInsets>
+                  </Label>
                </children>
             </HBox>
-         </left>
-      </BorderPane>
-   </top>
-   <left>
-      <VBox prefHeight="725.0" prefWidth="318.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="54.0" prefWidth="318.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="32.0" prefWidth="161.0" text="Users Online:">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="usersOnline" alignment="CENTER" prefHeight="32.0" prefWidth="161.0">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Label>
+                  <JFXButton fx:id="sgnOutBut" onAction="#signOut">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
                </children>
-            </HBox>
-            <JFXListView fx:id="onlineUsers" prefHeight="561.0" prefWidth="318.0" />
+               <HBox.margin>
+                  <Insets left="320.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-      </VBox>
-   </left>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      </HBox>
+      <VBox layoutX="229.0" layoutY="117.0" prefHeight="501.0" prefWidth="498.0">
          <children>
-            <JFXTextArea fx:id="viewMsg" editable="false" prefHeight="511.0" prefWidth="822.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <JFXTextArea fx:id="viewMsg" editable="false" prefHeight="467.0" prefWidth="498.0">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </JFXTextArea>
+            <HBox alignment="CENTER" prefHeight="107.0" prefWidth="485.0" style="-fx-background-color: white; -fx-border-color: black;">
                <children>
-                  <JFXTextArea fx:id="messageArea" prefHeight="142.0" prefWidth="639.0" />
-                  <JFXButton fx:id="sendMsg" alignment="CENTER" contentDisplay="CENTER" onAction="#sendMsg" prefHeight="68.0" prefWidth="186.0" style="-fx-background-color: pink;" text="Send">
+                  <JFXTextArea fx:id="messageArea" prefHeight="49.0" prefWidth="350.0" />
+                  <JFXButton fx:id="sendMsg" alignment="CENTER" contentDisplay="CENTER" onAction="#sendMsg" prefHeight="45.0" prefWidth="155.0" styleClass="categories-button" text="Send">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -70,5 +80,25 @@
             </HBox>
          </children>
       </VBox>
-   </center>
-</BorderPane>
+      <VBox layoutX="-1.0" layoutY="63.0" prefHeight="609.0" prefWidth="218.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="54.0" prefWidth="318.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="32.0" prefWidth="141.0" text="Users Online:">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="usersOnline" alignment="CENTER" prefHeight="32.0" prefWidth="94.0">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <JFXListView fx:id="onlineUsers" prefHeight="501.0" prefWidth="218.0" />
+         </children>
+      </VBox>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutY="49.0" prefHeight="568.0" prefWidth="260.0" />
+   </children>
+</Pane>

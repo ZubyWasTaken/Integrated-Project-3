@@ -5,11 +5,17 @@
  */
 package Chat;
 
+import Home.Home;
+import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+import ip3.Drawer;
 import ip3.Message;
+import ip3.SwitchWindow;
 import ip3.User;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -27,6 +33,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  *
@@ -47,12 +54,17 @@ public class ChatController implements Initializable {
     private JFXButton sendMsg;
 
     @FXML
-    private Label nameDisplay;
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer;
 
     @FXML
     private Label usersOnline;
-    
-     @FXML
+
+    @FXML
+    private JFXButton sgnOutBut;
+
+    @FXML
     public JFXListView<String> onlineUsers;
 
     String username;
@@ -67,6 +79,12 @@ public class ChatController implements Initializable {
 
     }
 
+    @FXML
+    private void signOut(ActionEvent event) throws SQLException {
+
+        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new Home(currentUser));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -74,17 +92,20 @@ public class ChatController implements Initializable {
 
             @Override
             public void run() {
+                 drawer.setDisable(true);
+                Drawer newdrawer = new Drawer();
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 System.out.println("Working?");
                 username = currentUser.getUsername();
                 String name = currentUser.getFirstname();
-                nameDisplay.setText(name);
+
                 usersOnline.setText(String.valueOf(count));
 
-               
             }
         });
 // onlineList.setItems(userList);
         try {
+            String room = "1";
             // Create a socket to connect to the server
             Socket socket = new Socket(ConnectionUtil.host, ConnectionUtil.port);
 
@@ -93,20 +114,18 @@ public class ChatController implements Initializable {
 
             // Create an output stream to send data to the server
             output = new DataOutputStream(socket.getOutputStream());
-        
+
             //create a thread in order to read message from server continuously
             TaskReadThread task = new TaskReadThread(socket, this);
             Thread thread = new Thread(task);
             thread.start();
-           
-            
+
         } catch (IOException ex) {
 
-          //  viewMsg.appendText(ex.toString() + '\n');
+            //  viewMsg.appendText(ex.toString() + '\n');
         }
     }
 
-    
 //      public void broadcastOnline(String username) throws IOException {
 //              output.writeUTF(username);
 //          

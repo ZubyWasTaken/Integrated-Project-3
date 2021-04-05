@@ -1,78 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="556.0" prefWidth="300.0" spacing="30.0" style="-fx-background-color: #7f948f;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
+<VBox prefHeight="556.0" prefWidth="300.0" spacing="30.0" style="-fx-background-color: #7f948f;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
    <children>
-      <HBox fx:id="homeBut" alignment="CENTER_LEFT" onMouseClicked="#home" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                
-               </children>
-            </VBox>
-            <Label text="Home">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
-      <HBox fx:id="qaBut" alignment="CENTER_LEFT" onMouseClicked="#qa" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                 
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </VBox>
-            <Label text="Q &amp; A">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
-      <HBox fx:id="chatBut" alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-            <Label prefHeight="35.0" prefWidth="86.0" text="Chats" textAlignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
-      <HBox fx:id="accBut" alignment="CENTER_LEFT" onMouseClicked="#acc" prefHeight="67.0" prefWidth="325.0" spacing="10.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-            <Label prefHeight="35.0" prefWidth="265.0" text="My account" textAlignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
+      <JFXButton fx:id="homeBut" graphicTextGap="90.0" onAction="#home" prefHeight="76.0" prefWidth="300.0" text="Home">
+         <graphic>
+            <FontAwesomeIcon glyphName="HOME" size="2em" wrappingWidth="45.785715103149414">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </FontAwesomeIcon>
+         </graphic>
+         <font>
+            <Font size="24.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXButton>
+      <JFXButton fx:id="qaBut" graphicTextGap="90.0" onAction="#qa" prefHeight="67.0" prefWidth="325.0" text="QnA">
+         <graphic>
+            <FontAwesomeIcon glyphName="QUESTION" size="2.2em" wrappingWidth="44.285715103149414" />
+         </graphic>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="chatBut" graphicTextGap="90.0" onAction="#chatDrawer" prefHeight="67.0" prefWidth="325.0" text="Chats">
+         <graphic>
+            <FontAwesomeIcon glyphName="SEND" size="1.6em" wrappingWidth="44.285715103149414" />
+         </graphic>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="accBut" graphicTextGap="60.0" onAction="#acc" prefHeight="67.0" prefWidth="325.0" text="  Account">
+         <graphic>
+            <FontAwesomeIcon glyphName="USER" size="1.8em" wrappingWidth="44.285715103149414" />
+         </graphic>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="fileShare" graphicTextGap="63.0" onAction="#share" prefHeight="67.0" prefWidth="325.0" text="File Share">
+         <graphic>
+            <FontAwesomeIcon glyphName="FILE" size="1.5em" wrappingWidth="44.285715103149414" />
+         </graphic>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </JFXButton>
    </children>
 </VBox>

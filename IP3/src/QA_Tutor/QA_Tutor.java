@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -24,7 +25,7 @@ public class QA_Tutor extends Application{
   
     
     public void start(Stage stage) throws Exception {
-      
+          stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("QA_Tutor.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
