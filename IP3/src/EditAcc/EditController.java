@@ -22,7 +22,6 @@ import ip3.Hash;
 import ip3.Shaker;
 import ip3.SwitchWindow;
 import ip3.User;
-import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +31,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,8 +52,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -106,9 +104,9 @@ private JFXPasswordField newPass1;
 @FXML
 private JFXPasswordField newPass2;
 @FXML
-private AnchorPane personalDet;
+private GridPane personalDet;
 @FXML
-private AnchorPane accDet;
+private GridPane accDet;
 @FXML
 private JFXButton deleteBut;
 

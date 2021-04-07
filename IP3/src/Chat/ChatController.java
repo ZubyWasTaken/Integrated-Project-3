@@ -7,8 +7,11 @@ package Chat;
 
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+import ip3.Drawer;
 import ip3.Message;
 import ip3.User;
 import java.io.DataOutputStream;
@@ -16,7 +19,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +29,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  *
@@ -50,21 +55,31 @@ public class ChatController implements Initializable {
     private Label nameDisplay;
 
     @FXML
-    private Label usersOnline;
+    private Label countUsers;
     
      @FXML
     public JFXListView<String> onlineUsers;
 
+     @FXML
+    private TableView<User> usersOnline;
+    
+    @FXML
+    private TableColumn<User,String> user;
+    
+    @FXML
+    private JFXDrawer drawer;    
+    
+    @FXML
+    private JFXHamburger hamburger;    
+    
     String username;
-
+    ObservableList<User> data = FXCollections.observableArrayList();
     User currentUser;
     int count = 0;
     SQLHandler sql = new SQLHandler();
 
     public void setData(User user) throws SQLException {
         currentUser = user;
-        count = sql.countUsersOnline(currentUser.getUserID(), currentUser.getCatId(), currentUser.getUniId());
-
     }
 
     @Override
@@ -74,11 +89,20 @@ public class ChatController implements Initializable {
 
             @Override
             public void run() {
-                System.out.println("Working?");
+                
+                Drawer newdrawer = new Drawer();
+                drawer.setDisable(true);
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username = currentUser.getUsername();
-                String name = currentUser.getFirstname();
-                nameDisplay.setText(name);
-                usersOnline.setText(String.valueOf(count));
+                try {
+                    data = sql.showChatUsers(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                usersOnline.setItems(data);
+                int rows = usersOnline.getItems().size();
+                countUsers.setText(String.valueOf(rows));
 
                
             }

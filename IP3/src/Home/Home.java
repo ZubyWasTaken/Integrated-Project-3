@@ -6,12 +6,19 @@
 package Home;
 
 import Interests.InterestController;
+import UserQNA.UserQNA;
 import ip3.User;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -33,6 +40,18 @@ public class Home extends Application{
         stage.setTitle("Home");
         stage.show();        
         stage.centerOnScreen();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent e) {
+            try {
+                currentUser.updateLogin(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(UserQNA.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Platform.exit();
+        System.exit(0);
+    }
+  });
     }
   
  public Home(User user) {

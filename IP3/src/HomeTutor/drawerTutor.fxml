@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
@@ -43,6 +44,9 @@
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </JFXButton>
                </bottom>
                <top>
@@ -53,7 +57,7 @@
                   </ImageView>
                </top>
                <center>
-                  <Label fx:id="userUsername" BorderPane.alignment="CENTER">
+                  <Label fx:id="userUsername" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>

@@ -17,6 +17,8 @@ import ip3.Shaker;
 import ip3.User;
 import ip3.SwitchWindow;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +38,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -63,6 +69,10 @@ public class InterestController implements Initializable {
     JFXComboBox catSelect;
     @FXML
     JFXButton cancelBut;
+    @FXML
+    AnchorPane pane;
+    @FXML
+    JFXTextField locImg;
     
     //Variables//
     LocalDate date = LocalDate.now();
@@ -76,12 +86,27 @@ public class InterestController implements Initializable {
     User currentUser;
     TrayNotification tray = new TrayNotification();
     AnimationType type = AnimationType.POPUP;
+    byte[] photo=null;
     
     public void setData(User user) {
     currentUser = user;
     tray.setAnimationType(type);
     }
     
+    @FXML
+    private void upload(ActionEvent event){
+    FileChooser fc = new FileChooser();
+    fc.setTitle("Open File Dialog");
+    Stage stage = (Stage)pane.getScene().getWindow();
+    File file = fc.showOpenDialog(stage);
+    if (file !=null)
+    {
+        String location=file.getAbsolutePath();
+        Image image = new Image (file.toURI().toString());
+        locImg.setText(location);
+             
+    }
+    }
     @FXML
     private void register(ActionEvent event) throws SQLException, ParseException, IOException {
  
@@ -122,7 +147,7 @@ public class InterestController implements Initializable {
             return;
 
         }
-        if(dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty() ){
+        if(dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty() ||locImg.getText().isEmpty() ){
           
             tray.setAnimationType(type);
             tray.setTitle("Register");
@@ -133,7 +158,7 @@ public class InterestController implements Initializable {
             registerFailed();
             return;
         }
-       
+     
          else
          {
             uniId=User.fetchUniId(email);
@@ -154,8 +179,8 @@ public class InterestController implements Initializable {
             tray.setTitle("Register");
             tray.setMessage("Welcome to StudyBudz, " + username + "!");
             tray.setNotificationType(NotificationType.SUCCESS);
-            tray.showAndDismiss(Duration.millis(3000));
-            User user = new User(username);
+            tray.showAndDismiss(Duration.millis(3000));  
+            User user = new User(username); 
             setImage(username);
             SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
             }
@@ -168,16 +193,20 @@ public class InterestController implements Initializable {
     }
     
     private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
-        User user = new User(username);
-        InputStream fs= sql.getResource(1);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
-        for (int readNum; (readNum=fs.read(buf))!=-1;){
+        User user = new User(username); 
+        
+         File image = new File (locImg.getText());
+         FileInputStream fis = new FileInputStream(image);
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         byte[] buf = new byte[1024];
+         for (int readNum; (readNum=fis.read(buf))!=-1;){
              bos.write(buf,0,readNum);
          }
-        byte[] photo=bos.toByteArray();
-        sql.addImage(photo,user.getUserID());
-    }
+         photo=bos.toByteArray();
+         sql.addImage(photo,user.getUserID());
+
+
+}
     
     @FXML
     private void cancel(ActionEvent event){
@@ -211,7 +240,7 @@ public class InterestController implements Initializable {
         super.updateItem(item, empty);
         if (item.isAfter(maxDate.getValue())) { //Disable all dates after required date
             setDisable(true);
-            setStyle("-fx-background-color: #ffc0cb;"); //To set background on different color
+            getStyleClass().add("disabled-calendar"); //To set background on different color
         }
     }
     
@@ -236,7 +265,7 @@ public class InterestController implements Initializable {
 
     
     }
-    
+
 }
 
    

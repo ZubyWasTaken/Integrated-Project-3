@@ -144,6 +144,15 @@ public class HomeTutorController implements Initializable {
     @FXML
     private Label userUsername;
     
+    @FXML
+    private Label fname;
+    
+    @FXML
+    private Label surname;
+    
+    @FXML
+    private Label title;
+    
     ObservableList<User> data = FXCollections.observableArrayList();
     private SQLHandler sql = new SQLHandler();
     User currentUser;
@@ -170,6 +179,9 @@ public class HomeTutorController implements Initializable {
         User user = new User(username);
         userDetails.setVisible(true);
         userUsername.setText(user.getUsername());
+        fname.setText(user.getFirstname());
+        surname.setText(user.getSurname());
+        title.setText(user.fetchTitle(user.getTitleId()));
         InputStream fs= user.getImage();
         Image image = new Image(fs);
         profilePic.setImage(image);

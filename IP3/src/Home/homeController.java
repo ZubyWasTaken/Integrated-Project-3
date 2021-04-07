@@ -146,6 +146,15 @@ public class homeController implements Initializable {
     @FXML
     private Label userUsername;
     
+    @FXML
+    private Label fname;
+    
+    @FXML
+    private Label surname;
+    
+    @FXML 
+    private Label title;
+    
     private SQLHandler sql = new SQLHandler();
     int count = 0;
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -182,6 +191,9 @@ public class homeController implements Initializable {
         User user = new User(username);
         userDetails.setVisible(true);
         userUsername.setText(user.getUsername());
+        fname.setText(user.getFirstname());
+        surname.setText(user.getSurname());
+        title.setText(user.fetchTitle(user.getTitleId()));
         InputStream fs= user.getImage();
         javafx.scene.image.Image image = new javafx.scene.image.Image(fs);
         profilePic.setImage(image);

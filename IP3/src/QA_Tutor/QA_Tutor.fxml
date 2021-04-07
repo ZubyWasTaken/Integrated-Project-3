@@ -12,6 +12,9 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,7 +24,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.QA_TutorController">
    <children>
       <Pane layoutX="656.0" layoutY="72.0" prefHeight="548.0" prefWidth="395.0" styleClass="navigation-bar2" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.0" />
       <VBox layoutX="-6.0" layoutY="73.0" prefWidth="661.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="394.0" AnchorPane.topAnchor="73.0">
@@ -64,7 +67,7 @@
             </VBox>
             <VBox prefHeight="643.0" prefWidth="661.0">
                <children>
-                  <ListView fx:id="feed" fixedCellSize="60.0" onMouseClicked="#settings" prefHeight="636.0" prefWidth="661.0">
+                  <ListView fx:id="feed" fixedCellSize="60.0" prefHeight="636.0" prefWidth="661.0">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
@@ -124,14 +127,34 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <effect>
+                  <Lighting specularConstant="2.0" specularExponent="0.0">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
             </JFXHamburger>
-            <Label fx:id="labelWelcome1" alignment="CENTER" layoutX="92.0" layoutY="5.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Q &amp; A " AnchorPane.leftAnchor="92.0">
+            <Label fx:id="labelWelcome1" alignment="CENTER" layoutX="92.0" layoutY="5.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Q &amp; A " textFill="WHITE" AnchorPane.leftAnchor="92.0">
                <font>
                   <Font name="SansSerif Regular" size="24.0" />
                </font>
                <opaqueInsets>
                   <Insets left="2.0" />
                </opaqueInsets>
+               <effect>
+                  <Lighting specularConstant="2.0" specularExponent="0.0">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
             </Label>
          </children>
       </AnchorPane>

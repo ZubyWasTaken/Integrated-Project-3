@@ -6,10 +6,8 @@ import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -169,7 +167,6 @@ public class User {
        return this.uniId;
     }
      
-    
     //getters for dob and email
     //setters for everything
 
@@ -214,6 +211,11 @@ public class User {
     public InputStream getImage() throws SQLException{
         InputStream blob = sql.getImage(userid);
         return blob;
+    }
+    
+    public String fetchTitle(int titleId) throws SQLException{
+        String category=sql.getTitle(catId);
+        return category;
     }
     
 }

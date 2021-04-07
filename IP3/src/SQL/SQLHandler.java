@@ -700,7 +700,48 @@ public class SQLHandler {
         query.close();
         return count;
     }
+
+    public ObservableList<User> showChatUsers(int uniId, int catId, int userID) throws SQLException {
+       ObservableList<User> output = FXCollections.observableArrayList();
+       String sql = "SELECT * FROM Users INNER JOIN loginData on Users.id=loginData.user_id WHERE Users.uniid =\"" + uniId + "\" AND Users.catid=\"" + catId +"\" AND loginData.online=TRUE AND Users.id!=\""+userID+"\" AND Users.title_id=1" ;
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            
+            int userId = rs.getInt("id");
+            String username = rs.getString("username");
+            String password = rs.getString("password");
+            String firstname = rs.getString("firstname");
+            String surname = rs.getString ("surname");
+            String dateOfBirth = rs.getString("dob");
+            String email = rs.getString("email");
+            int uniid = rs.getInt("uniid");
+            int catid = rs.getInt("catid");
+            int titleid = rs.getInt("title_id");
+            
+       output.add(new User(userId, firstname, surname, username,password, email,dateOfBirth, uniid, catid, titleid ));
+
+        }
+        query.close();
+        return output;
     }
+
+    public String getTitle(int titleId) throws SQLException {
+        String title=null;
+        String sql = "SELECT name FROM titles WHERE id =\""+titleId+"\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            
+            title = rs.getString("name");
+    }
+        query.close();
+        return title;
+    }
+    
+}
     
 
 

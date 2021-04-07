@@ -91,6 +91,11 @@ public class UserQNAController implements Initializable {
     @FXML
     private TextFlow repliesQ;
     
+    @FXML
+    private AnchorPane frame;
+    
+    
+    
 
     public int questionid;
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -184,6 +189,12 @@ public class UserQNAController implements Initializable {
     }
             },0,10000); 
                 }
+    
+@FXML
+public void exitApplication(ActionEvent event) {
+    ((Stage)frame.getScene().getWindow()).close();
+}
+
 @FXML
     private void loadReplies(Button btn) {
 

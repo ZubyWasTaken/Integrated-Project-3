@@ -107,7 +107,7 @@
     -fx-border-style: solid;
     -fx-border-color: black;
     -fx-font-family: Sans-Serif;
-    -fx-font-size:16px;
+    -fx-font-size:18px;
 
 }
 
@@ -161,7 +161,30 @@
     -fx-background-color: #a8d6c9;
     -fx-text-fill: black;
 }
+.categories-button2{
+    -fx-background-color:  -fx-darkblue;
+    -fx-background-radius :2.0em 2.0em 0em 0em;;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-font-family: Sans-Serif;
+    
+}
+.categories-button2:hover {
+   
+-fx-background-color: #a8d6c9;
+-fx-text-fill: black;
+}
 
+.categories-button2:selected{
+    -fx-background-color: #a8d6c9;
+    -fx-text-fill: black;
+}
+
+.categories-button2:disabled{
+    -fx-background-color: #a8d6c9;
+    -fx-text-fill: black;
+}
 .cancel-button {
     -fx-background-color:#a4a4a4;
     -fx-cursor: hand;
@@ -171,16 +194,20 @@
 }
 .cancel-button:hover {
     -fx-background-color:white;
-    -fx-border-color: #a4a4a4;
 }
 
 .menu-button {
     -fx-background-color:  -fx-darkblue;
-        -fx-font-size: 18px;
+    -fx-font-size: 18px;
     -fx-font-family: Sans-Serif;
     -fx-cursor: hand;
     -fx-background-radius :2.0em;
 
+}
+
+.edit-pane{
+     -fx-border-radius :0em 0em 2.0em 2.0em;
+     -fx-background-color: white;
 }
 .label {
     -fx-font-family: Sans-Serif;
@@ -196,14 +223,41 @@
     -fx-background-color: #a8d6c9; 
 }
 .text-area {
-    -jfx-focus-color:-fx-darkblue;
+
     -jfx-unfocus-color: #a4a4a4;
     -jfx-focus-color:#a8d6c9;
     -fx-background-color: white;
     -fx-text-padding: 20px;
     -fx-font-family: Sans-Serif;
-    -fx-font-size:16px;
+    -fx-font-size:18px;
+}
+.text-area-messages{
+
+    -jfx-unfocus-color: #a4a4a4;
+    -jfx-focus-color:#a8d6c9;
+    -fx-background-color: linear-gradient(to top, #002b43, #a8d6c9);
+    -fx-text-padding: 20px;
+    -fx-font-family: Sans-Serif;
+    -fx-font-size:18px;
+    -fx-text-fill:white;
+}
     
+.jfx-date-picker {
+    -fx-font-family: Sans-Serif;
+    -fx-font-size:18px;
+}
+.jfx-date-picker .jfx-text-field{
+    -jfx-unfocus-color: #a4a4a4;
+    -fx-font-family: Sans-Serif;
+    -fx-font-size:18px;
+    -jfx-focus-color:#a8d6c9;
+}
+.disabled-calendar{
+-fx-background-color: #ffc0cb;
+}
+.calendar-cell-today { 
+    -fx-background-color: rgba(155,155,19,0.7);
+    -fx-text-fill: white;
 }
 .filter-pane {
    -fx-border-color: white #a4a4a4 white white;
@@ -268,6 +322,7 @@
     -fx-cursor: hand;
     -fx-font-size: 18px;
     -fx-border-color:  #7f948f #7f948f #4a4a4a #7f948f;
+    -fx-text-fill: white;
 }
 
 .drawer-item:hover{

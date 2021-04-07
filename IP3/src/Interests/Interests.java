@@ -26,7 +26,7 @@ public class Interests extends Application {
         InterestController controller = loader.getController();
         controller.setData(currentUser);
         stage.setScene(scene);
-        stage.setTitle("Interests");
+        stage.setTitle("Sign Up");
         stage.show();        
         stage.centerOnScreen();
     }

@@ -9,102 +9,156 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="pane" prefHeight="572.0" prefWidth="587.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditAcc.EditController">
    <children>
-      <JFXButton fx:id="saveBut" buttonType="RAISED" layoutX="307.0" layoutY="455.0" onAction="#save" prefHeight="39.0" prefWidth="260.0" styleClass="categories-button" stylesheets="@../Resources/css.css" text="SAVE CHANGES" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="77.66666666666666" AnchorPane.rightAnchor="20.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="cancelBut" buttonType="RAISED" layoutX="29.0" layoutY="455.0" onAction="#cancel" prefHeight="39.0" prefWidth="260.0" styleClass="cancel-button" text="DISCARD CHANGES" textAlignment="CENTER" AnchorPane.bottomAnchor="77.66666666666666" AnchorPane.leftAnchor="20.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </JFXButton>
       <JFXButton fx:id="deleteBut" layoutX="426.0" layoutY="72.0" onAction="#deleteAccount" prefHeight="39.0" prefWidth="145.0" text="Delete account" textAlignment="JUSTIFY" textFill="RED" underline="true" AnchorPane.rightAnchor="20.0">
          <font>
             <Font size="18.0" />
-         </font></JFXButton>
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXButton>
       <Pane layoutX="1.0" layoutY="7.0" prefHeight="68.0" prefWidth="1059.0" styleClass="navigation-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="44.0" layoutY="23.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <effect>
+                  <Lighting specularConstant="2.0" specularExponent="0.0">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
             </JFXHamburger>
-            <Label layoutX="94.0" layoutY="-1.0" prefHeight="67.0" prefWidth="123.0" text="My account">
+            <Label layoutX="94.0" layoutY="-1.0" prefHeight="67.0" prefWidth="123.0" text="My account" textFill="WHITE">
                <font>
                   <Font name="SansSerif Regular" size="24.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <AnchorPane fx:id="personalDet" layoutX="19.0" layoutY="158.0" minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="547.0" style="-fx-border-color: #4a4a4a;" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <GridPane hgap="60.0" layoutY="129.0" prefHeight="423.0" prefWidth="507.0" vgap="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="129.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="91.22221374511719" minHeight="10.0" prefHeight="52.888921101888016" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="93.77774556477864" minHeight="10.0" prefHeight="93.77774556477864" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="82.11112976074219" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="84.77777099609375" minHeight="10.0" prefHeight="48.33331298828125" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="94.88888549804688" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="94.88888549804688" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <JFXTextField fx:id="fname" accessibleText="first name" focusColor="#a8d6c9" layoutX="28.0" layoutY="89.0" prefHeight="25.0" prefWidth="166.0" unFocusColor="#4a4a4a" />
-            <JFXTextField fx:id="surname" accessibleText="surname" focusColor="#a8d6c9" layoutX="316.0" layoutY="89.0" prefHeight="25.0" prefWidth="166.0" unFocusColor="#4a4a4a" />
-            <JFXTextField fx:id="email" accessibleText="email adress" focusColor="#a8d6c9" layoutX="28.0" layoutY="202.0" prefHeight="25.0" prefWidth="166.0" unFocusColor="#4a4a4a" />
-            <Label layoutX="28.0" layoutY="27.0" text="First name" textFill="#4a4a4a">
+            <GridPane fx:id="accDet" hgap="60.0" vgap="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="53.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label prefHeight="21.0" prefWidth="342.0" text="Username" textFill="#4a4a4a" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="SansSerif Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="username" accessibleText="Username" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="202.0" styleClass="text-area" GridPane.rowIndex="3" />
+                  <Label prefHeight="21.0" prefWidth="225.0" text="Change Password" textFill="#4a4a4a" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="SansSerif Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXPasswordField fx:id="oldPass" prefHeight="25.0" prefWidth="225.0" promptText="Old password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                  </JFXPasswordField>
+                  <JFXPasswordField fx:id="newPass1" prefHeight="15.0" prefWidth="328.0" promptText="New password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXPasswordField fx:id="newPass2" prefHeight="25.0" prefWidth="225.0" promptText="Confirm new password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ImageView fx:id="imageShow" fitHeight="141.0" fitWidth="226.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </GridPane>
+            <JFXButton fx:id="accTab" onAction="#returnToAcc" prefHeight="51.0" prefWidth="1204.0" styleClass="categories-button2" text="Account Details" />
+            <JFXButton fx:id="personalTab" onAction="#returnToPersonal" prefHeight="51.0" prefWidth="818.0" styleClass="categories-button2" text="Personal Details" GridPane.columnIndex="1" />
+            <JFXButton fx:id="saveBut" buttonType="RAISED" onAction="#save" prefHeight="41.0" prefWidth="814.0" styleClass="categories-button" stylesheets="@../Resources/css.css" text="SAVE CHANGES" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font size="18.0" />
                </font>
-            </Label>
-            <Label layoutX="313.0" layoutY="27.0" prefHeight="35.0" prefWidth="108.0" text="Surname" textFill="#4a4a4a">
+            </JFXButton>
+            <JFXButton fx:id="cancelBut" buttonType="RAISED" onAction="#cancel" prefHeight="39.0" prefWidth="1209.0" styleClass="cancel-button" text="DISCARD CHANGES" textAlignment="CENTER" GridPane.rowIndex="5">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font size="18.0" />
                </font>
-            </Label>
-            <Label layoutX="28.0" layoutY="137.0" prefHeight="35.0" prefWidth="89.0" text="Email" textFill="#4a4a4a">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="313.0" layoutY="137.0" prefHeight="17.0" prefWidth="96.0" text="Interest" textFill="#4a4a4a">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <JFXComboBox fx:id="catSelect" accessibleText="interest" focusColor="#a8d6c9" layoutX="315.0" layoutY="202.0" prefHeight="25.0" prefWidth="168.0" unFocusColor="#4a4a4a" />
+            </JFXButton>
+            <GridPane fx:id="personalDet" hgap="60.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label prefHeight="21.0" prefWidth="363.0" text="First name" textFill="#4a4a4a">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="35.0" prefWidth="214.0" text="Surname" textFill="#4a4a4a" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="35.0" prefWidth="89.0" text="Email" textFill="#4a4a4a" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="21.0" prefWidth="225.0" text="Interest" textFill="#4a4a4a" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="fname" accessibleText="first name" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="surname" accessibleText="surname" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="email" accessibleText="email adress" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="catSelect" accessibleText="interest" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="543.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </AnchorPane>
-      <AnchorPane fx:id="accDet" layoutX="20.0" layoutY="158.0" minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="547.0" style="-fx-border-color: #4a4a4a;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-         <children>
-            <JFXTextField fx:id="username" accessibleText="Username" focusColor="#a8d6c9" layoutX="11.0" layoutY="215.0" prefHeight="25.0" prefWidth="164.0" AnchorPane.leftAnchor="10.0" />
-            <Label layoutX="14.0" layoutY="178.0" prefHeight="17.0" prefWidth="159.0" text="Username" textFill="#4a4a4a" AnchorPane.leftAnchor="10.0">
-               <font>
-                  <Font name="SansSerif Bold" size="18.0" />
-               </font>
-            </Label>
-            <BorderPane layoutX="10.0" layoutY="14.0" prefHeight="137.0" prefWidth="164.0" styleClass="image-view" AnchorPane.leftAnchor="10.0">
-               <center>
-                  <ImageView fx:id="imageShow" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-               </center>
-            </BorderPane>
-            <JFXPasswordField fx:id="oldPass" layoutX="261.0" layoutY="85.0" prefHeight="25.0" prefWidth="225.0" promptText="Old password" AnchorPane.rightAnchor="60.66666666666661">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-            </JFXPasswordField>
-            <JFXPasswordField fx:id="newPass2" layoutX="261.0" layoutY="214.0" prefHeight="25.0" prefWidth="225.0" promptText="Confirm new password" AnchorPane.rightAnchor="60.0" />
-            <JFXPasswordField fx:id="newPass1" layoutX="261.0" layoutY="147.0" prefHeight="25.0" prefWidth="225.0" promptText="New password" AnchorPane.rightAnchor="60.0" />
-            <Label layoutX="260.0" layoutY="32.0" text="Change Password" textFill="#4a4a4a" AnchorPane.rightAnchor="130.33333333333337">
-               <font>
-                  <Font name="SansSerif Bold" size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <JFXButton fx:id="personalTab" layoutX="294.0" layoutY="119.0" onAction="#returnToPersonal" prefHeight="39.0" prefWidth="273.0" styleClass="categories-button" text="Personal Details" AnchorPane.rightAnchor="20.0" />
-      <JFXButton fx:id="accTab" layoutX="38.0" layoutY="119.0" onAction="#returnToAcc" prefHeight="39.0" prefWidth="273.0" styleClass="categories-button" text="Account Details" AnchorPane.leftAnchor="20.0" />
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="3.0" layoutY="68.0" prefHeight="504.0" prefWidth="308.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="279.0" AnchorPane.topAnchor="68.0" />
+      </GridPane>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="23.0" layoutY="88.0" prefHeight="504.0" prefWidth="308.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="68.0" />
    </children>
 </AnchorPane>
