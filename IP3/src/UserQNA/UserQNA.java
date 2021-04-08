@@ -7,10 +7,17 @@ package UserQNA;
 
 import ip3.User;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,6 +39,18 @@ public class UserQNA extends Application{
         stage.setTitle("UserQNA");
         stage.show();
         stage.centerOnScreen();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                try {
+                    currentUser.updateLogin(false);
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNA.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
  public UserQNA(User user) {
