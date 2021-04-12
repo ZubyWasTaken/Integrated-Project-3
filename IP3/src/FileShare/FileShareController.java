@@ -4,14 +4,12 @@
  * and open the template in the editor.
  */
 package FileShare;
-import QA_Tutor.QA_TutorController;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import ip3.AppFiles;
 import ip3.Drawer;
-import ip3.Reply;
 import ip3.SwitchWindow;
 import ip3.User;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,17 +48,18 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 
 /**
@@ -100,15 +98,14 @@ public class FileShareController implements Initializable {
     
     @FXML
     private JFXButton uploadBut;
-    
-    
-    
-    private static final int BUFFER_SIZE = 4096;
+   
     byte[] file=null;
     User currentUser;
     private SQLHandler sql = new SQLHandler();
-
     ObservableList<AppFiles> data = FXCollections.observableArrayList();
+    TrayNotification tray = new TrayNotification();
+    AnimationType type = AnimationType.POPUP;
+    
     /**
      * Initializes the controller class.
      */
@@ -172,11 +169,19 @@ private void upload(ActionEvent event) throws IOException, FileNotFoundException
     {
         chosenFile.forEach((_item) -> {
            
-      try {
-          uploadQs(_item);
+        try {
+            uploadFiles(_item);
+
+            tray.setTitle("Upload");
+            tray.setMessage("All files successfully uploaded");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
 }       
        catch (IOException | SQLException ex) {
-                Logger.getLogger(FileShareController.class.getName()).log(Level.SEVERE, null, ex);
+            tray.setTitle("Upload");
+            tray.setMessage("There was an error when uploading the files. Please try again.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
             }
         
     });
@@ -195,14 +200,13 @@ private void upload(ActionEvent event) throws IOException, FileNotFoundException
                      if (author.getUserID()==currentUser.getUserID()){
                          
                          ContextMenu context = new ContextMenu();
-                         
                          MenuItem remove = new MenuItem("Remove");
                          context.getItems().addAll( remove);
                          files.setContextMenu(context);
                          context.show(files, Side.TOP, files.getLayoutX(), files.getLayoutY());
-                         
+                            
                          remove.setOnAction((ActionEvent event2) -> {
-                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this ", ButtonType.YES, ButtonType.CANCEL);
+                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this? ", ButtonType.YES, ButtonType.CANCEL);
                              alert.showAndWait();
                              if (alert.getResult() == ButtonType.YES) {
                                  try {
@@ -222,9 +226,10 @@ private void upload(ActionEvent event) throws IOException, FileNotFoundException
 
 @FXML 
  private void download(ActionEvent e) throws  IOException, SQLException{
+    try {
         TablePosition pos = (TablePosition) files.getSelectionModel().getSelectedCells().get(0);
+        
         int i = pos.getRow();
-
         AppFiles item = (AppFiles) files.getItems().get(i);
   
         String extension = item.getExtension();
@@ -241,8 +246,21 @@ private void upload(ActionEvent event) throws IOException, FileNotFoundException
             fos.write(buf,0,len);
         }
         catch (IOException ex){
-            System.out.println("Null");
+       ;
+            tray.setTitle("Download");
+            tray.setMessage("Error when downloading the file. Please try again.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
         }
+}
+        catch (Exception ex){
+           
+            tray.setTitle("Download");
+            tray.setMessage("No file is selected");
+            tray.setNotificationType(NotificationType.INFORMATION);
+            tray.showAndDismiss(Duration.millis(3000));
+                   
+            }
    }
  
 @FXML
@@ -287,24 +305,25 @@ private void showAllFiles(ActionEvent event) {
 void setData(User currentUser) throws SQLException {
         this.currentUser=currentUser;
         data = sql.showFiles(currentUser.getUniId(), currentUser.getCatId());
+        tray.setAnimationType(type);
     }
   
-private void uploadQs(File item) throws FileNotFoundException, IOException, SQLException{
-      String location=item.getAbsolutePath();
-        Path path = Paths.get(location);
-        Path fileName = path.getFileName();
-        fileLoc.setText(location);
-        if (location != null){
-         File newFile  = new File (location);
-         FileInputStream fis = new FileInputStream(newFile);
-         String size = (double) newFile.length() / 1024 + "  kb";
-         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-         byte[] buf = new byte[1024];
-         for (int readNum; (readNum=fis.read(buf))!=-1;){
-             bos.write(buf,0,readNum);
-         }
-         file=bos.toByteArray();
-         sql.uploadFile(file,currentUser.getUserID(),fileName.toString(), size);
+private void uploadFiles(File item) throws FileNotFoundException, IOException, SQLException{
+    String location=item.getAbsolutePath();
+    Path path = Paths.get(location);
+    Path fileName = path.getFileName();
+    fileLoc.setText(location);
+    if (location != null){
+    File newFile  = new File (location);
+    FileInputStream fis = new FileInputStream(newFile);
+    String size = (double) newFile.length() / 1024 + "  kb";
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    byte[] buf = new byte[1024];
+    for (int readNum; (readNum=fis.read(buf))!=-1;){
+        bos.write(buf,0,readNum);
+        }
+    file=bos.toByteArray();
+    sql.uploadFile(file,currentUser.getUserID(),fileName.toString(), size);
 }
 }
 

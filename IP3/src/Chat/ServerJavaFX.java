@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 public class ServerJavaFX extends Application {
     public TextArea txtAreaDisplay;
     List<TaskClientConnection> connectionList = new ArrayList<TaskClientConnection>();
-
+ArrayList <String> users = new ArrayList(); 
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         // Text area for displaying contents
@@ -86,9 +86,29 @@ public class ServerJavaFX extends Application {
     }
 
     //send message to all connected clients
-    public void broadcast(String message) {
+    public void broadcast(String message, String username) {
         for (TaskClientConnection clientConnection : this.connectionList) {
-            clientConnection.sendMessage(message);
+            clientConnection.sendMessage(message,username);
         }
+        
+        
     }
+    
+//    public void broadcastonline(String username) {
+//       
+//        for (TaskClientConnection clientConnection : this.connectionList) {
+//            clientConnection.sendMessage(username + " has connected!");
+//      
+//           for (String string : users) {
+//               if(string.matches(username)){
+//                   users.add(string);
+//                    clientConnection.sendMessage(username + " has connected!");
+//                   
+//               }
+//           }
+//           
+//        }
+//        
+//        
+//    }
 }

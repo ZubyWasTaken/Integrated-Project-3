@@ -40,21 +40,21 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="32.0" prefWidth="161.0" text="0">
+                  <Label fx:id="usersOnline" alignment="CENTER" prefHeight="32.0" prefWidth="161.0">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <JFXListView prefHeight="561.0" prefWidth="318.0" />
+            <JFXListView fx:id="onlineUsers" prefHeight="561.0" prefWidth="318.0" />
          </children>
       </VBox>
    </left>
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXTextArea fx:id="viewMsg" prefHeight="511.0" prefWidth="822.0" />
+            <JFXTextArea fx:id="viewMsg" editable="false" prefHeight="511.0" prefWidth="822.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <JFXTextArea fx:id="messageArea" prefHeight="142.0" prefWidth="639.0" />

@@ -10,6 +10,7 @@ import SQL.SQLHandler;
 import UserQNA.UserQNAController;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXTextArea;
 import ip3.Drawer;
 import ip3.Question;
 import ip3.Reply;
@@ -42,7 +43,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -87,7 +87,7 @@ public class QA_TutorController implements Initializable {
     private ListView feed;
 
     @FXML
-    private TextArea replyArea;
+    private JFXTextArea replyArea;
 
     @FXML
     private AnchorPane repliesPane;
@@ -97,12 +97,7 @@ public class QA_TutorController implements Initializable {
     
     @FXML
     private ListView repliesView;
-    
-    @FXML
-    private MenuItem resolvedQs;
-    
-    @FXML
-    private MenuItem unresolvedQs;
+   
    
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
@@ -200,7 +195,7 @@ public class QA_TutorController implements Initializable {
         btn.setText("Replies (" + replyCount + ")");
         btn.setId(String.valueOf(question.getId()));
         btn.setAlignment(Pos.CENTER_RIGHT);
-        btn.setStyle("-fx-cursor: hand;");
+        btn.getStyleClass().add("categories-button");
         
         //Adding resolved status
         Label resolved = new Label();

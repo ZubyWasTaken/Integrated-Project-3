@@ -8,7 +8,7 @@ import ip3.SwitchWindow;
 import ip3.User;
 import ip3.Drawer;
 import SQL.SQLHandler;
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import ip3.Question;
 import ip3.Reply;
 import java.io.IOException;
@@ -26,7 +26,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -79,17 +78,12 @@ public class UserQNAController implements Initializable {
     @FXML
     private ListView repliesView;
 
-    @FXML
-    private JFXButton sendBtn;
 
     @FXML
-    private JFXButton replyBtn;
+    private JFXTextArea msgArea;
 
     @FXML
-    private TextArea msgArea;
-
-    @FXML
-    private TextArea replyArea;
+    private JFXTextArea replyArea;
 
     @FXML
     private AnchorPane repliesPane;
@@ -166,11 +160,6 @@ public class UserQNAController implements Initializable {
     }
    
 
-//    @FXML
-//    private void viewChats(ActionEvent event){
-//       
-//        SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser)); 
-//    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -208,7 +197,7 @@ public class UserQNAController implements Initializable {
 
     }
 
-     @FXML
+    @FXML
     private void displayReplies(Reply reply) throws SQLException  {
         
         repliesView.setFocusTraversable(false);
@@ -415,7 +404,7 @@ public class UserQNAController implements Initializable {
         btn.setText("Replies (" + replyCount + ")");
         btn.setId(String.valueOf(question.getId()));
         btn.setAlignment(Pos.CENTER_RIGHT);
-        btn.setStyle("-fx-cursor: hand;");
+        btn.getStyleClass().add("categories-button");
         
         //Adding resolved status
         Label resolved = new Label();

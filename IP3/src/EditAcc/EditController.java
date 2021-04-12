@@ -5,6 +5,7 @@
  */
 package EditAcc;
 
+import Home.Home;
 import HomeTutor.*;
 import Interests.InterestController;
 import SQL.SQLHandler;
@@ -12,7 +13,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import ip3.Categories;
 import ip3.Drawer;
@@ -41,6 +41,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -59,8 +60,7 @@ import tray.notification.TrayNotification;
  */
 public class EditController implements Initializable {
 User currentUser;
-@FXML
-private JFXTextField showLoc;
+
 @FXML
 private AnchorPane pane;
 @FXML
@@ -86,7 +86,7 @@ private Tab accTab;
 @FXML
 private Tab personalTab;
 @FXML
-private JFXTabPane tp;
+private TabPane tp;
 @FXML
 private JFXHamburger hamburger; 
 @FXML
@@ -101,7 +101,8 @@ int catId;
 ArrayList<String> allUsers;
 ObservableList<Categories> data2 = FXCollections.observableArrayList();
 ObservableList<String> namesCat = FXCollections.observableArrayList();
-
+TrayNotification tray = new TrayNotification();
+AnimationType type = AnimationType.POPUP;
 
  @FXML
  private void upload(MouseEvent event){
@@ -118,6 +119,7 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
     }
   
     }
+ 
  @FXML
  private void save (ActionEvent event) throws FileNotFoundException, IOException, SQLException{
     usernameSave();
@@ -126,12 +128,8 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
     fnameSave();
     surnameSave();
     catSave();
-    String tilte = "Success";
-    TrayNotification tray = new TrayNotification();
-    AnimationType type = AnimationType.POPUP;
 
-    tray.setAnimationType(type);
-    tray.setTitle(tilte);
+    tray.setTitle("Success");
     tray.setMessage("All changes are successfully saved.");
     tray.setNotificationType(NotificationType.SUCCESS);
     tray.showAndDismiss(Duration.millis(3000));
@@ -143,6 +141,7 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
  private void passEdit(ActionEvent event){
     SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new passwordEdit(currentUser));   
  }
+ 
  @FXML 
  private void cancel(ActionEvent event){
     
@@ -158,7 +157,7 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
  
  @FXML
  private void returnToAcc(Event event) throws SQLException{
-
+  tp.getSelectionModel().select(accTab);
  }
   @FXML
  private void returnToPersonal(Event event){
@@ -172,9 +171,12 @@ ObservableList<String> namesCat = FXCollections.observableArrayList();
     alert.showAndWait();
 
     if (alert.getResult() == ButtonType.YES) {
-        SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));   
-              
-            }
+         if (currentUser.getTitleId()==1) {
+            SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new Home(currentUser));
+        } else {
+            SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));
+        }   
+}
      
  }
     /**
@@ -242,6 +244,7 @@ private void catPopulate(){
  public void setData(User user) throws SQLException {
     currentUser=user;
     this.allUsers = allUsers=sql.getAllUsers();
+    tray.setAnimationType(type);
     }
  
 private void usernameSave() throws SQLException{
@@ -249,12 +252,7 @@ private void usernameSave() throws SQLException{
         
     if (allUsers.contains(username.getText())) {
 
-            String tilte = "Username";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            tray.setTitle("Username");
             tray.setMessage("This username is taken. Please select a new one");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -271,12 +269,7 @@ private void fnameSave() throws SQLException{
      if(!fname.getText().equals(currentUser.getFirstname())){
      if (User.matchName(fname.getText()) == true)
      {
-         String tilte = "Name";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+            tray.setTitle("Name");
             tray.setMessage("Name invalid.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -294,12 +287,8 @@ private void surnameSave() throws SQLException{
     if(!surname.getText().equals(currentUser.getSurname())){
      if (User.matchName(fname.getText()) == true)
      {
-         String tilte = "Name";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+       
+            tray.setTitle("Name");
             tray.setMessage("Name invalid.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
@@ -309,8 +298,7 @@ private void surnameSave() throws SQLException{
          currentUser.setSurname(surname.getText());
          sql.updateSurname(currentUser.getUserID(),currentUser.getSurname());
      }
-}
-    
+}   
 }
 
 private void picSave() throws FileNotFoundException, SQLException, IOException{
@@ -330,12 +318,8 @@ private void picSave() throws FileNotFoundException, SQLException, IOException{
 private void emailSave() throws SQLException{
     if (!email.getText().equals(currentUser.getEmail())){
         if (User.isValid(email.getText()) == false) {
-            String tilte = "Email";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
+           
+            tray.setTitle("Email");
             tray.setMessage("Email Invalid");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));

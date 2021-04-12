@@ -403,6 +403,19 @@ public class SQLHandler {
         query.executeUpdate();
         query.close();
     }
+    
+            //------------------//
+   //ADD A NEW MESSAGE//
+  //------------------//
+   
+      public void addMessage(String text, int sender) throws SQLException {
+        String sql = "INSERT INTO Questions (text, user_id) VALUES(?,?)";
+        query = conn.prepareStatement(sql);
+        query.setString(1, text);
+        query.setInt(2, sender);
+        query.executeUpdate();
+        query.close();
+    }
 
     public ObservableList showReplies(int quest_id) throws SQLException {
         ObservableList<Reply> output = FXCollections.observableArrayList();
@@ -570,9 +583,9 @@ public class SQLHandler {
         query.close();
     }
 
-    public ObservableList<User> showUsersOnline(int uniId, int catId) throws SQLException {
+    public ObservableList<User> showUsersOnline(int uniId, int catId, int id) throws SQLException {
         ObservableList<User> output = FXCollections.observableArrayList();
-       String sql = "SELECT * FROM Users INNER JOIN loginData on Users.id=loginData.user_id WHERE Users.uniid =\"" + uniId + "\" AND Users.catid=\"" + catId +"\" AND loginData.online=TRUE ";
+       String sql = "SELECT * FROM Users INNER JOIN loginData on Users.id=loginData.user_id WHERE Users.uniid =\"" + uniId + "\" AND Users.catid=\"" + catId +"\" AND loginData.online=TRUE AND Users.id!=\""+id+"\"" ;
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
 
@@ -647,6 +660,19 @@ public class SQLHandler {
         query = conn.prepareStatement(sql);
         query.executeUpdate();
         query.close();   
+    }
+
+    public int countUsersOnline(int userID, int catId, int uniId) throws SQLException {
+        int count = 0;
+        String sql = "SELECT Users.id  FROM Users INNER JOIN loginData ON\n" +
+        "Users.id=loginData.user_id WHERE loginData.user_id =Users.id AND Users.catid=\"" + catId + "\" AND Users.uniid=\"" + uniId + "\" AND loginData.online=TRUE";
+         query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+             count ++;
+        }
+        query.close();
+        return count;
     }
     }
     
