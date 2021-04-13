@@ -41,8 +41,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -77,12 +77,6 @@ public class QA_TutorController implements Initializable {
     @FXML
     private Button btnHome;
 
-    @FXML 
-    private MenuButton showMenu;
-    
-    @FXML
-    private MenuButton sortMenu;
-
     @FXML
     private ListView feed;
 
@@ -98,12 +92,13 @@ public class QA_TutorController implements Initializable {
     @FXML
     private ListView repliesView;
    
-   
+    Tooltip tooltip = new Tooltip("Right-click for more details");
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
     User currentUser;
     public int questionid;
     Timestamp now = new Timestamp(System.currentTimeMillis());
+    
     
     public void setData(User user) throws SQLException {
     currentUser = user;
@@ -131,6 +126,7 @@ public class QA_TutorController implements Initializable {
     }     
     },0,10000); 
                 }
+    
     private void loadAllQs() throws SQLException{
         data.clear();
         feed.getItems().clear(); 
@@ -222,7 +218,9 @@ public class QA_TutorController implements Initializable {
         feed.getItems().addAll(quest, answers);
 
         //  msgArea.requestFocus();
-
+        if(question.getSender().getUserID()== currentUser.getUserID()){
+           Tooltip.install(feed, tooltip);
+        }
         loadReplies(btn);
     }
 
@@ -343,6 +341,9 @@ public class QA_TutorController implements Initializable {
        
         //Adding them to the pane
         repliesView.getItems().addAll(replies,details);
+        if(reply.getSender().getUserID()== currentUser.getUserID()){
+           Tooltip.install(repliesView, tooltip);
+        }
     }
 
    

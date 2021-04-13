@@ -5,10 +5,7 @@
  */
 package Home;
 
-import Chat.Chat;
-import FileShare.FileShare;
 import LoginRegister.LoginRegister;
-import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
 import UserQNA.UserQNA;
 import com.jfoenix.controls.JFXButton;
@@ -43,7 +40,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;

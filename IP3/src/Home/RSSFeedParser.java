@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+
 public class RSSFeedParser {
     static final String TITLE = "title";
     static final String DESCRIPTION = "description";

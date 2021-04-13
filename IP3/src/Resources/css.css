@@ -267,6 +267,9 @@
 
 .menu-item:hover {
     -fx-background-color: #a8d6c9;
+    -fx-cursor: hand;
+    -fx-text-fill: black;
+    
 }
 
 .tab-pane .tab-header-area .tab-header-background {

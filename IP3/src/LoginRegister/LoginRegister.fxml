@@ -33,7 +33,7 @@
                      </effect>
                   </JFXButton>
                
-                        <JFXButton fx:id="btnsignup" buttonType="RAISED" layoutX="172.0" layoutY="368.0" onMouseClicked="#register" prefHeight="39.0" prefWidth="135.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE">
+                        <JFXButton fx:id="btnsignup" buttonType="RAISED" layoutX="172.0" layoutY="368.0" prefHeight="39.0" prefWidth="135.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE">
                      <font>
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>

@@ -57,6 +57,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.synedra.validatorfx.Validator;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -120,6 +121,9 @@ ObservableList<Categories> data2 = FXCollections.observableArrayList();
 ObservableList<String> namesCat = FXCollections.observableArrayList();
 TrayNotification tray = new TrayNotification();
 AnimationType type = AnimationType.POPUP;
+private Validator validator = new Validator();
+Hash h = new Hash();
+String passNew1;   
 
  @FXML
  private void upload(MouseEvent event){
@@ -137,7 +141,7 @@ AnimationType type = AnimationType.POPUP;
   
     }
  
- @FXML
+@FXML
  private void save (ActionEvent event) throws FileNotFoundException, IOException, SQLException{
     usernameSave();
     picSave();
@@ -227,13 +231,105 @@ public void initialize(URL url, ResourceBundle rb) {
                 email.setText(currentUser.getEmail());
                 catPopulate();
                 catSelect.getSelectionModel().select(currentUser.getCatId()-1);
+                
            
         
     }   catch (SQLException ex) {
         Logger.getLogger(EditController.class.getName()).log(Level.SEVERE, null, ex);
     }
-        
-        
+         saveBut.disableProperty().bind(validator.containsErrorsProperty());
+         validator.createCheck()
+             .dependsOn("username", username.textProperty())
+             .withMethod(c -> {
+            if (username.getText().isEmpty()){
+               c.warn("Please enter a username");
+            }
+                     else{
+                      if (!username.getText().equals(currentUser.getUsername()) && allUsers.contains(username.getText())) {
+                      c.error("This username is taken. Please select a new one.");
+            }
+                      else if (User.match(username.getText()) == true) {
+                c.error("Username cannot contain special characters.");
+              }
+            }
+            
+          })
+          .decorates(username)
+          .immediate();;
+         validator.createCheck()
+                   .dependsOn("fname",fname.textProperty())
+                   .withMethod(c->{
+                       if (fname.getText().isEmpty()){
+                          c.warn("Please enter a first name.");
+                       }
+                       else {                      
+                        if ((User.matchName(fname.getText()) == true)) {
+                            c.error("Please, enter a valid name.");
+                        }
+                       }
+                        
+                   })
+                   .decorates(fname)
+                   .immediate();
+        validator.createCheck()
+                   .dependsOn("surname",surname.textProperty())
+                   .withMethod(c->{
+                      
+                       if (surname.getText().isEmpty()){
+                          c.warn("Please enter a surname.");
+                       }
+                       else {                      
+                        if ((User.matchName(surname.getText()) == true)) {
+                            c.error("Please, enter a valid name.");
+                        }
+                       }
+                        
+                   })
+                   .decorates(surname)
+                   .immediate();
+        validator.createCheck()
+                   .dependsOn("email",email.textProperty())
+                   .withMethod(c->{
+                      if (email.getText().isEmpty()){
+                          c.warn("Please enter a surname.");
+                       }
+                       else {                      
+                        if ((User.isValid(email.getText()) == false)) {
+                            c.error("Please, enter a valid email.");
+                        }
+                       }
+                        
+                   })
+                   .decorates(email)
+                   .immediate();
+        validator.createCheck()
+                   .dependsOn("pass",oldPass.textProperty())
+                   .withMethod(c->{
+                       String pass = c.get("pass");
+                       if(!pass.isEmpty()){
+                        if (!h.verifyHash(pass, currentUser.getPassword())) {
+                            c.error("Old password is invalid. Please re-enter.");
+                        }
+                       }
+                   })
+                   .decorates(oldPass)
+                   .immediate();
+                validator.createCheck()
+                   .dependsOn("pass1",newPass1.textProperty())
+                   .withMethod(c->{
+                       passNew1 = c.get("pass1");
+                       String passNew2 = newPass2.getText();
+                       if(!passNew1.isEmpty()){
+                        if (passNew1.length() < 8 || passNew1.length() > 32) {
+                            c.error("Password must be between 8-32 characters");
+                        }
+                        else if (!passNew1.equals(passNew2)){
+                            c.error("Passwords do not match");
+                        }
+                       }
+                   })
+                   .decorates(newPass1)
+                   .immediate();
         catSelect.setOnAction(new EventHandler() {
         @Override
         public void handle(Event event) {
@@ -270,7 +366,6 @@ private void delete(){
     dialog.getDialogPane().setContent(content);
     dialog.setResultConverter(dialogButton -> {
         if (dialogButton == ButtonType.OK) {
-            Hash h = new Hash();
             if(h.verifyHash(pwd.getText(), currentUser.getPassword())){
                 try {
                     sql.deleteAccount(currentUser.getUserID());
@@ -313,15 +408,6 @@ private void catPopulate(){
  
 private void usernameSave() throws SQLException{
     if(!username.getText().equals(currentUser.getUsername())){
-        
-    if (allUsers.contains(username.getText())) {
-
-            tray.setTitle("Username");
-            tray.setMessage("This username is taken. Please select a new one");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
         currentUser.setUsername(username.getText());
         sql.updateUsername(currentUser.getUserID(),currentUser.getUsername());
     }
@@ -331,69 +417,18 @@ private void usernameSave() throws SQLException{
 
 private void fnameSave() throws SQLException{
      if(!fname.getText().equals(currentUser.getFirstname())){
-     if (User.matchName(fname.getText()) == true)
-     {
-            tray.setTitle("Name");
-            tray.setMessage("Name invalid.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-}
-     else {
          currentUser.setFirstname(fname.getText());
          sql.updateFirstname(currentUser.getUserID(),currentUser.getFirstname());
-     }
+     
 }
 }
 
 
     private void passSave() throws SQLException{
-        ArrayList<String> allUsers = new ArrayList<>();
-        Hash h = new Hash();
-        SQLHandler sql = new SQLHandler();
-        String pass = oldPass.getText();
-        String passNew = newPass1.getText();
-        String passNew2 = newPass2.getText();
-        if (!h.verifyHash(pass, currentUser.getPassword())) {
-           
-     
-            tray.setTitle("Password");
-            tray.setMessage("Old password is invalid. Please re-enter");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
-         
-         if (pass.isEmpty()||passNew.isEmpty()) {
-
-            changePasswordFailed();
-            }
-     
-        if (passNew.length() < 8 || passNew.length() > 32) {
-            
-            
-            tray.setTitle("Password");
-            tray.setMessage("Password must be between 8-32 characters");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
         
-
-        if (!passNew.equals(passNew2)){
-            
-            tray.setTitle("Password");
-            tray.setMessage("Passwords do not match. Please try again.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
-        
-         else {
-            passNew = h.hash(passNew);
-            currentUser.setPassword(passNew);
+            passNew1 = h.hash(passNew1);
+            currentUser.setPassword(passNew1);
             currentUser.editPassword(currentUser);
-        }
 }
  private void changePasswordFailed() {
         Shaker shake = new Shaker(saveBut);
@@ -403,19 +438,8 @@ private void fnameSave() throws SQLException{
     
 private void surnameSave() throws SQLException{
     if(!surname.getText().equals(currentUser.getSurname())){
-     if (User.matchName(fname.getText()) == true)
-     {
-       
-            tray.setTitle("Name");
-            tray.setMessage("Name invalid.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-}
-     else {
          currentUser.setSurname(surname.getText());
          sql.updateSurname(currentUser.getUserID(),currentUser.getSurname());
-     }
 }   
 }
 
@@ -435,21 +459,12 @@ private void picSave() throws FileNotFoundException, SQLException, IOException{
 
 private void emailSave() throws SQLException{
     if (!email.getText().equals(currentUser.getEmail())){
-        if (User.isValid(email.getText()) == false) {
-           
-            tray.setTitle("Email");
-            tray.setMessage("Email Invalid");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
-        else {
-            
+    
             currentUser.setEmail(email.getText());
             currentUser.setUniId(User.fetchUniId(currentUser.getEmail()));
             sql.updateEmail(currentUser.getUserID(),currentUser.getEmail());
             sql.updateUni(currentUser.getUserID(),currentUser.getUniId());
-        }
+
     }
     
 }

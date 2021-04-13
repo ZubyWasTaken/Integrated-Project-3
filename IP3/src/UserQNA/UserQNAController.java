@@ -38,8 +38,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -53,6 +53,7 @@ import javafx.util.Duration;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
+import net.synedra.validatorfx.Validator;
 
 /**
  *
@@ -70,7 +71,7 @@ public class UserQNAController implements Initializable {
     @FXML
     private Button btnHome;
 
-  
+
 
     @FXML
     private ListView feed;
@@ -93,7 +94,7 @@ public class UserQNAController implements Initializable {
     
     @FXML
     private AnchorPane frame;
-    
+    Tooltip tooltip = new Tooltip("Right-click for more details");
     
     
 
@@ -101,7 +102,7 @@ public class UserQNAController implements Initializable {
     Timestamp now = new Timestamp(System.currentTimeMillis());
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
-
+    
     
     //FXML controls//
     
@@ -122,7 +123,7 @@ public class UserQNAController implements Initializable {
 
             tray.setAnimationType(type);
             tray.setTitle(tilte);
-            tray.setMessage("You have not entered a message");
+            tray.setMessage("You have not entered a question");
             tray.setNotificationType(NotificationType.INFORMATION);
             tray.showAndDismiss(Duration.millis(3000));
             return;
@@ -191,11 +192,6 @@ public class UserQNAController implements Initializable {
                 }
     
 @FXML
-public void exitApplication(ActionEvent event) {
-    ((Stage)frame.getScene().getWindow()).close();
-}
-
-@FXML
     private void loadReplies(Button btn) {
 
         btn.setOnAction((ActionEvent event) -> {
@@ -257,6 +253,10 @@ public void exitApplication(ActionEvent event) {
        
         //Adding them to the pane
         repliesView.getItems().addAll(replies,details);
+        
+        if(reply.getSender().getUserID()== currentUser.getUserID()){
+           Tooltip.install(repliesView, tooltip);
+        }
     }
     
    
@@ -443,7 +443,9 @@ public void exitApplication(ActionEvent event) {
         feed.getItems().addAll(quest, answers);
 
         msgArea.requestFocus();
-
+        if(question.getSender().getUserID()== currentUser.getUserID()){
+           Tooltip.install(feed, tooltip);
+        }
         loadReplies(btn);
     }
 

@@ -20,6 +20,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.synedra.validatorfx.Validator;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -75,13 +78,16 @@ public class LoginRegisterController implements Initializable {
     private JFXPasswordField regpassword;
     @FXML
     private AnchorPane layer1;
-   
+    
     //Other variables declaration
     ArrayList<String> allUsers = new ArrayList<>();
     SQLHandler sql = new SQLHandler();
     TrayNotification tray = new TrayNotification();
     AnimationType type = AnimationType.POPUP;
-
+    private Validator validator = new Validator();
+    String username ;
+    String password;
+    Hash h = new Hash();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -99,81 +105,64 @@ public class LoginRegisterController implements Initializable {
             regusername.setVisible(true);
             regpassword.setVisible(true);
             tray.setAnimationType(type);
+             
+        try {
+            allUsers=sql.getAllUsers();
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginRegisterController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            btnsignup.disableProperty().bind(validator.containsErrorsProperty());
+            btnsignup.disableProperty().bind(validator.containsWarningsProperty());
+            validator.createCheck()
+             .dependsOn("username", regusername.textProperty())
+             .withMethod(c -> {
+             username = c.get("username");
+            if (username.isEmpty()){
+               c.warn("Please enter a username");
+            }
+                     else{
+                      if (allUsers.contains(username)) {
+                      c.error("This username is taken. Please select a new one.");
+            }
+                      else if (User.match(username) == true) {
+                c.error("Username cannot contain special characters.");
+              }
+                      else{
+                          username = username.substring(0, 1).toUpperCase() + username.substring(1).toLowerCase(); 
+                      }
+            }
+            
+          })
+          .decorates(regusername)
+          .immediate();;
+          
+           validator.createCheck()
+                   .dependsOn("password",regpassword.textProperty())
+                   .withMethod(c->{
+                       password = c.get("password");
+                       if (password.isEmpty()){
+                          c.warn("Please enter a password");
+                       }
+                       else {                      
+                        if ((password.length() < 8 || password.length() > 32)) {
+                            c.error("Password must be between 8-32 characters.");
+                        }
+                       }
+                        
+                   })
+                   .decorates(regpassword)
+                   .immediate();
+            btnsignup.setOnAction(e -> register(username, password));
+           
         
     }
 
-    @FXML
-    private void register(MouseEvent event) throws SQLException {
-        String username = regusername.getText().trim();
-        String password = regpassword.getText().trim();
-        allUsers=sql.getAllUsers();
-        
-        //validation to check fields are not empty
-        checkEmpty(username,password);
-
-        //Checking if username is available (both in tutors and student)
-        if (allUsers.contains(username)) {
-
-        
-            tray.setTitle("Register");
-            tray.setMessage("This username is taken. Please select a new one");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-            return;
-        }
-
-        //Validation for special characters
-        /*if (User.match(password) == true) {
-            String tilte = "Register";
-            TrayNotification tray = new TrayNotification();
-            AnimationType type = AnimationType.POPUP;
-
-            tray.setAnimationType(type);
-            tray.setTitle(tilte);
-            tray.setMessage("Password cannot contain special characters.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-            return;
-
-        }*/
-
-        if (User.match(username) == true) {
-          
-            tray.setTitle("Register");
-            tray.setMessage("Username cannot contain special characters.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-            return;
-
-        }
-
-        //Validation for password length
-        if ((password.length() < 8 || password.length() > 32) && (!username.isEmpty() && !password.isEmpty())) {
-
-           
-            tray.setTitle("Register");
-            tray.setMessage("Password must be between 8-32 characters.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-
-            return;
-
-        }
-         else {
-            Hash h = new Hash();
+    
+    private void register(String username, String password) {
             password = h.hash(password);
             User intialUser= new User(username, password);
             SwitchWindow.switchWindow((Stage) btnsignup.getScene().getWindow(), new Interests(intialUser));   
-        }
-
+ 
     }
 
     //failed login
@@ -195,11 +184,10 @@ public class LoginRegisterController implements Initializable {
     @FXML
     private void login(MouseEvent event) throws SQLException {
 
-        String username = loginUsername.getText().trim();
-        String password = loginPassword.getText().trim();
+        username = loginUsername.getText().trim();
+        password = loginPassword.getText().trim();
         
         checkEmpty(username, password);
-        Hash h = new Hash();
         allUsers = sql.searchUsersTable(username);
         
            
@@ -245,13 +233,6 @@ public class LoginRegisterController implements Initializable {
             SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new HomeTutor(currentUser));
         }
        
-    }
-
-    public void register(String user) throws SQLException {
-
-        User currentUser = new User(user);
-
-        SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Interests(currentUser));
     }
 
     @FXML

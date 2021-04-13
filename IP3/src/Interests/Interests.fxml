@@ -45,7 +45,7 @@
                   <Font size="18.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="registerBut" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" onAction="#register" prefHeight="54.0" prefWidth="650.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <JFXButton fx:id="registerBut" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" prefWidth="650.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>

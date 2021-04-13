@@ -49,6 +49,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -156,7 +157,14 @@ public class FileShareController implements Initializable {
                     return new SimpleStringProperty(p.getValue().getAuthor().getUsername());
                     }
                     });
+                
                 files.setItems(filesData);
+                filesData.forEach((AppFiles _item)-> {
+                    if(_item.getAuthor()==currentUser){
+                        Tooltip tooltip = new Tooltip("Right-click for more details");
+                        Tooltip.install(files, tooltip);
+                    }
+                });
           }  
     
 @FXML
@@ -219,6 +227,12 @@ private void upload(ActionEvent event) throws IOException, FileNotFoundException
                              }          });
                          
                      }
+                 }
+                     else{
+                     TablePosition pos = (TablePosition) files.getSelectionModel().getSelectedCells().get(0);
+                     int i = pos.getRow();
+                     AppFiles item = (AppFiles) files.getItems().get(i);
+                     fileLoc.setText(item.getFileName());
                  }
              });
          

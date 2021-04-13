@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -39,12 +38,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import net.synedra.validatorfx.Validator;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -74,6 +73,7 @@ public class InterestController implements Initializable {
     @FXML
     JFXTextField locImg;
     
+    
     //Variables//
     LocalDate date = LocalDate.now();
     ObservableList<Categories> data2 = FXCollections.observableArrayList();
@@ -87,6 +87,7 @@ public class InterestController implements Initializable {
     TrayNotification tray = new TrayNotification();
     AnimationType type = AnimationType.POPUP;
     byte[] photo=null;
+    private Validator validator = new Validator();
     
     public void setData(User user) {
     currentUser = user;
@@ -107,92 +108,21 @@ public class InterestController implements Initializable {
              
     }
     }
-    @FXML
-    private void register(ActionEvent event) throws SQLException, ParseException, IOException {
- 
-        
-        firstname = getfname.getText();
-        firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
-        surname = getsurname.getText();
-        surname = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase();
-        username = currentUser.getUsername();
-        password = currentUser.getPassword();
-        email = getemail.getText();
-        email = email.substring(0, 1).toUpperCase() + email.substring(1).toLowerCase();
-        dob = getdob.getValue().toString();
-        
-           
-
-         if (User.isValid(email) == false) {
-
-            tray.setAnimationType(type);
-            tray.setTitle("Register");
-            tray.setMessage("Email Invalid");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-            return;
-
-        }
-
-          if (User.matchName(firstname) == true || User.matchName(surname) == true  ) {
-            
-            tray.setTitle("Register");
-            tray.setMessage("Name invalid.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-            return;
-
-        }
-        if(dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty() ||locImg.getText().isEmpty() ){
-          
-            tray.setAnimationType(type);
-            tray.setTitle("Register");
-            tray.setMessage("Please enter all details");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-
-            registerFailed();
-            return;
-        }
-     
-         else
-         {
+    
+    private void register() throws SQLException, ParseException, IOException {
             uniId=User.fetchUniId(email);
-            if (uniId==0){
-              
-                tray.setTitle("Register");
-                tray.setMessage("Please use a valid university email");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-                registerFailed();
-                
-            }
-            else{
-                
-            
-            User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
+            User.createUser(currentUser.getUsername(), currentUser.getPassword(), firstname, surname, dob, email, uniId, catId, title_id);
         
             tray.setTitle("Register");
             tray.setMessage("Welcome to StudyBudz, " + username + "!");
             tray.setNotificationType(NotificationType.SUCCESS);
             tray.showAndDismiss(Duration.millis(3000));  
-            User user = new User(username); 
-            setImage(username);
+            User user = new User(currentUser.getUsername()); 
+            setImage(currentUser.getUsername());
             SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
             }
-         }
-}
-    private void registerFailed() {
-        Shaker shake = new Shaker(registerBut);
-        shake.shake();
-        getfname.requestFocus();
-    }
-    
-    private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
+         
+private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
         User user = new User(username); 
         
          File image = new File (locImg.getText());
@@ -262,9 +192,106 @@ public class InterestController implements Initializable {
             
         }
     });
-
+        registerBut.disableProperty().bind(validator.containsErrorsProperty());
+        registerBut.disableProperty().bind(validator.containsWarningsProperty());
+        validator.createCheck()
+                   .dependsOn("fname",getfname.textProperty())
+                   .withMethod(c->{
+                       firstname = c.get("fname");
+                       if (firstname.isEmpty()){
+                          c.warn("Please enter a first name.");
+                       }
+                       else {                      
+                        if ((User.matchName(firstname) == true)) {
+                            c.error("Please, enter a valid name.");
+                        }
+                        else{
+                           firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase(); 
+                        }
+                       }
+                        
+                   })
+                   .decorates(getfname)
+                   .immediate();
+        validator.createCheck()
+                   .dependsOn("surname",getsurname.textProperty())
+                   .withMethod(c->{
+                       surname = c.get("surname");
+                       if (surname.isEmpty()){
+                          c.warn("Please enter a surname.");
+                       }
+                       else {                      
+                        if ((User.matchName(surname) == true)) {
+                            c.error("Please, enter a valid name.");
+                        }
+                        else{
+                           surname = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase(); 
+                        }
+                       }
+                        
+                   })
+                   .decorates(getsurname)
+                   .immediate();
+        validator.createCheck()
+                   .dependsOn("email",getemail.textProperty())
+                   .withMethod(c->{
+                       email = c.get("email");
+                       if (email.isEmpty()){
+                          c.warn("Please enter an email.");
+                       }
+                       else {                      
+                        if ((User.isValid(email) == false)) {
+                            c.error("Please, enter a valid email.");
+                        }
+                        else{
+                           email = email.substring(0, 1).toUpperCase() + email.substring(1).toLowerCase();; 
+                        }
+                       }
+                        
+                   })
+                   .decorates(getemail)
+                   .immediate();
+         validator.createCheck()
+                   .dependsOn("dob",getdob.dayCellFactoryProperty())
+                   .withMethod(c->{
+                       dob = c.get("dob").toString();
+                       if (dob.isEmpty()){
+                          c.warn("Please select a date of birth.");
+                       }
+                       
+                   })
+                   .decorates(getdob)
+                   .immediate();
     
+    validator.createCheck()
+                   .dependsOn("pic",locImg.textProperty())
+                   .withMethod(c->{
+                       String loc = c.get("pic");
+                       if (loc.isEmpty()){
+                          c.warn("Please select a picture.");
+                       }
+                   })
+                   .decorates(locImg)
+                   .immediate();
+    
+    validator.createCheck()
+                   .dependsOn("cat",catSelect.valueProperty())
+                   .withMethod(c->{
+                       if (catId==0){
+                          c.warn("Please select a category.");
+                       }
+                   })
+                   .decorates(catSelect)
+                   .immediate();
+        registerBut.setOnAction(e -> {
+        try {
+            register();
+        } catch (SQLException | ParseException | IOException ex) {
+            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    });
     }
+
 
 }
 
