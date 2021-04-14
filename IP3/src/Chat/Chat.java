@@ -15,6 +15,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.scene.image.Image;
+import javafx.stage.WindowEvent;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author erino
