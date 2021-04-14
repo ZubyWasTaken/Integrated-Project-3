@@ -51,6 +51,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -176,7 +177,8 @@ public class UserQNAController implements Initializable {
 
         final int MAX_CHARS = 280;
         msgArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
-        replyArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        final int MAX_REPLY = 200;
+        replyArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_REPLY ? change : null));
 
         //  Timer timer = new Timer();
         //  timer.scheduleAtFixedRate(new TimerTask() {
@@ -221,7 +223,8 @@ public class UserQNAController implements Initializable {
         //Setting the current question
         User sender = reply.getSender();
         TextFlow replyText = new TextFlow();
-        Text text = new Text(reply.getText());
+        String userReply = reply.getText();
+        Text text = new Text(userReply);
         text.setStyle("-fx-font: 16 arial;");
         replyText.getChildren().add(text);
         replyText.setTextAlignment(TextAlignment.RIGHT);
@@ -246,20 +249,39 @@ public class UserQNAController implements Initializable {
         datePosted.setText("Date Posted: " + reply.getDate());
         datePosted.setStyle("-fx-padding: 0 20 5 0;");
 
-        //Setting the boxes
-        HBox replies = new HBox();
-        replies.getChildren().addAll(replyText);
-        replies.setId(String.valueOf(reply.getId()));
-        replies.setAlignment(Pos.TOP_LEFT);
-        replies.setMaxWidth(repliesView.getWidth() - 20);
+       
+        
+        VBox container = new VBox();
+        container.setSpacing(5);
+        container.setMaxWidth(repliesView.getWidth() - 35);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setId(String.valueOf(reply.getId()));
+      
 
-        HBox details = new HBox();
-        details.setMaxWidth(repliesView.getWidth() - 20);
-        details.setAlignment(Pos.BOTTOM_RIGHT);
-        details.getChildren().addAll(author, profilePic, datePosted);
+        //Setting the boxes
+        VBox quest = new VBox();
+        quest.setAlignment(Pos.TOP_LEFT);
+        HBox questhbox = new HBox();
+        quest.getChildren().add(questhbox);
+        quest.setMinHeight(95);
+        questhbox.setAlignment(Pos.TOP_LEFT);
+        questhbox.getChildren().addAll(replyText);
+        questhbox.setSpacing(5);
+
+        VBox answers = new VBox();
+        answers.setMinHeight(20);
+        answers.setAlignment(Pos.CENTER_RIGHT);
+        HBox answerhbox = new HBox();
+        answers.getChildren().add(answerhbox);
+        answerhbox.setAlignment(Pos.CENTER_RIGHT);
+        answerhbox.getChildren().addAll(author, profilePic, datePosted);
+        answerhbox.setSpacing(5);
+        
+        container.getChildren().add(quest);
+        container.getChildren().add(answers);
 
         //Adding them to the pane
-        repliesView.getItems().addAll(replies, details);
+        repliesView.getItems().addAll(container);
     }
 
     @FXML
@@ -307,8 +329,8 @@ public class UserQNAController implements Initializable {
         feed.setOnMouseClicked((javafx.scene.input.MouseEvent event1) -> {
             if (event1.getButton() == MouseButton.SECONDARY) {
                 try {
-                    HBox hbox = (HBox) feed.getSelectionModel().selectedItemProperty().getValue();
-                    int id = parseInt(hbox.getId());
+                    VBox VBox = (VBox) feed.getSelectionModel().selectedItemProperty().getValue();
+                    int id = parseInt(VBox.getId());
                     Question currentQuestion = Question.search(id);
                     User sender = currentQuestion.getSender();
                     if (sender.getUserID() == currentUser.getUserID()) {
@@ -383,6 +405,7 @@ public class UserQNAController implements Initializable {
 
         //Getting the Question
         int replyCount = sql.countAllReplies(question.getId());
+
         TextFlow questText = new TextFlow();
         Text text = new Text(question.getText());
         text.setStyle("-fx-font: 16 arial;");
@@ -424,20 +447,36 @@ public class UserQNAController implements Initializable {
         }
         resolved.setAlignment(Pos.CENTER_RIGHT);
 
-        //Setting the boxes
-        HBox quest = new HBox();
-        quest.setMaxWidth(feed.getWidth() - 30);
-        quest.setAlignment(Pos.TOP_LEFT);
-        quest.setId(String.valueOf(question.getId()));
-        quest.getChildren().addAll(questText, resolved);
+        VBox container = new VBox();
+        container.setMaxWidth(feed.getWidth() - 32);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setId(String.valueOf(question.getId()));
+      
 
-        HBox answers = new HBox();
-        answers.setMaxWidth(feed.getWidth() - 30);
+        //Setting the boxes
+        VBox quest = new VBox();
+        quest.setAlignment(Pos.TOP_LEFT);
+        HBox questhbox = new HBox();
+        quest.getChildren().add(questhbox);
+        quest.setMinHeight(100);
+        questhbox.setAlignment(Pos.TOP_LEFT);
+        questhbox.getChildren().addAll(questText);
+        questhbox.setSpacing(5);
+
+        VBox answers = new VBox();
+        answers.setMaxHeight(100);
         answers.setAlignment(Pos.BOTTOM_RIGHT);
-        answers.getChildren().addAll(author, profilePic, datePosted, btn);
+        HBox answerhbox = new HBox();
+        answers.getChildren().add(answerhbox);
+        answerhbox.setAlignment(Pos.CENTER_RIGHT);
+        answerhbox.getChildren().addAll(resolved, author, profilePic, datePosted, btn);
+        answerhbox.setSpacing(5);
+        
+        container.getChildren().add(quest);
+        container.getChildren().add(answers);
 
         //Adding them to the feed
-        feed.getItems().addAll(quest, answers);
+        feed.getItems().addAll(container);
 
         msgArea.requestFocus();
 

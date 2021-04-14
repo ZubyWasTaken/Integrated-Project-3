@@ -15,14 +15,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.QA_TutorController">
    <children>
-      <Pane layoutX="656.0" layoutY="72.0" prefHeight="548.0" prefWidth="395.0" styleClass="navigation-bar2" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.0" />
       <VBox layoutX="-6.0" layoutY="73.0" prefHeight="552.0" prefWidth="661.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="394.0" AnchorPane.topAnchor="73.0">
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
@@ -61,54 +59,51 @@
             </HBox>
             <VBox prefHeight="539.0" prefWidth="661.0">
                <children>
-                  <ListView fx:id="feed" fixedCellSize="60.0" prefHeight="532.0" prefWidth="661.0" />
+                  <ListView fx:id="feed" fixedCellSize="140.0" prefHeight="532.0" prefWidth="661.0" />
                </children></VBox>
          </children>
          <padding>
             <Insets bottom="5.0" />
          </padding>
       </VBox>
-      <AnchorPane fx:id="repliesPane" layoutX="660.0" layoutY="69.0" prefHeight="547.0" prefWidth="395.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.66666666666663">
+      <AnchorPane fx:id="repliesPane" layoutX="661.0" layoutY="51.0" prefHeight="568.0" prefWidth="401.0" visible="false">
          <children>
-            <ListView fx:id="repliesView" fixedCellSize="60.0" layoutY="168.0" onMouseClicked="#clickItem" prefHeight="346.0" prefWidth="394.0" AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="0.0" />
-            <HBox layoutY="502.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="51.0" prefWidth="394.0" style="-fx-border-color: #a4a4a4;;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <VBox alignment="TOP_RIGHT" prefHeight="567.0" prefWidth="396.0">
                <children>
-                  <JFXTextArea fx:id="replyArea" prefHeight="57.0" prefWidth="282.0" promptText="Send a reply..." styleClass="text-area">
-                     <cursor>
-                        <Cursor fx:constant="TEXT" />
-                     </cursor>
-                  </JFXTextArea>
-                  <JFXButton fx:id="replyBtn" onAction="#sendReply" prefHeight="77.0" prefWidth="120.0" styleClass="categories-button" text="SEND" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
+                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/x-mark.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                  </JFXButton>
+                  </Button>
+                  <TextFlow fx:id="repliesQ" prefHeight="193.0" prefWidth="396.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0.5;" />
+                  <ListView fx:id="repliesView" fixedCellSize="140.0" maxWidth="396.0" onMouseClicked="#clickItem" prefHeight="445.0" prefWidth="396.0" />
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="62.0" prefWidth="396.0" style="-fx-border-color: #a4a4a4; -fx-background-color: white;">
+                     <children>
+                        <JFXTextArea fx:id="replyArea" prefHeight="73.0" prefWidth="290.0" promptText="Send a reply..." styleClass="text-area">
+                           <cursor>
+                              <Cursor fx:constant="TEXT" />
+                           </cursor>
+                        </JFXTextArea>
+                        <JFXButton fx:id="replyBtn" onAction="#sendReply" prefHeight="43.0" prefWidth="134.0" styleClass="categories-button" text="SEND" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
-            <TextFlow fx:id="repliesQ" layoutX="1.0" layoutY="76.0" prefHeight="74.0" prefWidth="393.0" AnchorPane.bottomAnchor="397.33333333333337" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </TextFlow>
-            <Button layoutX="322.0" layoutY="6.0" mnemonicParsing="false" onAction="#close" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: none;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Resources/x-mark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
+            </VBox>
          </children>
-         <padding>
-            <Insets top="10.0" />
-         </padding>
       </AnchorPane>
       <BorderPane prefHeight="49.0" prefWidth="1055.0" style="-fx-background-color: #7f948f;">
          <right>

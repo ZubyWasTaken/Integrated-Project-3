@@ -12,10 +12,20 @@
 }
 .list-view {
    -fx-border-color: #a4a4a4;
+  
+   
+  
 }
+
+.list-cell{
+      -fx-border-color: #ececec;  /* similar to the default color */
+    -fx-border-width: 0.5;   /* similar to the default width */
+}
+
 .list-view .list-cell:even {
 -fx-background-color: white;
 -fx-text-fill: black;
+
 }
 .list-view .list-cell:odd {
 -fx-background-color: white;
@@ -218,4 +228,5 @@
 .image-view {
     -fx-border-color: black;
 }
+
 
