@@ -42,6 +42,7 @@ public class Home extends Application{
         stage.setTitle("Home");
         stage.show();        
         stage.centerOnScreen();
+         root.requestFocus();
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

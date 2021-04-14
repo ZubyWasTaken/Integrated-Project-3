@@ -43,6 +43,7 @@ public class QA_Tutor extends Application{
         stage.setTitle("Q & A");
         stage.show();        
         stage.centerOnScreen();
+        root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {

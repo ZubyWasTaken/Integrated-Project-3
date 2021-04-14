@@ -8,6 +8,7 @@ import ip3.SwitchWindow;
 import ip3.User;
 import ip3.Drawer;
 import SQL.SQLHandler;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import ip3.Question;
 import ip3.Reply;
@@ -73,13 +74,11 @@ public class UserQNAController implements Initializable {
     @FXML
     private Button btnHome;
 
-
     @FXML
     private ListView feed;
 
     @FXML
     private ListView repliesView;
-
 
     @FXML
     private JFXTextArea msgArea;
@@ -92,16 +91,15 @@ public class UserQNAController implements Initializable {
 
     @FXML
     private TextFlow repliesQ;
-
+    @FXML
+    private JFXButton refreshBtn;
 
     public int questionid;
     Timestamp now = new Timestamp(System.currentTimeMillis());
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
 
-
     //FXML controls//
-
     @FXML
     private void goHome(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) btnHome.getScene().getWindow(), new Home(currentUser));
@@ -131,12 +129,23 @@ public class UserQNAController implements Initializable {
         }
     }
 
-
     @FXML
     private void close(ActionEvent event) {
 
         repliesPane.setVisible(false);
 
+    }
+
+    @FXML
+    private void refresh(ActionEvent event) {
+
+        //TODOREFRESH
+        try {
+            loadQs();
+            sql.updateLastSeenQ(currentUser.getUserID(), now);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -162,30 +171,32 @@ public class UserQNAController implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         final int MAX_CHARS = 280;
         msgArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        replyArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
+
+        //  Timer timer = new Timer();
+        //  timer.scheduleAtFixedRate(new TimerTask() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    drawer.setDisable(true);
-                    Drawer newdrawer = new Drawer();
+                drawer.setDisable(true);
+                Drawer newdrawer = new Drawer();
 
-                    newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                    try {
-                        loadQs();
-                        sql.updateLastSeenQ(currentUser.getUserID(), now);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                try {
+                    loadQs();
+                    sql.updateLastSeenQ(currentUser.getUserID(), now);
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
-        }, 0, 10000);
+        });
+
     }
 
     @FXML
@@ -206,7 +217,6 @@ public class UserQNAController implements Initializable {
 
         repliesView.setFocusTraversable(false);
         replyArea.clear();
-
 
         //Setting the current question
         User sender = reply.getSender();
@@ -241,17 +251,16 @@ public class UserQNAController implements Initializable {
         replies.getChildren().addAll(replyText);
         replies.setId(String.valueOf(reply.getId()));
         replies.setAlignment(Pos.TOP_LEFT);
-        replies.setMaxWidth(repliesView.getWidth()-20);
-        
+        replies.setMaxWidth(repliesView.getWidth() - 20);
+
         HBox details = new HBox();
-        details.setMaxWidth(repliesView.getWidth()-20);
+        details.setMaxWidth(repliesView.getWidth() - 20);
         details.setAlignment(Pos.BOTTOM_RIGHT);
         details.getChildren().addAll(author, profilePic, datePosted);
 
         //Adding them to the pane
         repliesView.getItems().addAll(replies, details);
     }
-
 
     @FXML
     private void clickItem(MouseEvent event) {
@@ -347,15 +356,12 @@ public class UserQNAController implements Initializable {
     }
 
     //private methods//
-
     public void setData(User user) throws SQLException {
         currentUser = user;
-
 
     }
 
     //retrieving the questions from the database//
-
     private void loadQs() throws SQLException {
         data.clear();
         feed.getItems().clear();
@@ -368,11 +374,9 @@ public class UserQNAController implements Initializable {
             }
         });
 
-
     }
 
     //creating a box for each question//
-
     private void displayQs(Question question) throws SQLException {
 
         feed.setFocusTraversable(false);
@@ -393,7 +397,6 @@ public class UserQNAController implements Initializable {
 
         // profilePic.setFitHeight(20);
         //  profilePic.setFitWidth(20);
-
         //Getting the author
         Label author = new Label();
         author.setText("By: " + sender.getUsername());
@@ -421,9 +424,7 @@ public class UserQNAController implements Initializable {
         }
         resolved.setAlignment(Pos.CENTER_RIGHT);
 
-       
         //Setting the boxes
-
         HBox quest = new HBox();
         quest.setMaxWidth(feed.getWidth() - 30);
         quest.setAlignment(Pos.TOP_LEFT);
@@ -443,9 +444,7 @@ public class UserQNAController implements Initializable {
         loadReplies(btn);
     }
 
-
 //retrieving replies from database//
-
     private void loadR(int questId) throws SQLException {
         sql.updateLastSeenQ(currentUser.getUserID(), now);
         repliesQ.getChildren().clear();
@@ -550,4 +549,3 @@ public class UserQNAController implements Initializable {
         });
     }
 }
-

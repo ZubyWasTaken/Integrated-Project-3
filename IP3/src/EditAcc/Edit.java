@@ -14,8 +14,6 @@ package EditAcc;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import UserQNA.UserQNA;
 import ip3.User;
 import javafx.application.Application;
@@ -36,13 +34,13 @@ import java.util.logging.Logger;
  *
  * @author Zuby
  */
-public class Edit extends Application{
+public class Edit extends Application {
 
     User currentUser;
 
     public void start(Stage stage) throws Exception {
-      
-            stage.getIcons().add(new Image("/Resources/icon.png"));
+
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("edit.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
@@ -50,9 +48,9 @@ public class Edit extends Application{
         controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Edit");
-        stage.show();        
+        stage.show();
         stage.centerOnScreen();
-
+        root.requestFocus();
         //noinspection DuplicatedCode
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -67,10 +65,9 @@ public class Edit extends Application{
             }
         });
     }
-  
- public Edit(User user) {
-        currentUser=user;
+
+    public Edit(User user) {
+        currentUser = user;
     }
 
-   
 }

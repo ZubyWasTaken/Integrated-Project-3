@@ -19,6 +19,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  *
@@ -35,8 +38,7 @@ public class ServerJavaFX extends Application {
     public TextArea txtAreaDisplay;
     List<TaskClientConnection> connectionList = new ArrayList<TaskClientConnection>();
 
- 
-
+   
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         // Text area for displaying contents
@@ -93,6 +95,7 @@ public class ServerJavaFX extends Application {
     public void broadcast(String message) {
         for (TaskClientConnection clientConnection : this.connectionList) {
             clientConnection.sendMessage(message);
+             
         }
 
     }

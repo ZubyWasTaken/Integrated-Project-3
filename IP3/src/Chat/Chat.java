@@ -25,10 +25,11 @@ import java.util.logging.Logger;
  * @author erino
  */
 public class Chat extends Application {
-        User currentUser;
-       
-        public void start(Stage stage) throws Exception {
-          stage.getIcons().add(new Image("/Resources/icon.png"));
+
+    User currentUser;
+
+    public void start(Stage stage) throws Exception {
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
@@ -38,7 +39,7 @@ public class Chat extends Application {
         stage.setTitle("Chat");
         stage.show();
         stage.centerOnScreen();
-
+        root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
@@ -59,8 +60,3 @@ public class Chat extends Application {
     }
 
 }
-   
-
-
-
-

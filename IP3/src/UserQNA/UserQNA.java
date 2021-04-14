@@ -40,6 +40,7 @@ public class UserQNA extends Application{
         stage.setTitle("UserQNA");
         stage.show();
         stage.centerOnScreen();
+         root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
