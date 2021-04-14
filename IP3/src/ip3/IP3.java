@@ -32,6 +32,7 @@ public class IP3 extends Application {
         primaryStage.setTitle("Login");
 
         primaryStage.show();
+        
     }
 
     public static void main(String[] args) {

@@ -52,6 +52,7 @@ public class HomeTutor extends Application{
         stage.setTitle("Home");
         stage.show();        
         stage.centerOnScreen();
+         root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {

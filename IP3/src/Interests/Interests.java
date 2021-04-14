@@ -30,6 +30,7 @@ public class Interests extends Application {
         stage.setTitle("Interests");
         stage.show();        
         stage.centerOnScreen();
+         root.requestFocus();
     }
      public Interests(User user) {
         currentUser = user;

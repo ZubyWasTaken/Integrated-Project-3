@@ -5,7 +5,6 @@
  */
 package FileShare;
 
-
 import UserQNA.UserQNA;
 import ip3.User;
 import javafx.application.Application;
@@ -26,12 +25,13 @@ import java.util.logging.Logger;
  *
  * @author stani
  */
-public class FileShare extends Application{
-     User currentUser;
+public class FileShare extends Application {
+
+    User currentUser;
 
     public void start(Stage stage) throws Exception {
-      
-            stage.getIcons().add(new Image("/Resources/icon.png"));
+
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fileShare.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
@@ -39,9 +39,9 @@ public class FileShare extends Application{
         controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Edit");
-        stage.show();        
+        stage.show();
         stage.centerOnScreen();
-
+        root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
@@ -55,8 +55,8 @@ public class FileShare extends Application{
             }
         });
     }
-  
- public FileShare(User user) {
-        currentUser=user;
+
+    public FileShare(User user) {
+        currentUser = user;
     }
 }
