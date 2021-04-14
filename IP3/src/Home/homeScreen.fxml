@@ -230,29 +230,33 @@
             <InnerShadow color="#796f6f" />
          </effect>
       </VBox>
-      <AnchorPane fx:id="userDetails" layoutX="170.0" layoutY="67.0" prefHeight="146.0" prefWidth="354.0" style="-fx-background-color: white;" visible="false">
+      <AnchorPane fx:id="userDetails" layoutX="554.0" layoutY="85.0" prefHeight="67.0" prefWidth="305.0" style="-fx-background-color: white;" visible="false">
          <children>
-            <ImageView fx:id="profilePic" fitHeight="114.0" fitWidth="121.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-            <Button layoutX="300.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Resources/x-mark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Label fx:id="userUsername" layoutX="216.0" layoutY="60.0" prefHeight="26.0" prefWidth="125.0">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="84.0" prefWidth="306.0" spacing="10.0">
+               <children>
+                  <ImageView fx:id="profilePic" fitHeight="85.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="userUsername" prefHeight="26.0" prefWidth="125.0">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/x-mark.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
          </children>
          <effect>
             <DropShadow radius="8.225" width="13.9" />
          </effect>
       </AnchorPane>
-      <Label fx:id="repliesCount" layoutX="402.0" layoutY="312.0" prefHeight="17.0" prefWidth="32.0" textFill="WHITE">
+      <Label fx:id="repliesCount" layoutX="403.0" layoutY="306.0" prefHeight="17.0" prefWidth="32.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

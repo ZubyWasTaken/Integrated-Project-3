@@ -289,8 +289,8 @@ public class UserQNAController implements Initializable {
         repliesView.setOnMouseClicked((MouseEvent event1) -> {
             if (event1.getButton() == MouseButton.SECONDARY) {
                 try {
-                    HBox hbox = (HBox) repliesView.getSelectionModel().selectedItemProperty().getValue();
-                    int id = parseInt(hbox.getId());
+                    VBox vbox = (VBox) repliesView.getSelectionModel().selectedItemProperty().getValue();
+                    int id = parseInt(vbox.getId());
                     Reply currentReply = Reply.search(id);
                     User sender = currentReply.getSender();
                     if (sender.getUserID() == currentUser.getUserID()) {
