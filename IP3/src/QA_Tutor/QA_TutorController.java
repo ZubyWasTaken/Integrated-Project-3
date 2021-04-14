@@ -46,12 +46,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -119,6 +121,9 @@ public class QA_TutorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        final int MAX_REPLY = 200;
+        replyArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_REPLY ? change : null));
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -227,19 +232,37 @@ public class QA_TutorController implements Initializable {
         }
         resolved.setAlignment(Pos.CENTER_RIGHT);
 
-        //Setting the bozes
-        HBox quest = new HBox();
-        quest.setMaxWidth(feed.getWidth() - 20);
-        quest.setAlignment(Pos.TOP_LEFT);
-        quest.getChildren().addAll(questText, resolved);
+        VBox container = new VBox();
+        container.setMaxWidth(feed.getWidth() - 32);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setId(String.valueOf(question.getId()));
+      
 
-        HBox answers = new HBox();
-        answers.setMaxWidth(feed.getWidth() - 20);
+        //Setting the boxes
+        VBox quest = new VBox();
+        quest.setAlignment(Pos.TOP_LEFT);
+        HBox questhbox = new HBox();
+        quest.getChildren().add(questhbox);
+        quest.setMinHeight(100);
+        questhbox.setAlignment(Pos.TOP_LEFT);
+        questhbox.getChildren().addAll(questText);
+        questhbox.setSpacing(5);
+
+        VBox answers = new VBox();
+        answers.setMaxHeight(100);
         answers.setAlignment(Pos.BOTTOM_RIGHT);
-        answers.getChildren().addAll(author, profilePic, datePosted, btn);
+        HBox answerhbox = new HBox();
+        answers.getChildren().add(answerhbox);
+        answerhbox.setAlignment(Pos.CENTER_RIGHT);
+        answerhbox.getChildren().addAll(resolved, author, profilePic, datePosted, btn);
+        answerhbox.setSpacing(5);
+        
+        container.getChildren().add(quest);
+        container.getChildren().add(answers);
 
         //Adding them to the feed
-        feed.getItems().addAll(quest, answers);
+        feed.getItems().addAll(container);
+        
 
         //  msgArea.requestFocus();
         loadReplies(btn);
@@ -346,21 +369,38 @@ public class QA_TutorController implements Initializable {
         Label datePosted = new Label();
         datePosted.setText("Date Posted: " + reply.getDate());
         datePosted.setStyle("-fx-padding: 0 20 5 0;");
+ 
+        VBox container = new VBox();
+        container.setSpacing(5);
+        container.setMaxWidth(repliesView.getWidth() - 35);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setId(String.valueOf(reply.getId()));
+      
 
         //Setting the boxes
-        HBox replies = new HBox();
-        replies.getChildren().addAll(replyText);
-        replies.setId(String.valueOf(reply.getId()));
-        replies.setAlignment(Pos.TOP_LEFT);
-        replies.setMaxWidth(repliesView.getWidth() - 20);
+        VBox quest = new VBox();
+        quest.setAlignment(Pos.TOP_LEFT);
+        HBox questhbox = new HBox();
+        quest.getChildren().add(questhbox);
+        quest.setMinHeight(95);
+        questhbox.setAlignment(Pos.TOP_LEFT);
+        questhbox.getChildren().addAll(replyText);
+        questhbox.setSpacing(5);
 
-        HBox details = new HBox();
-        details.setMaxWidth(repliesView.getWidth() - 20);
-        details.setAlignment(Pos.BOTTOM_RIGHT);
-        details.getChildren().addAll(author, profilePic, datePosted);
+        VBox answers = new VBox();
+        answers.setMinHeight(20);
+        answers.setAlignment(Pos.CENTER_RIGHT);
+        HBox answerhbox = new HBox();
+        answers.getChildren().add(answerhbox);
+        answerhbox.setAlignment(Pos.CENTER_RIGHT);
+        answerhbox.getChildren().addAll(author, profilePic, datePosted);
+        answerhbox.setSpacing(5);
+        
+        container.getChildren().add(quest);
+        container.getChildren().add(answers);
 
         //Adding them to the pane
-        repliesView.getItems().addAll(replies, details);
+        repliesView.getItems().addAll(container);
     }
 
     @FXML
