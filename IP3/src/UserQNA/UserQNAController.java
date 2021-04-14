@@ -136,11 +136,16 @@ public class UserQNAController implements Initializable {
 
     }
 
-     @FXML
+    @FXML
     private void refresh(ActionEvent event) {
 
-     //TODOREFRESH
-
+        //TODOREFRESH
+        try {
+            loadQs();
+            sql.updateLastSeenQ(currentUser.getUserID(), now);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -173,24 +178,25 @@ public class UserQNAController implements Initializable {
         msgArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
         replyArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
 
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        //  Timer timer = new Timer();
+        //  timer.scheduleAtFixedRate(new TimerTask() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    drawer.setDisable(true);
-                    Drawer newdrawer = new Drawer();
+                drawer.setDisable(true);
+                Drawer newdrawer = new Drawer();
 
-                    newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                    try {
-                        loadQs();
-                        sql.updateLastSeenQ(currentUser.getUserID(), now);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
+                try {
+                    loadQs();
+                    sql.updateLastSeenQ(currentUser.getUserID(), now);
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
-        }, 0, 10000);
+        });
+
     }
 
     @FXML
