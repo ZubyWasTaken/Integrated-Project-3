@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -30,7 +31,7 @@ public class FileShare extends Application{
 
     public void start(Stage stage) throws Exception {
       
-        
+            stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fileShare.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);

@@ -14,20 +14,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
-import javafx.stage.WindowEvent;
-
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.scene.image.Image;
 
 /**
  * @author erino
  */
 public class Chat extends Application {
-    User currentUser;
-
-    public void start(Stage stage) throws Exception {
-
+        User currentUser;
+       
+        public void start(Stage stage) throws Exception {
+          stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);

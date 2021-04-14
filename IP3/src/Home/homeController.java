@@ -141,10 +141,13 @@ public class homeController implements Initializable {
     private JFXButton qa;
     
     @FXML
-    private JFXButton fileShare;
+    private JFXButton shareFiles;
     
     @FXML
     private JFXButton chat;
+    
+        @FXML
+    private JFXButton teacherQNA;
     
     @FXML
     private AnchorPane userDetails;
@@ -180,11 +183,18 @@ public class homeController implements Initializable {
  
     @FXML
     private void fileShare(ActionEvent event){
-          SwitchWindow.switchWindow((Stage) fileShare.getScene().getWindow(), new FileShare(currentUser));
+          SwitchWindow.switchWindow((Stage) shareFiles.getScene().getWindow(), new FileShare(currentUser));
     }
     @FXML
     private void chat(ActionEvent event){
           SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser));
+    }
+    
+    
+    @FXML
+    private void questionAnswer(ActionEvent event) throws SQLException {
+        
+        SwitchWindow.switchWindow((Stage) teacherQNA.getScene().getWindow(), new UserQNA(currentUser));
     }
     
      @FXML
@@ -263,7 +273,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+    
 
         //------------------//
         //First Article     //
@@ -362,7 +372,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+      
 
         //------------------//
         //First Article     //
@@ -461,7 +471,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+     
 
         //------------------//
         //First Article     //
@@ -560,7 +570,7 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
+     
 
         //------------------//
         //First Article     //
@@ -658,7 +668,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
@@ -756,7 +765,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        feedTitle.setText(feed.getTitle());
 
         //------------------//
         //First Article     //
