@@ -5,9 +5,12 @@
  */
 package QA_Tutor;
 
+import EditAcc.Edit;
 import HomeTutor.HomeTutor;
+import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
 import UserQNA.UserQNAController;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextArea;
@@ -75,7 +78,10 @@ public class QA_TutorController implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private Button btnHome;
+    private JFXButton sgnOutBut;
+    
+    @FXML
+    private JFXButton editAcc;
 
     @FXML 
     private MenuButton showMenu;
@@ -153,11 +159,17 @@ public class QA_TutorController implements Initializable {
        
     }
     
-     @FXML 
- private void goHome(ActionEvent event){
-
-             SwitchWindow.switchWindow((Stage) btnHome.getScene().getWindow(), new HomeTutor(currentUser));
-         }
+//     @FXML 
+// private void signOut(ActionEvent event){
+//
+//             SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
+//         }
+// 
+//  @FXML 
+// private void editAccount(ActionEvent event){
+//
+//             SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new Edit(currentUser));
+//         }
  
   private void displayQs(Question question) throws SQLException {
   

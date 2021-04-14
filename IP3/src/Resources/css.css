@@ -98,6 +98,35 @@
     -fx-text-fill: black;
 }
 
+.home-button{
+     -fx-background-color:  -fx-darkblue;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-radius: 10;
+    
+}
+
+.home-button:hover {
+   
+-fx-background-color: #a8d6c9;
+-fx-text-fill: black;
+}
+
+.drawer-button{
+  
+      -fx-cursor: hand;
+    
+}
+.drawer-button:selected{
+    -fx-background-color: #dfedea;
+      
+    
+}
+.drawer-button:hover{
+    -fx-background-color: #dfedea;
+      -fx-cursor: hand;
+    
+}
 .cancel-button {
     -fx-background-color:#a4a4a4;
 }

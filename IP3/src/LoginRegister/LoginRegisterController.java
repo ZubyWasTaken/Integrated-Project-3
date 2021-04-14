@@ -8,6 +8,7 @@ package LoginRegister;
 import Home.Home;
 import HomeTutor.HomeTutor;
 import Interests.Interests;
+import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -242,7 +243,7 @@ public class LoginRegisterController implements Initializable {
         if (currentUser.getTitleId()==1) {
             SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new Home(currentUser));
         } else {
-            SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new HomeTutor(currentUser));
+            SwitchWindow.switchWindow((Stage) btnsignin.getScene().getWindow(), new QA_Tutor(currentUser));
         }
        
     }

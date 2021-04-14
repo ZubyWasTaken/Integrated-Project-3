@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 public class ServerJavaFX extends Application {
     public TextArea txtAreaDisplay;
     List<TaskClientConnection> connectionList = new ArrayList<TaskClientConnection>();
-ArrayList <String> users = new ArrayList(); 
+
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         // Text area for displaying contents
@@ -63,6 +63,7 @@ ArrayList <String> users = new ArrayList();
                 while (true) {
                     // Listen for a connection request, add new connection to the list
                     Socket socket = serverSocket.accept();
+                
                     TaskClientConnection connection = new TaskClientConnection(socket, this);
                     connectionList.add(connection);
 
