@@ -329,8 +329,8 @@ public class homeController implements Initializable {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
-                //Sets feed title to inform user to select a feed
-                feedTitle.setText("Please Select a Feed.");
+               
+                
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
                 } catch (SQLException ex) {
