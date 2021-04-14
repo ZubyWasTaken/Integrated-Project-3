@@ -8,6 +8,7 @@ package EditAcc;
 import Home.Home;
 import HomeTutor.*;
 import Interests.InterestController;
+import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -14,115 +13,138 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.QA_TutorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QA_Tutor.QA_TutorController">
    <children>
-      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1059.0" style="-fx-background-color: #7f948f;">
+      <VBox layoutX="-6.0" layoutY="73.0" prefHeight="552.0" prefWidth="661.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="394.0" AnchorPane.topAnchor="73.0">
          <children>
-            <HBox prefHeight="69.0" prefWidth="419.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
-                     <children>
-                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXHamburger>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label prefHeight="71.0" prefWidth="110.0" text="Q &amp; A">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children></HBox>
-         </children>
-      </HBox>
-      <ListView fx:id="feed" fixedCellSize="60.0" layoutY="117.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="504.0" prefWidth="655.0">
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
-      </ListView>
-      <AnchorPane fx:id="repliesPane" layoutX="655.0" layoutY="65.0" prefHeight="556.0" prefWidth="401.0" visible="false">
-         <children>
-            <ListView fx:id="repliesView" fixedCellSize="60.0" layoutY="136.0" onMouseClicked="#clickItem" prefHeight="423.0" prefWidth="401.0" />
-            <Pane prefHeight="137.0" prefWidth="395.0" style="-fx-background-color: #dfedea;">
-               <children>
-                  <TextFlow fx:id="repliesQ" layoutY="35.0" prefHeight="102.0" prefWidth="398.0" />
-               </children>
-            </Pane>
-            <Button layoutX="356.0" mnemonicParsing="false" onAction="#close" onKeyPressed="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Resources/x-mark.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <HBox layoutY="513.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="43.0" prefWidth="401.0" style="-fx-border-color: #a4a4a4;;">
-               <children>
-                  <JFXTextArea fx:id="replyArea" prefHeight="43.0" prefWidth="319.0" promptText="Send a reply..." styleClass="text-area">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <cursor>
-                        <Cursor fx:constant="TEXT" />
-                     </cursor>
-                  </JFXTextArea>
-                  <JFXButton fx:id="replyBtn" onAction="#sendReply" onKeyPressed="#sendReply" prefHeight="43.0" prefWidth="125.0" styleClass="categories-button" text="SEND" textFill="WHITE">
+                  <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" minWidth="56.0" onAction="#refresh" prefHeight="38.0">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
+                     </graphic>
+                  </JFXButton>
+                  <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Sort By:" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
+                        <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
+                     </items>
                      <font>
                         <Font size="14.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                  </MenuButton>
+                  <MenuButton fx:id="showMenu" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Show" textFill="WHITE">
+                     <items>
+                        <MenuItem fx:id="allQs" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
+                        <MenuItem fx:id="resolvedQs" mnemonicParsing="false" onAction="#showResolvedQs" text="Only Resolved Questions" />
+                        <MenuItem fx:id="unresolvedQs" mnemonicParsing="false" onAction="#showUnresolvedQs" text="Only Unresolved Questions" />
+                     </items>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MenuButton>
+               </children>
+            </HBox>
+            <VBox prefHeight="539.0" prefWidth="661.0">
+               <children>
+                  <ListView fx:id="feed" fixedCellSize="140.0" prefHeight="532.0" prefWidth="661.0" />
+               </children></VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+      </VBox>
+      <AnchorPane fx:id="repliesPane" layoutX="661.0" layoutY="51.0" prefHeight="568.0" prefWidth="401.0" visible="false">
+         <children>
+            <VBox alignment="TOP_RIGHT" prefHeight="567.0" prefWidth="396.0">
+               <children>
+                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/x-mark.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <TextFlow fx:id="repliesQ" prefHeight="193.0" prefWidth="396.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0.5;" />
+                  <ListView fx:id="repliesView" fixedCellSize="140.0" maxWidth="396.0" onMouseClicked="#clickItem" prefHeight="445.0" prefWidth="396.0" />
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="62.0" prefWidth="396.0" style="-fx-border-color: #a4a4a4; -fx-background-color: white;">
+                     <children>
+                        <JFXTextArea fx:id="replyArea" prefHeight="73.0" prefWidth="290.0" promptText="Send a reply..." styleClass="text-area">
+                           <cursor>
+                              <Cursor fx:constant="TEXT" />
+                           </cursor>
+                        </JFXTextArea>
+                        <JFXButton fx:id="replyBtn" onAction="#sendReply" prefHeight="43.0" prefWidth="134.0" styleClass="categories-button" text="SEND" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <BorderPane prefHeight="49.0" prefWidth="1055.0" style="-fx-background-color: #7f948f;">
+         <right>
+            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="156.0" spacing="35.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="editAcc" contentDisplay="GRAPHIC_ONLY" onAction="#editAccount" prefHeight="58.0" prefWidth="42.0">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="USER" size="3em" wrappingWidth="25.306867599487305" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="sgnOutBut" contentDisplay="GRAPHIC_ONLY" onAction="#signOut">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </JFXButton>
                </children>
             </HBox>
-         </children>
-      </AnchorPane>
-      <Pane layoutX="-1.0" layoutY="65.0" prefHeight="51.0" prefWidth="655.0" styleClass="filter-pane">
-         <children>
-            <MenuButton fx:id="sortMenu" layoutX="553.0" layoutY="7.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" text="Sort By:" textFill="WHITE">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
-                <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
-              </items>
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </MenuButton>
-            <MenuButton fx:id="showMenu" layoutX="445.0" layoutY="8.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="79.0" text="Show" textFill="WHITE">
-               <items>
-                  <MenuItem fx:id="allQs" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
-                  <MenuItem fx:id="resolvedQs" mnemonicParsing="false" onAction="#showResolvedQs" text="Only Resolved Questions" />
-                  <MenuItem fx:id="unresolvedQs" mnemonicParsing="false" onAction="#showUnresolvedQs" text="Only Unresolved Questions" />
-               </items>
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </MenuButton>
-         </children>
-      </Pane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-2.0" layoutY="63.0" prefHeight="557.0" prefWidth="311.0" />
+         </right>
+         <left>
+            <HBox prefHeight="49.0" prefWidth="326.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="62.0" prefWidth="130.0" text="Welcome,">
+                     <font>
+                        <Font name="SansSerif Regular" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets left="2.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label fx:id="username" minHeight="16" minWidth="69" prefHeight="63.0" prefWidth="156.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </left>
+      </BorderPane>
    </children>
 </AnchorPane>

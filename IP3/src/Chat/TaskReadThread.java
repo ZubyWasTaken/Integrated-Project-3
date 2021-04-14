@@ -39,15 +39,14 @@ public class TaskReadThread implements Runnable {
 
                 //get input from the client
                 String message = input.readUTF();
-                String username = input.readUTF();
+                
+           
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {
                     //display the message in the textarea
 
                     client.viewMsg.appendText(message + "\n");
-                    if (!client.onlineUsers.getItems().contains(username)) {
-                        client.onlineUsers.getItems().add(username);
-                    }
+           
 
                 });
             } catch (IOException ex) {

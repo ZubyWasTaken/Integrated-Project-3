@@ -5,17 +5,23 @@
  */
 package Chat;
 
+import Home.Home;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import ip3.Message;
+import ip3.Drawer;
+import ip3.Post;
+import ip3.SwitchWindow;
 import ip3.User;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,6 +33,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextFormatter;
+import javafx.stage.Stage;
 
 /**
  *
@@ -47,19 +55,26 @@ public class ChatController implements Initializable {
     private JFXButton sendMsg;
 
     @FXML
-    private Label nameDisplay;
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer;
 
     @FXML
-    private Label usersOnline;
-    
-     @FXML
-    public JFXListView<String> onlineUsers;
+    Label usersOnline;
+
+    @FXML
+    private JFXButton sgnOutBut;
+
+    @FXML
+    public static JFXListView<String> onlineUsers;
 
     String username;
-
+    int userID;
     User currentUser;
     int count = 0;
     SQLHandler sql = new SQLHandler();
+
+    Timestamp now = new Timestamp(System.currentTimeMillis());
 
     public void setData(User user) throws SQLException {
         currentUser = user;
@@ -67,24 +82,41 @@ public class ChatController implements Initializable {
 
     }
 
+    @FXML
+    private void signOut(ActionEvent event) throws SQLException {
+
+        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new Home(currentUser));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+                final int MAX_CHARS = 500;
+         messageArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        try {
+            displayMsgs();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Platform.runLater(new Runnable() {
 
             @Override
             public void run() {
+                drawer.setDisable(true);
+                Drawer newdrawer = new Drawer();
+                newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 System.out.println("Working?");
                 username = currentUser.getUsername();
-                String name = currentUser.getFirstname();
-                nameDisplay.setText(name);
-                usersOnline.setText(String.valueOf(count));
+             
 
-               
+              
+                usersOnline.setText(String.valueOf(count));
+                userID = currentUser.getUserID();
+
             }
         });
-// onlineList.setItems(userList);
+
         try {
+           
             // Create a socket to connect to the server
             Socket socket = new Socket(ConnectionUtil.host, ConnectionUtil.port);
 
@@ -93,37 +125,42 @@ public class ChatController implements Initializable {
 
             // Create an output stream to send data to the server
             output = new DataOutputStream(socket.getOutputStream());
-        
+
             //create a thread in order to read message from server continuously
             TaskReadThread task = new TaskReadThread(socket, this);
             Thread thread = new Thread(task);
             thread.start();
-           
-            
+
         } catch (IOException ex) {
 
-          //  viewMsg.appendText(ex.toString() + '\n');
+              viewMsg.appendText(ex.toString() + '\n');
         }
     }
 
-    
-//      public void broadcastOnline(String username) throws IOException {
-//              output.writeUTF(username);
-//          
-//      
-//      }
+    public void displayMsgs() throws SQLException {
+        ObservableList<Post> data = FXCollections.observableArrayList();
+        ArrayList<String> userdata = new ArrayList<>();
+        data = sql.showMsgs();
+        String name = "";
+        for (Post post : data) {
+            String msg = post.getText();
+            int id = post.getSender();
+            userdata = sql.searchByID(id);
+            name = userdata.get(1);
+            viewMsg.appendText("[" + name + "]: " + msg + "\n");
+        }
+
+    }
+
     /**
      * Handle button action
      */
-    public void sendMsg(ActionEvent event) {
+    public void sendMsg(ActionEvent event) throws SQLException {
         try {
-            //get username and message
+            //get message
 
             String message = messageArea.getText().trim();
 
-            Message newmsg = new Message(message, username);
-
-            //  System.out.println(newmsg);
             //if username is empty set it to 'Unknown' 
             if (username.length() == 0) {
                 username = "Unknown";
@@ -135,9 +172,9 @@ public class ChatController implements Initializable {
 
             //send message to server
             output.writeUTF("[" + username + "]: " + message + "");
-            output.writeUTF(username);
-            output.flush();
 
+            output.flush();
+            Post.createPost(userID, message);
             //clear the textfield
             messageArea.clear();
         } catch (IOException ex) {

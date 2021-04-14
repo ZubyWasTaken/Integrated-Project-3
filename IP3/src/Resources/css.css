@@ -12,10 +12,20 @@
 }
 .list-view {
    -fx-border-color: #a4a4a4;
+  
+   
+  
 }
+
+.list-cell{
+      -fx-border-color: #ececec;  /* similar to the default color */
+    -fx-border-width: 0.5;   /* similar to the default width */
+}
+
 .list-view .list-cell:even {
 -fx-background-color: white;
 -fx-text-fill: black;
+
 }
 .list-view .list-cell:odd {
 -fx-background-color: white;
@@ -98,6 +108,35 @@
     -fx-text-fill: black;
 }
 
+.home-button{
+     -fx-background-color:  -fx-darkblue;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-radius: 10;
+    
+}
+
+.home-button:hover {
+   
+-fx-background-color: #a8d6c9;
+-fx-text-fill: black;
+}
+
+.drawer-button{
+  
+      -fx-cursor: hand;
+    
+}
+.drawer-button:selected{
+    -fx-background-color: #dfedea;
+      
+    
+}
+.drawer-button:hover{
+    -fx-background-color: #dfedea;
+      -fx-cursor: hand;
+    
+}
 .cancel-button {
     -fx-background-color:#a4a4a4;
 }
@@ -124,10 +163,13 @@
 .text-area {
     -jfx-focus-color:-fx-darkblue;
     -jfx-unfocus-color: #a4a4a4;
-    -fx-background-color: white;
-    -fx-text-padding: 20px;
     
+    -fx-text-padding: 20px;
+    -fx-font-size: 16px;
+   -fx-cursor: text;
 }
+
+
 .filter-pane {
    -fx-border-color: white #a4a4a4 white white;
    -fx-background-color: white;
@@ -186,3 +228,5 @@
 .image-view {
     -fx-border-color: black;
 }
+
+
