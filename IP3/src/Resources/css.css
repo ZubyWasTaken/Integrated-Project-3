@@ -153,10 +153,13 @@
 .text-area {
     -jfx-focus-color:-fx-darkblue;
     -jfx-unfocus-color: #a4a4a4;
-    -fx-background-color: white;
-    -fx-text-padding: 20px;
     
+    -fx-text-padding: 20px;
+    -fx-font-size: 16px;
+   -fx-cursor: text;
 }
+
+
 .filter-pane {
    -fx-border-color: white #a4a4a4 white white;
    -fx-background-color: white;
@@ -215,3 +218,4 @@
 .image-view {
     -fx-border-color: black;
 }
+

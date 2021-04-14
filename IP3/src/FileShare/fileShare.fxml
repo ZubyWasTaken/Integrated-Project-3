@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1040.0" style="-fx-background-color: white;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FileShare.FileShareController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FileShare.FileShareController">
    <children>
-      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="67.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
+      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="49.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
          <children>
             <HBox prefHeight="69.0" prefWidth="419.0">
                <children>
@@ -42,7 +42,10 @@
                </children></HBox>
          </children>
       </HBox>
-      <JFXTextField fx:id="search" layoutX="97.0" layoutY="109.0" prefHeight="25.0" prefWidth="422.0" promptText="Search" />
+      <JFXTextField fx:id="search" layoutX="97.0" layoutY="103.0" prefHeight="25.0" prefWidth="422.0" promptText="Search">
+         <font>
+            <Font size="16.0" />
+         </font></JFXTextField>
       <TableView fx:id="files" layoutX="91.0" layoutY="150.0" onMouseClicked="#clickItem" prefHeight="304.0" prefWidth="764.0" styleClass="table">
         <placeholder>
             <Label text="No files uploaded" />
@@ -53,18 +56,20 @@
             <TableColumn fx:id="fileAuthor" prefWidth="189.11102294921875" text="Uploaded By:" />
         </columns>
       </TableView>
-      <JFXButton fx:id="uploadBut" layoutX="601.0" layoutY="460.0" onAction="#upload" prefHeight="51.0" prefWidth="110.0" styleClass="categories-button" text="UPLOAD" textFill="WHITE">
+      <JFXButton fx:id="uploadBut" layoutX="601.0" layoutY="469.0" onAction="#upload" prefHeight="42.0" prefWidth="110.0" styleClass="categories-button" text="UPLOAD" textFill="WHITE">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
          </font>
       </JFXButton>
-      <JFXTextField fx:id="fileLoc" layoutX="91.0" layoutY="462.0" prefHeight="42.0" prefWidth="463.0" />
-      <JFXButton fx:id="downloadBut" layoutX="726.0" layoutY="460.0" onAction="#download" prefHeight="51.0" prefWidth="130.0" styleClass="categories-button" text="DOWNLOAD" textFill="WHITE">
+      <JFXTextField fx:id="fileLoc" layoutX="91.0" layoutY="462.0" prefHeight="42.0" prefWidth="463.0">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
+         </font></JFXTextField>
+      <JFXButton fx:id="downloadBut" layoutX="726.0" layoutY="469.0" onAction="#download" prefHeight="42.0" prefWidth="130.0" styleClass="categories-button" text="DOWNLOAD" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
          </font>
       </JFXButton>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="1.0" layoutY="65.0" prefHeight="556.0" prefWidth="308.0" />
       <MenuButton layoutX="544.0" layoutY="109.0" mnemonicParsing="false" style="-fx-background-color: #002b43;" text="SHOW" textFill="WHITE">
         <items>
             <MenuItem fx:id="allFiles" mnemonicParsing="false" onAction="#showAllFiles" text="All Files" />
@@ -72,12 +77,19 @@
           <MenuItem fx:id="imageFiles" mnemonicParsing="false" onAction="#showImageFiles" text="Images" />
             <MenuItem fx:id="pptxFiles" mnemonicParsing="false" text="PowerPoint Presentations" />
         </items>
+         <font>
+            <Font size="14.0" />
+         </font>
       </MenuButton>
       <MenuButton layoutX="633.0" layoutY="109.0" mnemonicParsing="false" style="-fx-alignment: #002b43;" text="SORT BY" textFill="WHITE">
          <items>
             <MenuItem fx:id="dateDesc" mnemonicParsing="false" text="Date Uploaded (Newest to Oldest)" />
             <MenuItem mnemonicParsing="false" text="Date Uploaded (Oldest to Newest)" />
          </items>
+         <font>
+            <Font size="14.0" />
+         </font>
       </MenuButton>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="1.0" layoutY="47.0" prefHeight="568.0" prefWidth="260.0" />
    </children>
 </AnchorPane>

@@ -241,10 +241,10 @@ public class UserQNAController implements Initializable {
         replies.getChildren().addAll(replyText);
         replies.setId(String.valueOf(reply.getId()));
         replies.setAlignment(Pos.TOP_LEFT);
-        replies.setMaxWidth(feed.getWidth());
-
+        replies.setMaxWidth(repliesView.getWidth()-20);
+        
         HBox details = new HBox();
-        details.setMaxWidth(feed.getWidth() - 20);
+        details.setMaxWidth(repliesView.getWidth()-20);
         details.setAlignment(Pos.BOTTOM_RIGHT);
         details.getChildren().addAll(author, profilePic, datePosted);
 
@@ -421,15 +421,17 @@ public class UserQNAController implements Initializable {
         }
         resolved.setAlignment(Pos.CENTER_RIGHT);
 
-        //Setting the bozes
+       
+        //Setting the boxes
+
         HBox quest = new HBox();
-        quest.setMaxWidth(feed.getWidth() - 20);
+        quest.setMaxWidth(feed.getWidth() - 30);
         quest.setAlignment(Pos.TOP_LEFT);
         quest.setId(String.valueOf(question.getId()));
         quest.getChildren().addAll(questText, resolved);
 
         HBox answers = new HBox();
-        answers.setMaxWidth(feed.getWidth() - 20);
+        answers.setMaxWidth(feed.getWidth() - 30);
         answers.setAlignment(Pos.BOTTOM_RIGHT);
         answers.getChildren().addAll(author, profilePic, datePosted, btn);
 

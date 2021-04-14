@@ -4,13 +4,30 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="568.0" prefWidth="260.0" style="-fx-background-color: #7f948f;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
    <children>
-      <HBox prefHeight="118.0" prefWidth="260.0" />
+      <HBox alignment="CENTER" prefHeight="118.0" prefWidth="260.0">
+         <children>
+            <JFXButton fx:id="sgnOutBut" contentDisplay="RIGHT" onAction="#signOut" prefHeight="46.0" prefWidth="136.0" styleClass="drawer-button" text="LOG OUT">
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Resources/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
       <JFXButton fx:id="homeBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#home" prefHeight="90.0" prefWidth="300.0" styleClass="drawer-button" stylesheets="@../Resources/css.css" text="Home">
          <graphic>
             <FontAwesomeIcon glyphName="HOME" size="2em" wrappingWidth="37.785715103149414">

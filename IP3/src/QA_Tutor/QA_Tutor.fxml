@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -15,6 +14,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -113,23 +113,46 @@
             <Insets top="10.0" />
          </padding>
       </AnchorPane>
-      <AnchorPane layoutX="11.0" layoutY="8.0" prefHeight="73.0" prefWidth="1039.0" style="-fx-background-color: #7f948f;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="25.0" AnchorPane.leftAnchor="40.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXHamburger>
-            <Label fx:id="labelWelcome1" alignment="CENTER" layoutX="92.0" layoutY="5.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Q &amp; A " AnchorPane.leftAnchor="92.0">
-               <font>
-                  <Font name="SansSerif Regular" size="24.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets left="2.0" />
-               </opaqueInsets>
-            </Label>
-         </children>
-      </AnchorPane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-2.0" layoutY="71.0" prefWidth="352.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="71.0" />
+      <BorderPane prefHeight="49.0" prefWidth="1055.0" style="-fx-background-color: #7f948f;">
+         <right>
+            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="156.0" spacing="35.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="editAcc" contentDisplay="GRAPHIC_ONLY" onAction="#editAccount" prefHeight="58.0" prefWidth="42.0">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="USER" size="3em" wrappingWidth="25.306867599487305" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="sgnOutBut" contentDisplay="GRAPHIC_ONLY" onAction="#signOut">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </right>
+         <left>
+            <HBox prefHeight="49.0" prefWidth="326.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="40.0" prefWidth="130.0" text="Welcome,">
+                     <font>
+                        <Font name="SansSerif Regular" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets left="2.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label fx:id="username" minHeight="16" minWidth="69" prefHeight="49.0" prefWidth="156.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </left>
+      </BorderPane>
    </children>
 </AnchorPane>

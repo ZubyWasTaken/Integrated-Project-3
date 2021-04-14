@@ -6,6 +6,7 @@ import FileShare.FileShare;
 import Home.Home;
 
 import HomeTutor.HomeTutor;
+import LoginRegister.LoginRegister;
 import QA_Tutor.QA_Tutor;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
@@ -32,6 +33,8 @@ public class drawerController implements Initializable {
     private JFXButton chatBut;
     @FXML
     private JFXButton accBut;
+     @FXML
+    private JFXButton sgnOutBut;
     
     @FXML
     private JFXButton fileShare;
@@ -76,6 +79,13 @@ public class drawerController implements Initializable {
     private void chatDrawer (Event event){
     
             SwitchWindow.switchWindow((Stage) chatBut.getScene().getWindow(), new Chat(currentUser)); 
+    
+    }
+    
+      @FXML
+    private void signOut (Event event){
+    
+            SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
     
     }
     
