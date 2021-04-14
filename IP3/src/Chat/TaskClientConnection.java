@@ -49,6 +49,7 @@ public class TaskClientConnection implements Runnable {
 
                 //send message via server broadcast
                 server.broadcast(message);
+              
 
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {

@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -107,7 +108,7 @@
                <children>
                   <Pane prefHeight="50.0" prefWidth="663.0" styleClass="filter-pane">
                      <children>
-                        <MenuButton fx:id="sortMenu1" layoutX="532.0" layoutY="13.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="104.0" text="Sort By:" textAlignment="JUSTIFY" textFill="WHITE">
+                        <MenuButton fx:id="sortMenu1" layoutX="543.0" layoutY="13.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="104.0" text="Sort By:" textAlignment="JUSTIFY" textFill="WHITE">
                            <items>
                               <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
                               <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
@@ -122,7 +123,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </MenuButton>
-                        <MenuButton fx:id="showMenu1" layoutX="421.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Show" textFill="WHITE">
+                        <MenuButton fx:id="showMenu1" layoutX="445.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Show" textFill="WHITE">
                            <items>
                               <MenuItem fx:id="allQs1" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
                               <MenuItem mnemonicParsing="false" onAction="#showMyQs" text="Only my Questions" />
@@ -139,11 +140,16 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </MenuButton>
-                        <JFXTextField fx:id="search" focusColor="#a8d6c9" layoutX="20.0" layoutY="14.0" prefHeight="25.0" prefWidth="365.0" promptText="Search" unFocusColor="BLACK">
+                        <JFXTextField fx:id="search" focusColor="#a8d6c9" layoutX="20.0" layoutY="14.0" prefHeight="25.0" prefWidth="301.0" promptText="Search" unFocusColor="BLACK">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </JFXTextField>
+                        <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="9.0" onAction="#refresh">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </Pane>
                </children>
