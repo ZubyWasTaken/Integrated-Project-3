@@ -94,6 +94,9 @@ public class QA_TutorController implements Initializable {
 
     @FXML
     private JFXTextArea replyArea;
+    
+        @FXML
+    private Label username;
 
     @FXML
     private AnchorPane repliesPane;
@@ -124,9 +127,8 @@ public class QA_TutorController implements Initializable {
             public void run() {
            
          Platform.runLater(() -> {
-             drawer.setDisable(true);
-             Drawer newdrawer = new Drawer();
-             newdrawer.drawerPullout(drawer, currentUser, hamburger);
+           
+               username.setText(currentUser.getUsername());
              
              try {
                  loadAllQs();
@@ -159,17 +161,17 @@ public class QA_TutorController implements Initializable {
        
     }
     
-//     @FXML 
-// private void signOut(ActionEvent event){
-//
-//             SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
-//         }
-// 
-//  @FXML 
-// private void editAccount(ActionEvent event){
-//
-//             SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new Edit(currentUser));
-//         }
+     @FXML 
+ private void signOut(ActionEvent event){
+
+             SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
+         }
+ 
+  @FXML 
+ private void editAccount(ActionEvent event){
+
+             SwitchWindow.switchWindow((Stage) editAcc.getScene().getWindow(), new Edit(currentUser));
+         }
  
   private void displayQs(Question question) throws SQLException {
   
@@ -346,10 +348,10 @@ public class QA_TutorController implements Initializable {
         replies.getChildren().addAll(replyText); 
         replies.setId(String.valueOf(reply.getId()));
         replies.setAlignment(Pos.TOP_LEFT);
-        replies.setMaxWidth(feed.getWidth());
+        replies.setMaxWidth(repliesView.getWidth()-20);
         
         HBox details = new HBox();
-        details.setMaxWidth(feed.getWidth()-20);
+        details.setMaxWidth(repliesView.getWidth()-20);
         details.setAlignment(Pos.BOTTOM_RIGHT);
         details.getChildren().addAll(author, profilePic,datePosted);
        

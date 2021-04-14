@@ -4,34 +4,51 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="587.0" style="-fx-background-color: white;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="587.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
    <children>
-      <Pane prefHeight="117.0" prefWidth="587.0" style="-fx-background-color: #7f948f;">
+      <Pane prefHeight="60.0" prefWidth="587.0" style="-fx-background-color: #7f948f;">
          <children>
-            <Label layoutX="208.0" layoutY="26.0" prefHeight="66.0" prefWidth="171.0" text="Sign Up" textAlignment="CENTER">
+            <Label layoutX="236.0" layoutY="-3.0" prefHeight="66.0" prefWidth="116.0" text="Sign Up" textAlignment="CENTER">
                <font>
-                  <Font size="45.0" />
+                  <Font size="30.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <ButtonBar layoutX="331.0" layoutY="471.0" prefHeight="40.0" prefWidth="200.0" />
-      <JFXComboBox fx:id="catSelect" focusColor="#a8d6c9" layoutX="101.0" layoutY="314.0" prefHeight="25.0" prefWidth="179.0" promptText="Select Interest" />
-      <JFXDatePicker fx:id="getdob" defaultColor="#002b43" layoutX="330.0" layoutY="247.0" overLay="true" prefHeight="28.0" prefWidth="179.0" promptText="Date of Birth" />
-      <JFXTextField fx:id="getsurname" focusColor="#a8d6c9" layoutX="330.0" layoutY="196.0" prefHeight="25.0" prefWidth="171.0" promptText="Surname">
+      <JFXTextField fx:id="getfname" focusColor="#a8d6c9" layoutX="101.0" layoutY="159.0" prefHeight="25.0" prefWidth="179.0" promptText="First name" styleClass="text-area">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></JFXTextField>
+      <JFXTextField fx:id="getsurname" focusColor="#a8d6c9" layoutX="330.0" layoutY="159.0" prefHeight="25.0" prefWidth="171.0" promptText="Surname" styleClass="text-area">
          <effect>
             <DropShadow color="TRANSPARENT" />
-         </effect></JFXTextField>
-      <JFXTextField fx:id="getfname" focusColor="#a8d6c9" layoutX="101.0" layoutY="196.0" prefHeight="25.0" prefWidth="179.0" promptText="First name" />
-      <JFXTextField fx:id="getemail" focusColor="#a8d6c9" layoutX="101.0" layoutY="248.0" prefHeight="25.0" prefWidth="171.0" promptText="University Email" />
-      <JFXButton fx:id="cancelBut" buttonType="RAISED" layoutX="112.0" layoutY="451.0" onAction="#cancel" prefHeight="40.0" prefWidth="100.0" styleClass="cancel-button" text="CANCEL" />
-      <JFXButton fx:id="registerBut" buttonType="RAISED" layoutX="398.0" layoutY="451.0" onAction="#register" prefHeight="40.0" prefWidth="100.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE" />
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font></JFXTextField>
+      <JFXTextField fx:id="getemail" focusColor="#a8d6c9" layoutX="101.0" layoutY="248.0" prefHeight="25.0" prefWidth="171.0" promptText="University Email" styleClass="text-area">
+         <font>
+            <Font size="16.0" />
+         </font></JFXTextField>
+      <JFXDatePicker fx:id="getdob" defaultColor="#002b43" layoutX="330.0" layoutY="247.0" overLay="true" prefHeight="28.0" prefWidth="179.0" promptText="Date of Birth" styleClass="text-area" />
+      <JFXComboBox fx:id="catSelect" focusColor="#a8d6c9" layoutX="97.0" layoutY="344.0" prefHeight="25.0" prefWidth="179.0" promptText="Select Interest" styleClass="text-area" />
+      <JFXButton fx:id="registerBut" buttonType="RAISED" layoutX="398.0" layoutY="451.0" onAction="#register" prefHeight="35.0" prefWidth="100.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="cancelBut" buttonType="RAISED" layoutX="112.0" layoutY="451.0" onAction="#cancel" prefHeight="35.0" prefWidth="100.0" styleClass="cancel-button" text="CANCEL">
+         <font>
+            <Font size="16.0" />
+         </font></JFXButton>
    </children>
 </AnchorPane>

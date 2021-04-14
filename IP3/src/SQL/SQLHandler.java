@@ -8,6 +8,7 @@ package SQL;
 
 import ip3.AppFiles;
 import ip3.Categories;
+import ip3.Post;
 import ip3.Question;
 import ip3.Reply;
 import ip3.Uni;
@@ -129,7 +130,27 @@ public class SQLHandler {
         }
         return output;
     }
+    public ArrayList searchByID(int searchQuery) throws SQLException {
 
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE id = \"" + searchQuery + "\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            output.add((rs.getString("id")));
+            output.add((rs.getString("username")));
+            output.add((rs.getString("password")));
+            output.add((rs.getString("firstname")));
+            output.add((rs.getString("surname")));
+            output.add((rs.getString("dob")));
+            //unsure which format this reads as
+            output.add((rs.getString("email")));
+            output.add((rs.getString("uniid")));
+            output.add((rs.getString("catid")));
+            output.add((rs.getString("title_id")));
+        }
+        return output;
+    }
     //------------------//
    //UPDATE PROFILE PIC//
   //------------------//
@@ -550,30 +571,40 @@ public class SQLHandler {
         return count;
     }
 
-    public List searchPosts(int userquest) throws SQLException {
-        List output = new ArrayList<>();
-       String sql = "SELECT Posts.id, Posts.text, Questions.user_id, Users.id, Users.username FROM Posts INNER JOIN Users ON\n" +
-        "Posts.user_id= Users.id WHERE Posts.id = \"" + userquest + "\"";
-        query = conn.prepareStatement(sql);
-        ResultSet rs = query.executeQuery();
-        while (rs.next()) {
-            output.add((rs.getInt("id")));
-            output.add((rs.getString("text")));
-            output.add((rs.getString("username")));
-        }
-        return output;
-    }
 
-    public void createPost(String text, int sender, Timestamp timestamp) throws SQLException {
+    public void createPost( int sender, String text) throws SQLException {
       
-        String sql = "INSERT INTO Posts (text, timestamp, user_id,) VALUES(?,?,?)";
+        String sql = "INSERT INTO Posts (user_id, text) VALUES(?,?)";
         query = conn.prepareStatement(sql);
-        query.setString(1, text);
-        query.setTimestamp(2, timestamp);
-        query.setInt(3, sender);
+        query.setInt(1, sender);
+        query.setString(2, text);
+       // query.setTimestamp(3, timestamp);
         query.executeUpdate();
         query.close();
+        
+        
     }
+    
+    public ObservableList showMsgs() throws SQLException{
+        ObservableList<Post> output = FXCollections.observableArrayList();
+        output.clear();
+
+        String sql = "SELECT * FROM Posts";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+            int msgId = rs.getInt("id");
+            int usersId = rs.getInt("user_id");
+            String message = rs.getString("text");
+            String date = rs.getTimestamp("timestamp").toString().trim();
+       output.add(new Post(msgId,usersId,message,date));
+
+        }
+        query.close();
+        return output;
+    }
+       
 
     public void updateLastSeenQ(int userID, Timestamp timestamp) throws SQLException {
         String sql = "UPDATE loginData SET lastSeenQ = ? WHERE user_id =\"" + userID + "\"";
