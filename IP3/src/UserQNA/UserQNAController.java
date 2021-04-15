@@ -259,7 +259,7 @@ public class UserQNAController implements Initializable {
         repliesView.getItems().addAll(replies,details);
         
         if(reply.getSender().getUserID()== currentUser.getUserID()){
-           Tooltip.install(repliesView, tooltip);
+           Tooltip.install(replies, tooltip);
         }
     }
     
@@ -448,7 +448,7 @@ public class UserQNAController implements Initializable {
 
         msgArea.requestFocus();
         if(question.getSender().getUserID()== currentUser.getUserID()){
-           Tooltip.install(feed, tooltip);
+           Tooltip.install(quest, tooltip);
         }
         loadReplies(btn);
     }

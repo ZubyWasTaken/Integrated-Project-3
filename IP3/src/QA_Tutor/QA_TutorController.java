@@ -350,7 +350,7 @@ public class QA_TutorController implements Initializable {
         //Adding them to the pane
         repliesView.getItems().addAll(replies,details);
         if(reply.getSender().getUserID()== currentUser.getUserID()){
-           Tooltip.install(repliesView, tooltip);
+           Tooltip.install(replies, tooltip);
         }
     }
 
