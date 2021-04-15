@@ -12,6 +12,6 @@ package Chat;
  * static variables that holds host and port
  */
 public class ConnectionUtil {
-    public static String host="localhost";
+    public static String host="167.172.149.212";
     public static int port=4444;
 }

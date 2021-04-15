@@ -5,25 +5,19 @@ import EditAcc.Edit;
 import FileShare.FileShare;
 import Home.Home;
 
-import HomeTutor.drawerTutorController;
+import HomeTutor.HomeTutor;
 import LoginRegister.LoginRegister;
+import QA_Tutor.QA_Tutor;
 import com.jfoenix.controls.JFXButton;
 import ip3.SwitchWindow;
 import ip3.User;
-import java.io.InputStream;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -32,81 +26,75 @@ public class drawerController implements Initializable {
     User currentUser;
 
     @FXML
-    private HBox homeBut;
+    private JFXButton homeBut;
     @FXML
-    private HBox qaBut;
+    private JFXButton qaBut;
     @FXML
-    private HBox chatBut;
+    private JFXButton chatBut;
     @FXML
-    private HBox accBut;
-    @FXML
-    private HBox fileBut;
-    @FXML
+    private JFXButton accBut;
+     @FXML
     private JFXButton sgnOutBut;
-    @FXML
-    private Label userUsername;
-    @FXML 
-    private ImageView profilePic;
     
+    @FXML
+    private JFXButton fileShare;
 
 
     @FXML
-    private void home(MouseEvent event){
+    private void home(Event event){
+        if (currentUser.getTitleId()==1){
+            SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new Home(currentUser)); 
+    }
         
-         SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new Home(currentUser)); 
-    
+         else{
+            SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new HomeTutor(currentUser));
+        }  
     }
     
+    
+    
     @FXML
-    private void chat(MouseEvent event){
-          SwitchWindow.switchWindow((Stage) chatBut.getScene().getWindow(), new Chat(currentUser));
-    }
-    @FXML
-    private void qa(MouseEvent event){
-     
+    private void qa(Event event){
+       if (currentUser.getTitleId()==1){
             SwitchWindow.switchWindow((Stage) qaBut.getScene().getWindow(), new UserQNA(currentUser)); 
-    
-         
+    }
+       else{
+           SwitchWindow.switchWindow((Stage) qaBut.getScene().getWindow(), new QA_Tutor(currentUser));
+       }  
     } 
 
     @FXML
-    private void acc (MouseEvent event){
+    private void acc (Event event){
     
             SwitchWindow.switchWindow((Stage) accBut.getScene().getWindow(), new Edit(currentUser)); 
     
     }
-    
     @FXML
-    private void fileShare (MouseEvent event){
+    private void share (Event event){
     
-            SwitchWindow.switchWindow((Stage) fileBut.getScene().getWindow(), new FileShare(currentUser)); 
+            SwitchWindow.switchWindow((Stage) fileShare.getScene().getWindow(), new FileShare(currentUser)); 
     
     }
+    @FXML
+    private void chatDrawer (Event event){
+    
+            SwitchWindow.switchWindow((Stage) chatBut.getScene().getWindow(), new Chat(currentUser)); 
+    
+    }
+    
+      @FXML
+    private void signOut (Event event){
+    
+            SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
+    
+    }
+    
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-         Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-        userUsername.setText(currentUser.getUsername());
-        InputStream fs = null;
-                try {
-                    fs = currentUser.getImage();
-                } catch (SQLException ex) {
-                    Logger.getLogger(drawerTutorController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        Image image = new Image(fs);
-        profilePic.setImage(image);
-    }
-        });
     }
     
-    @FXML
-    private void signOut(ActionEvent event) throws SQLException{
         
-        currentUser.updateLogin(false);
-        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister()); 
-    }    
 
     public void setData(User user) {
         this.currentUser = user;

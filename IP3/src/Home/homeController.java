@@ -5,6 +5,8 @@
  */
 package Home;
 
+import Chat.Chat;
+import FileShare.FileShare;
 import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
 import UserQNA.UserQNA;
@@ -49,7 +51,6 @@ import javafx.stage.Stage;
 /**
  * @author Zuby
  */
-
 public class homeController implements Initializable {
 
     @FXML
@@ -85,6 +86,9 @@ public class homeController implements Initializable {
     private Label username;
 
     @FXML
+    private Label feedTitle;
+
+    @FXML
     private Label lblArticle1;
 
     @FXML
@@ -113,72 +117,85 @@ public class homeController implements Initializable {
 
     @FXML
     private Hyperlink articleHyperlink5;
-    
-    
+
     @FXML
     private JFXHamburger hamburger;
-    
+
     @FXML
     private JFXDrawer drawer;
-    
+
     @FXML
     private TableView<User> usersOnline;
-    
+
     @FXML
     private TableColumn<User, String> user;
-    
+
     @FXML
     private Label repliesCount;
-    
+
     @FXML
     private JFXButton qa;
-    
+
+    @FXML
+    private JFXButton shareFiles;
+
+    @FXML
+    private JFXButton chat;
+
+    @FXML
+    private JFXButton teacherQNA;
+
     @FXML
     private AnchorPane userDetails;
-    
+
     @FXML
     private ImageView profilePic;
-    
+
     @FXML
     private Label userUsername;
-    
-    @FXML
-    private Label fname;
-    
-    @FXML
-    private Label surname;
-    
-    @FXML 
-    private Label title;
-    
+
     private SQLHandler sql = new SQLHandler();
     int count = 0;
     Timestamp now = new Timestamp(System.currentTimeMillis());
     ObservableList<User> data = FXCollections.observableArrayList();
-    
+
     public void setData(User user) throws SQLException {
         currentUser = user;
-        currentUser.updateLogin(true);
+        sql.updateLogin(currentUser.getUserID(), true);
         Timestamp timestamp = sql.getLastSeenQ(user.getUserID());
-        count = sql.countUnseenReplies(currentUser.getUserID(),now,timestamp);
+        count = sql.countUnseenReplies(currentUser.getUserID(), now, timestamp);
     }
 
     @FXML
     private void signOut(ActionEvent event) throws SQLException {
-        currentUser.updateLogin(false);
+        sql.updateLogin(currentUser.getUserID(), false);
         SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
     }
 
     @FXML
-    private void qaSwitch(ActionEvent event){
-          SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
+    private void qaSwitch(ActionEvent event) {
+        SwitchWindow.switchWindow((Stage) qa.getScene().getWindow(), new UserQNA(currentUser));
     }
- 
-   
-    
-     @FXML
+
+    @FXML
+    private void fileShare(ActionEvent event) {
+        SwitchWindow.switchWindow((Stage) shareFiles.getScene().getWindow(), new FileShare(currentUser));
+    }
+
+    @FXML
+    private void chat(ActionEvent event) {
+        SwitchWindow.switchWindow((Stage) chat.getScene().getWindow(), new Chat(currentUser));
+    }
+
+    @FXML
+    private void questionAnswer(ActionEvent event) throws SQLException {
+
+        SwitchWindow.switchWindow((Stage) teacherQNA.getScene().getWindow(), new UserQNA(currentUser));
+    }
+
+    @FXML
     private void getOnlineUser(MouseEvent event) throws SQLException {
-        
+
         TablePosition pos = (TablePosition) usersOnline.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         User item = usersOnline.getItems().get(index);
@@ -187,56 +204,158 @@ public class homeController implements Initializable {
         User user = new User(username);
         userDetails.setVisible(true);
         userUsername.setText(user.getUsername());
-        fname.setText(user.getFirstname());
-        surname.setText(user.getSurname());
-        title.setText(user.fetchTitle(user.getTitleId()));
-        InputStream fs= user.getImage();
+        InputStream fs = sql.getImage(user.getUserID());
         javafx.scene.image.Image image = new javafx.scene.image.Image(fs);
         profilePic.setImage(image);
     }
-     @FXML
-    private void close(ActionEvent event){
+
+    @FXML
+    private void close(ActionEvent event) {
         userDetails.setVisible(false);
     }
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+      //**SETTING DISPLAY AS UK (FIRST BUTTON)**//
+        
+        btnUK.setDisable(true);
+        btnWorld.setDisable(false);
+        btnBusiness.setDisable(false);
+        btnTech.setDisable(false);
+        btnPolitics.setDisable(false);
+        btnScience.setDisable(false);
 
+        //This reads the current articles on BBC (https://www.bbc.co.uk/news/uk)
+        //The articles will change as the news updates on BBC
+        RSSFeedParser parser = new RSSFeedParser(
+                "http://feeds.bbci.co.uk/news/uk/rss.xml");
+        Feed feed = parser.readFeed();
+        List<FeedMessage> articles = feed.getMessages();
+
+        //------------------//
+        //First Article     //
+        //------------------//
+        lblArticle1.setText(articles.get(0).getTitle());
+        articleHyperlink1.setText(articles.get(0).getLink());
+
+        articleHyperlink1.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        //------------------//
+        //Second Article    //
+        //------------------//
+        lblArticle2.setText(articles.get(1).getTitle());
+        articleHyperlink2.setText(articles.get(1).getLink());
+
+        articleHyperlink2.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        //------------------//
+        //Third Article     //
+        //------------------//
+        lblArticle3.setText(articles.get(2).getTitle());
+        articleHyperlink3.setText(articles.get(2).getLink());
+
+        articleHyperlink3.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        //------------------//
+        //Fourth Article    //
+        //------------------//
+        lblArticle4.setText(articles.get(3).getTitle());
+        articleHyperlink4.setText(articles.get(3).getLink());
+
+        articleHyperlink4.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        //------------------//
+        //Fifth Article    //
+        //------------------//
+        lblArticle5.setText(articles.get(4).getTitle());
+        articleHyperlink5.setText(articles.get(4).getLink());
+
+        articleHyperlink5.setOnAction(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+            label.setVisible(true);
+        }
+
+        for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+            hyperlink.setVisible(true);
+        }
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 Drawer newdrawer = new Drawer();
+
                 drawer.setDisable(true);
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
+                //Sets feed title to inform user to select a feed
+                feedTitle.setText("Please Select a Feed.");
                 try {
-                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
                 } catch (SQLException ex) {
                     Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 repliesCount.setText(Integer.toString(count));
-                user.setCellValueFactory(new PropertyValueFactory<>("username"));  
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
                 usersOnline.setItems(data);
                 //Hides the labels and hyperlinks from the user
-                for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
-                    label.setVisible(false);
-                }
-
-                for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
-                    hyperlink.setVisible(false);
-                }
-
+//                for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
+//                    label.setVisible(false);
+//                }
+//
+//                for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
+//                    hyperlink.setVisible(false);
+//                }
 
             }
         });
     }
-    
+
     //FEEDS//
     @FXML
-    private void UKFeed(ActionEvent event) {
+    private void UKFeed(ActionEvent Event) {
         //Unhides all other buttons and hides this button
         btnUK.setDisable(true);
         btnWorld.setDisable(false);
@@ -252,8 +371,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        
-
         //------------------//
         //First Article     //
         //------------------//
@@ -261,10 +378,12 @@ public class homeController implements Initializable {
         articleHyperlink1.setText(articles.get(0).getLink());
 
         articleHyperlink1.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -275,10 +394,12 @@ public class homeController implements Initializable {
         articleHyperlink2.setText(articles.get(1).getLink());
 
         articleHyperlink2.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -289,10 +410,12 @@ public class homeController implements Initializable {
         articleHyperlink3.setText(articles.get(2).getLink());
 
         articleHyperlink3.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -303,10 +426,12 @@ public class homeController implements Initializable {
         articleHyperlink4.setText(articles.get(3).getLink());
 
         articleHyperlink4.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -317,10 +442,12 @@ public class homeController implements Initializable {
         articleHyperlink5.setText(articles.get(4).getLink());
 
         articleHyperlink5.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -351,8 +478,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        
-
         //------------------//
         //First Article     //
         //------------------//
@@ -360,10 +485,12 @@ public class homeController implements Initializable {
         articleHyperlink1.setText(articles.get(0).getLink());
 
         articleHyperlink1.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -374,10 +501,12 @@ public class homeController implements Initializable {
         articleHyperlink2.setText(articles.get(1).getLink());
 
         articleHyperlink2.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -388,10 +517,12 @@ public class homeController implements Initializable {
         articleHyperlink3.setText(articles.get(2).getLink());
 
         articleHyperlink3.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -402,10 +533,12 @@ public class homeController implements Initializable {
         articleHyperlink4.setText(articles.get(3).getLink());
 
         articleHyperlink4.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -416,10 +549,12 @@ public class homeController implements Initializable {
         articleHyperlink5.setText(articles.get(4).getLink());
 
         articleHyperlink5.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -450,8 +585,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        
-
         //------------------//
         //First Article     //
         //------------------//
@@ -459,10 +592,12 @@ public class homeController implements Initializable {
         articleHyperlink1.setText(articles.get(0).getLink());
 
         articleHyperlink1.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -473,10 +608,12 @@ public class homeController implements Initializable {
         articleHyperlink2.setText(articles.get(1).getLink());
 
         articleHyperlink2.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -487,10 +624,12 @@ public class homeController implements Initializable {
         articleHyperlink3.setText(articles.get(2).getLink());
 
         articleHyperlink3.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -501,10 +640,12 @@ public class homeController implements Initializable {
         articleHyperlink4.setText(articles.get(3).getLink());
 
         articleHyperlink4.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -515,10 +656,12 @@ public class homeController implements Initializable {
         articleHyperlink5.setText(articles.get(4).getLink());
 
         articleHyperlink5.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -541,15 +684,12 @@ public class homeController implements Initializable {
         btnPolitics.setDisable(false);
         btnScience.setDisable(false);
 
-
         //This reads the current articles on BBC (https://www.bbc.co.uk/news/technology)
         //The articles will change as the news updates on BBC
         RSSFeedParser parser = new RSSFeedParser(
                 "http://feeds.bbci.co.uk/news/technology/rss.xml");
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
-
-       
 
         //------------------//
         //First Article     //
@@ -558,10 +698,12 @@ public class homeController implements Initializable {
         articleHyperlink1.setText(articles.get(0).getLink());
 
         articleHyperlink1.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -572,10 +714,12 @@ public class homeController implements Initializable {
         articleHyperlink2.setText(articles.get(1).getLink());
 
         articleHyperlink2.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -586,10 +730,12 @@ public class homeController implements Initializable {
         articleHyperlink3.setText(articles.get(2).getLink());
 
         articleHyperlink3.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -600,10 +746,12 @@ public class homeController implements Initializable {
         articleHyperlink4.setText(articles.get(3).getLink());
 
         articleHyperlink4.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -614,10 +762,12 @@ public class homeController implements Initializable {
         articleHyperlink5.setText(articles.get(4).getLink());
 
         articleHyperlink5.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -647,7 +797,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-
         //------------------//
         //First Article     //
         //------------------//
@@ -655,10 +804,12 @@ public class homeController implements Initializable {
         articleHyperlink1.setText(articles.get(0).getLink());
 
         articleHyperlink1.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -669,10 +820,12 @@ public class homeController implements Initializable {
         articleHyperlink2.setText(articles.get(1).getLink());
 
         articleHyperlink2.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -683,10 +836,12 @@ public class homeController implements Initializable {
         articleHyperlink3.setText(articles.get(2).getLink());
 
         articleHyperlink3.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -697,10 +852,12 @@ public class homeController implements Initializable {
         articleHyperlink4.setText(articles.get(3).getLink());
 
         articleHyperlink4.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -711,10 +868,12 @@ public class homeController implements Initializable {
         articleHyperlink5.setText(articles.get(4).getLink());
 
         articleHyperlink5.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -744,8 +903,6 @@ public class homeController implements Initializable {
         Feed feed = parser.readFeed();
         List<FeedMessage> articles = feed.getMessages();
 
-        
-
         //------------------//
         //First Article     //
         //------------------//
@@ -753,10 +910,12 @@ public class homeController implements Initializable {
         articleHyperlink1.setText(articles.get(0).getLink());
 
         articleHyperlink1.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(0).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -767,10 +926,12 @@ public class homeController implements Initializable {
         articleHyperlink2.setText(articles.get(1).getLink());
 
         articleHyperlink2.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(1).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -781,10 +942,12 @@ public class homeController implements Initializable {
         articleHyperlink3.setText(articles.get(2).getLink());
 
         articleHyperlink3.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(2).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -795,10 +958,12 @@ public class homeController implements Initializable {
         articleHyperlink4.setText(articles.get(3).getLink());
 
         articleHyperlink4.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(3).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -809,10 +974,12 @@ public class homeController implements Initializable {
         articleHyperlink5.setText(articles.get(4).getLink());
 
         articleHyperlink5.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) try {
-                Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
-            } catch (IOException | URISyntaxException e1) {
-                e1.printStackTrace();
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(articles.get(4).getLink()));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -825,8 +992,3 @@ public class homeController implements Initializable {
         }
     }
 }
-
-
-
-
-

@@ -21,18 +21,20 @@ public class TaskClientConnection implements Runnable {
     ServerJavaFX server;
     // Create data input and output streams
     DataInputStream input;
-
     DataOutputStream output;
-String username;
+    String username;
+
     public TaskClientConnection(Socket socket, ServerJavaFX server) {
         this.socket = socket;
         this.server = server;
+
     }
 
     @Override
     public void run() {
 
         try {
+
             // Create data input and output streams
             input = new DataInputStream(
                     socket.getInputStream());
@@ -44,24 +46,24 @@ String username;
                 // Get message from the client
 
                 String message = input.readUTF();
-                 username = input.readUTF();
+
                 //send message via server broadcast
-                server.broadcast(message, username);
-           //     server.broadcastonline(username);
+                server.broadcast(message);
+              
+
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {
                     server.txtAreaDisplay.appendText(message + "\n");
-                      
+
                 });
-               
+
             }
 
-            
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
             try {
-              
+
                 socket.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -70,15 +72,13 @@ String username;
         }
 
     }
-    
-    
 
     //send message back to client
-    public void sendMessage(String message, String username) {
+    public void sendMessage(String message) {
         try {
-           // output.writeUTF(username);
+            // output.writeUTF(username);
             output.writeUTF(message);
-            output.writeUTF(username);
+            // output.writeUTF(username);
             output.flush();
 
         } catch (IOException ex) {
@@ -86,5 +86,4 @@ String username;
         }
 
     }
-
 }
