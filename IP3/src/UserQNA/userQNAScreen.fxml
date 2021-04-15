@@ -4,16 +4,19 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextArea?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -23,80 +26,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1055.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1055.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.UserQNAController">
    <children>
-      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="49.0" prefWidth="1059.0" style="-fx-background-color: #7f948f;">
+      <Pane layoutX="656.0" layoutY="72.0" prefHeight="548.0" prefWidth="395.0" styleClass="navigation-bar2" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.0" />
+      <VBox layoutX="-6.0" layoutY="73.0" maxHeight="1.7976931348623157E308" prefHeight="547.0" prefWidth="661.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="393.66666666666663" AnchorPane.topAnchor="72.66666666666663">
          <children>
-            <HBox prefHeight="49.0" prefWidth="419.0">
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="85.0" prefWidth="661.0" style="-fx-border-color: #a4a4a4;;">
                <children>
-                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
-                     <children>
-                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXHamburger>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label prefHeight="71.0" prefWidth="110.0" text="Q &amp; A">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
-               <children>
-                  <Button fx:id="btnHome" mnemonicParsing="false" onAction="#goHome" prefHeight="40.0" prefWidth="37.0" style="-fx-background-color: none;">
-                     <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/logout.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-               <HBox.margin>
-                  <Insets left="580.0" />
-               </HBox.margin>
-            </VBox>
-         </children>
-      </HBox>
-      <VBox layoutY="47.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="661.0" style="-fx-background-color: white;">
-         <children>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" style="-fx-border-color: #a4a4a4;;" VBox.vgrow="NEVER">
-               <children>
-                  <JFXTextArea fx:id="msgArea" focusColor="#a8d6c9" prefHeight="43.0" prefWidth="545.0" promptText="Ask a question:" scrollTop="10.0" styleClass="text-area">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="20.0" top="5.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
+                  <JFXTextArea fx:id="msgArea" prefHeight="83.0" prefWidth="812.0" promptText="Ask a question..." styleClass="text-area">
                      <cursor>
                         <Cursor fx:constant="TEXT" />
                      </cursor>
                   </JFXTextArea>
-                  <JFXButton fx:id="sendBtn" onAction="#sendMsg" prefHeight="36.0" prefWidth="114.0" styleClass="categories-button" text="SEND" textFill="WHITE">
+                  <JFXButton onAction="#sendMsg" prefHeight="150.0" prefWidth="398.0" styleClass="categories-button" text="SEND" textFill="WHITE">
                      <font>
-                        <Font name="SansSerif Regular" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -104,105 +48,148 @@
                   </JFXButton>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="650.0">
-               <children>
-                  <Pane prefHeight="50.0" prefWidth="663.0" styleClass="filter-pane">
-                     <children>
-                        <MenuButton fx:id="sortMenu1" layoutX="543.0" layoutY="13.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="104.0" text="Sort By:" textAlignment="JUSTIFY" textFill="WHITE">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
-                              <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
-                           </items>
-                           <effect>
-                              <DropShadow color="#777070" height="14.0" offsetX="2.0" offsetY="2.0" radius="4.75" width="7.0" />
-                           </effect>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </MenuButton>
-                        <MenuButton fx:id="showMenu1" layoutX="445.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Show" textFill="WHITE">
-                           <items>
-                              <MenuItem fx:id="allQs1" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
-                              <MenuItem mnemonicParsing="false" onAction="#showMyQs" text="Only my Questions" />
-                              <MenuItem fx:id="resolvedQs1" mnemonicParsing="false" onAction="#showResolvedQs" text="Only Resolved Questions" />
-                              <MenuItem fx:id="unresolvedQs1" mnemonicParsing="false" onAction="#showUnresolvedQs" text="Only Unresolved Questions" />
-                           </items>
-                           <effect>
-                              <DropShadow color="#777070" height="5.25" offsetX="2.0" offsetY="2.0" radius="0.8125" width="0.0" />
-                           </effect>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </MenuButton>
-                        <JFXTextField fx:id="search" focusColor="#a8d6c9" layoutX="20.0" layoutY="14.0" prefHeight="25.0" prefWidth="301.0" promptText="Search" unFocusColor="BLACK">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXTextField>
-                        <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="9.0" onAction="#refresh">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
-                           </graphic>
-                        </JFXButton>
-                     </children>
-                  </Pane>
-               </children>
-            </HBox>
-            <ListView fx:id="feed" fixedCellSize="140.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#settings" prefHeight="512.0" prefWidth="661.0">
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-               <opaqueInsets>
-                  <Insets top="5.0" />
-               </opaqueInsets>
-            </ListView>
-         </children>
-      </VBox>
-      <AnchorPane fx:id="repliesPane" layoutX="661.0" layoutY="47.0" prefHeight="568.0" prefWidth="401.0" visible="false">
-         <children>
-            <VBox alignment="TOP_RIGHT" prefHeight="567.0" prefWidth="396.0">
-               <children>
-                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+            <ButtonBar>
+               <buttons>
+                  <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" minWidth="0.0" onAction="#refresh" prefHeight="38.0">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/x-mark.png" />
-                           </image>
-                        </ImageView>
+                        <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
                      </graphic>
+                  </JFXButton>
+                  <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Sort By:" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
+                        <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
+                     </items>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                  </Button>
-                  <TextFlow fx:id="repliesQ" prefHeight="193.0" prefWidth="396.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0.5;" />
-                  <ListView fx:id="repliesView" fixedCellSize="140.0" maxWidth="396.0" onMouseClicked="#clickItem" prefHeight="445.0" prefWidth="396.0" />
-                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="62.0" prefWidth="396.0" style="-fx-border-color: #a4a4a4; -fx-background-color: white;">
-                     <children>
-                        <JFXTextArea fx:id="replyArea" prefHeight="73.0" prefWidth="290.0" promptText="Send a reply..." styleClass="text-area">
-                           <cursor>
-                              <Cursor fx:constant="TEXT" />
-                           </cursor>
-                        </JFXTextArea>
-                        <JFXButton fx:id="replyBtn" onAction="#sendReply" prefHeight="43.0" prefWidth="134.0" styleClass="categories-button" text="SEND" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXButton>
-                     </children>
-                  </HBox>
+                  </MenuButton>
+                  <MenuButton fx:id="showMenu" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Show" textFill="WHITE">
+                     <items>
+                        <MenuItem fx:id="allQs" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
+                        <MenuItem fx:id="resolvedQs" mnemonicParsing="false" onAction="#showResolvedQs" text="Only Resolved Questions" />
+                        <MenuItem fx:id="unresolvedQs" mnemonicParsing="false" onAction="#showUnresolvedQs" text="Only Unresolved Questions" />
+                     </items>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MenuButton>
+               </buttons>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </padding>
+            </ButtonBar>
+            <ListView fx:id="feed" fixedCellSize="60.0" maxWidth="1.7976931348623157E308" onMouseClicked="#settings" prefHeight="512.0" prefWidth="661.0">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </ListView>
+         </children>
+      </VBox>
+      <AnchorPane fx:id="repliesPane" layoutX="660.0" layoutY="69.0" prefHeight="547.0" prefWidth="395.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.66666666666663">
+         <children>
+            <ListView fx:id="repliesView" fixedCellSize="60.0" layoutY="168.0" onMouseClicked="#clickItem" prefHeight="346.0" prefWidth="394.0" AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="0.0" />
+            <HBox layoutY="502.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" prefHeight="51.0" prefWidth="394.0" style="-fx-border-color: #a4a4a4;;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <JFXTextArea fx:id="replyArea" prefHeight="57.0" prefWidth="282.0" promptText="Send a reply..." styleClass="text-area">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                  </JFXTextArea>
+                  <JFXButton fx:id="replyBtn" onAction="#sendReply" prefHeight="77.0" prefWidth="120.0" styleClass="categories-button" text="SEND" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
                </children>
-            </VBox>
+            </HBox>
+            <TextFlow fx:id="repliesQ" layoutX="1.0" layoutY="76.0" prefHeight="74.0" prefWidth="393.0" AnchorPane.bottomAnchor="397.33333333333337" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </TextFlow>
+            <Button layoutX="322.0" layoutY="6.0" mnemonicParsing="false" onAction="#close" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: none;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../OneDrive%20-%20GLASGOW%20CALEDONIAN%20UNIVERSITY/Uni/IP3/IP3/src/Resources/x-mark.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </AnchorPane>
+      <AnchorPane layoutX="11.0" layoutY="8.0" prefHeight="73.0" prefWidth="1039.0" styleClass="navigation-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="25.0" AnchorPane.leftAnchor="40.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Lighting specularConstant="2.0" specularExponent="0.0" surfaceScale="10.0">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+            </JFXHamburger>
+            <Label fx:id="labelWelcome1" alignment="CENTER" layoutX="92.0" layoutY="5.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Q &amp; A " textFill="WHITE" AnchorPane.leftAnchor="92.0">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets left="2.0" />
+               </opaqueInsets>
+            </Label>
+            <Button fx:id="btnHome" layoutX="989.0" layoutY="15.0" mnemonicParsing="false" onAction="#goHome" prefHeight="40.0" prefWidth="37.0" style="-fx-background-color: none;" textFill="WHITE" AnchorPane.bottomAnchor="14.333333333333329" AnchorPane.rightAnchor="14.0">
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Resources/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Lighting specularConstant="2.0" specularExponent="0.0">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+            </Button>
          </children>
       </AnchorPane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="1.0" layoutY="48.0" prefHeight="568.0" prefWidth="260.0" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-2.0" layoutY="71.0" prefWidth="352.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="71.0" />
    </children>
+   <stylesheets>
+      <URL value="@../../../../../OneDrive%20-%20GLASGOW%20CALEDONIAN%20UNIVERSITY/Uni/IP3/IP3/src/Resources/css.css" />
+      <URL value="@../Resources/css.css" />
+   </stylesheets>
 </AnchorPane>

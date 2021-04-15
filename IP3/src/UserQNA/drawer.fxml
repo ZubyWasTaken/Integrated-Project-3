@@ -4,79 +4,134 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="568.0" prefWidth="260.0" style="-fx-background-color: #7f948f;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
+<VBox prefHeight="556.0" prefWidth="300.0" styleClass="navigation-bar2" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserQNA.drawerController">
    <children>
-      <HBox alignment="CENTER" prefHeight="118.0" prefWidth="260.0">
+      <HBox prefHeight="132.0" prefWidth="300.0" style="-fx-border-color: #4a4a4a;">
          <children>
-            <JFXButton fx:id="sgnOutBut" contentDisplay="RIGHT" onAction="#signOut" prefHeight="46.0" prefWidth="136.0" styleClass="drawer-button" text="LOG OUT">
-               <graphic>
-                  <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Resources/logout.png" />
-                     </image>
+            <BorderPane prefHeight="166.0" prefWidth="298.0">
+               <top>
+                  <ImageView fx:id="profilePic" fitHeight="91.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </BorderPane.margin>
                   </ImageView>
+               </top>
+               <center>
+                  <Label fx:id="userUsername" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </center>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <bottom>
+                  <JFXButton fx:id="sgnOutBut" contentDisplay="RIGHT" onAction="#signOut" prefHeight="50.0" prefWidth="170.0" styleClass="drawer-button" text="LOG OUT" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/logout.png" />
+                           </image>
+                           <effect>
+                              <Lighting bumpInput="$null" specularConstant="2.0" specularExponent="0.0">
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="SansSerif Regular" size="20.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </bottom>
+            </BorderPane>
+         </children>
+      </HBox>
+      <HBox onMouseClicked="#home" prefHeight="193.0" prefWidth="300.0" styleClass="drawer-item">
+         <children>
+            <JFXButton fx:id="homeBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#home" prefHeight="130.0" prefWidth="298.0" styleClass="drawer-button" stylesheets="@../Resources/css.css" text="Home" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="HOME" size="2em" wrappingWidth="37.785715103149414">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </FontAwesomeIcon>
                </graphic>
                <font>
-                  <Font size="14.0" />
+                  <Font size="20.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXButton>
+         </children>
+      </HBox>
+      <HBox onMouseClicked="#qa" prefHeight="183.0" prefWidth="300.0" styleClass="drawer-item">
+         <children>
+            <JFXButton fx:id="qaBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#qa" prefHeight="188.0" prefWidth="298.0" styleClass="drawer-button" text="Teacher QnA" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="QUESTION" size="2.2em" wrappingWidth="25.785715103149414" />
+               </graphic>
+               <font>
+                  <Font name="SansSerif Regular" size="20.0" />
                </font>
             </JFXButton>
          </children>
       </HBox>
-      <JFXButton fx:id="homeBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#home" prefHeight="90.0" prefWidth="300.0" styleClass="drawer-button" stylesheets="@../Resources/css.css" text="Home">
-         <graphic>
-            <FontAwesomeIcon glyphName="HOME" size="2em" wrappingWidth="37.785715103149414">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </FontAwesomeIcon>
-         </graphic>
-         <font>
-            <Font size="20.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </JFXButton>
-      <JFXButton fx:id="qaBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#qa" prefHeight="90.0" prefWidth="325.0" styleClass="drawer-button" text="Teacher QnA">
-         <graphic>
-            <FontAwesomeIcon glyphName="QUESTION" size="2.2em" wrappingWidth="25.785715103149414" />
-         </graphic>
-         <font>
-            <Font size="20.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="chatBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#chatDrawer" prefHeight="90.0" prefWidth="325.0" styleClass="drawer-button" text="Chats">
-         <graphic>
-            <FontAwesomeIcon glyphName="SEND" size="1.6em" wrappingWidth="31.285715103149414" />
-         </graphic>
-         <font>
-            <Font size="20.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="fileShare" contentDisplay="TOP" graphicTextGap="0.0" onAction="#share" prefHeight="90.0" prefWidth="325.0" styleClass="drawer-button" text="File Share">
-         <graphic>
-            <FontAwesomeIcon glyphName="FILE" size="1.5em" wrappingWidth="25.785715103149414" />
-         </graphic>
-         <font>
-            <Font size="20.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="accBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#acc" prefHeight="90.0" prefWidth="260.0" styleClass="drawer-button" text="  Account">
-         <graphic>
-            <FontAwesomeIcon glyphName="USER" size="1.8em" wrappingWidth="28.785715103149414" />
-         </graphic>
-         <font>
-            <Font size="20.0" />
-         </font>
-      </JFXButton>
+      <HBox prefHeight="100.0" prefWidth="200.0" styleClass="drawer-item">
+         <children>
+            <JFXButton fx:id="chatBut" alignment="CENTER" contentDisplay="TOP" graphicTextGap="0.0" onAction="#chat" prefHeight="121.0" prefWidth="329.0" styleClass="drawer-button" text="Chats" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="SEND" size="1.6em" wrappingWidth="31.285715103149414" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" styleClass="drawer-item">
+         <children>
+            <JFXButton fx:id="fileBut" alignment="CENTER" contentDisplay="TOP" graphicTextGap="0.0" onAction="#fileShare" prefHeight="121.0" prefWidth="329.0" styleClass="drawer-button" text="File Share" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="FILE" size="1.5em" wrappingWidth="25.785715103149414" />
+               </graphic>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
+      <HBox onMouseClicked="#acc" prefHeight="178.0" prefWidth="300.0" styleClass="drawer-item">
+         <children>
+            <JFXButton fx:id="accBut" contentDisplay="TOP" graphicTextGap="0.0" onAction="#acc" prefHeight="149.0" prefWidth="298.0" styleClass="drawer-button" text="  Account" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="USER" size="1.8em" wrappingWidth="28.785715103149414" />
+               </graphic>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
    </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
 </VBox>

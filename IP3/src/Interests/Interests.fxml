@@ -6,49 +6,77 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="587.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
+<AnchorPane fx:id="pane" prefHeight="464.0" prefWidth="767.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
    <children>
-      <Pane prefHeight="60.0" prefWidth="587.0" style="-fx-background-color: #7f948f;">
+      <AnchorPane maxHeight="-Infinity" prefHeight="60.0" prefWidth="600.0" styleClass="navigation-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="236.0" layoutY="-3.0" prefHeight="66.0" prefWidth="116.0" text="Sign Up" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutY="-4.0" prefHeight="67.0" prefWidth="600.0" text="SIGN UP" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
-                  <Font size="30.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
          </children>
-      </Pane>
-      <JFXTextField fx:id="getfname" focusColor="#a8d6c9" layoutX="101.0" layoutY="159.0" prefHeight="25.0" prefWidth="179.0" promptText="First name" styleClass="text-area">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></JFXTextField>
-      <JFXTextField fx:id="getsurname" focusColor="#a8d6c9" layoutX="330.0" layoutY="159.0" prefHeight="25.0" prefWidth="171.0" promptText="Surname" styleClass="text-area">
-         <effect>
-            <DropShadow color="TRANSPARENT" />
-         </effect>
-         <font>
-            <Font size="16.0" />
-         </font></JFXTextField>
-      <JFXTextField fx:id="getemail" focusColor="#a8d6c9" layoutX="101.0" layoutY="248.0" prefHeight="25.0" prefWidth="171.0" promptText="University Email" styleClass="text-area">
-         <font>
-            <Font size="16.0" />
-         </font></JFXTextField>
-      <JFXDatePicker fx:id="getdob" defaultColor="#002b43" layoutX="330.0" layoutY="247.0" overLay="true" prefHeight="28.0" prefWidth="179.0" promptText="Date of Birth" styleClass="text-area" />
-      <JFXComboBox fx:id="catSelect" focusColor="#a8d6c9" layoutX="97.0" layoutY="344.0" prefHeight="25.0" prefWidth="179.0" promptText="Select Interest" styleClass="text-area" />
-      <JFXButton fx:id="registerBut" buttonType="RAISED" layoutX="398.0" layoutY="451.0" onAction="#register" prefHeight="35.0" prefWidth="100.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE">
-         <font>
-            <Font size="16.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="cancelBut" buttonType="RAISED" layoutX="112.0" layoutY="451.0" onAction="#cancel" prefHeight="35.0" prefWidth="100.0" styleClass="cancel-button" text="CANCEL">
-         <font>
-            <Font size="16.0" />
-         </font></JFXButton>
+      </AnchorPane>
+      <GridPane hgap="40.0" layoutX="40.0" layoutY="89.0" prefHeight="333.0" prefWidth="699.0" vgap="20.0" AnchorPane.bottomAnchor="41.666666666666686" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="89.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXTextField fx:id="getfname" promptText="First name" styleClass="text-area" />
+            <JFXTextField fx:id="getsurname" promptText="Surname" styleClass="text-area" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="getemail" promptText="University Email" styleClass="text-area" GridPane.rowIndex="1" />
+            <JFXDatePicker fx:id="getdob" defaultColor="#002b43" prefHeight="28.0" prefWidth="857.0" promptText="Date of Birth" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="catSelect" prefHeight="48.0" prefWidth="1184.0" promptText="Select Interest" styleClass="text-area" GridPane.rowIndex="2" />
+            <JFXButton fx:id="cancelBut" buttonType="RAISED" onAction="#cancel" prefHeight="51.0" prefWidth="1191.0" styleClass="cancel-button" text="CANCEL" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="registerBut" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" prefWidth="650.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXButton>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <JFXButton onAction="#upload" prefHeight="33.0" prefWidth="633.0" styleClass="categories-button" text="Browse" textFill="WHITE" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <Label text="Select Profile Picture" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <JFXTextField fx:id="locImg" editable="false" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

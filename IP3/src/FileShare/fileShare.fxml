@@ -4,73 +4,49 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1040.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FileShare.FileShareController">
+<AnchorPane fx:id="pane" style="-fx-background-color: white;" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FileShare.FileShareController">
    <children>
-      <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="49.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
+      <JFXTextField fx:id="search" focusColor="#a8d6c9" layoutX="97.0" layoutY="109.0" prefHeight="33.0" prefWidth="523.0" promptText="Search" styleClass="text-area" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="436.0" AnchorPane.topAnchor="109.0" />
+      <AnchorPane layoutX="100.0" layoutY="168.0" prefHeight="279.0" prefWidth="681.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="168.0">
          <children>
-            <HBox prefHeight="69.0" prefWidth="419.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
-                     <children>
-                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </JFXHamburger>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="67.0" prefWidth="123.0">
-                     <children>
-                        <Label prefHeight="67.0" prefWidth="123.0" text="File Share">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children></HBox>
+            <TableView fx:id="files" onMouseClicked="#clickItem" styleClass="table" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <placeholder>
+                  <Label text="No files uploaded" />
+               </placeholder>
+                <columns>
+                <TableColumn fx:id="fileName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="378.66666412353516" resizable="false" sortable="false" text="File Name" />
+                <TableColumn fx:id="fileSize" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="254.88897705078125" resizable="false" sortable="false" text="Size" />
+                  <TableColumn fx:id="fileAuthor" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="227.11102294921875" resizable="false" sortable="false" text="Uploaded By:" />
+              </columns>
+            </TableView>
          </children>
-      </HBox>
-      <JFXTextField fx:id="search" layoutX="97.0" layoutY="103.0" prefHeight="25.0" prefWidth="422.0" promptText="Search">
+      </AnchorPane>
+      <JFXTextField fx:id="fileLoc" focusColor="#a8d6c9" layoutX="97.0" layoutY="480.0" prefHeight="42.0" prefWidth="342.0" styleClass="text-area" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="439.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXTextField>
+      <JFXButton fx:id="downloadBut" layoutX="623.0" layoutY="491.0" onAction="#download" prefHeight="51.0" prefWidth="151.0" styleClass="categories-button" text="DOWNLOAD" textFill="WHITE" AnchorPane.rightAnchor="103.66666666666663">
          <font>
-            <Font size="16.0" />
-         </font></JFXTextField>
-      <TableView fx:id="files" layoutX="91.0" layoutY="150.0" onMouseClicked="#clickItem" prefHeight="304.0" prefWidth="764.0" styleClass="table">
-        <placeholder>
-            <Label text="No files uploaded" />
-         </placeholder>
-          <columns>
-          <TableColumn fx:id="fileName" prefWidth="318.888916015625" text="File Name" />
-          <TableColumn fx:id="fileSize" minWidth="0.0" prefWidth="255.11111450195312" text="Size" />
-            <TableColumn fx:id="fileAuthor" prefWidth="189.11102294921875" text="Uploaded By:" />
-        </columns>
-      </TableView>
-      <JFXButton fx:id="uploadBut" layoutX="601.0" layoutY="469.0" onAction="#upload" prefHeight="42.0" prefWidth="110.0" styleClass="categories-button" text="UPLOAD" textFill="WHITE">
-         <font>
-            <Font size="16.0" />
+            <Font size="18.0" />
          </font>
       </JFXButton>
-      <JFXTextField fx:id="fileLoc" layoutX="91.0" layoutY="462.0" prefHeight="42.0" prefWidth="463.0">
-         <font>
-            <Font size="16.0" />
-         </font></JFXTextField>
-      <JFXButton fx:id="downloadBut" layoutX="726.0" layoutY="469.0" onAction="#download" prefHeight="42.0" prefWidth="130.0" styleClass="categories-button" text="DOWNLOAD" textFill="WHITE">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </JFXButton>
-      <MenuButton layoutX="544.0" layoutY="109.0" mnemonicParsing="false" style="-fx-background-color: #002b43;" text="SHOW" textFill="WHITE">
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="1.0" layoutY="65.0" prefHeight="556.0" prefWidth="308.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="570.0" AnchorPane.topAnchor="68.0" />
+      <MenuButton layoutX="645.0" layoutY="92.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="151.0" style="-fx-background-color: #002b43;" text="SHOW" textFill="WHITE" AnchorPane.rightAnchor="263.0000000000001" AnchorPane.topAnchor="92.0">
         <items>
             <MenuItem fx:id="allFiles" mnemonicParsing="false" onAction="#showAllFiles" text="All Files" />
           <MenuItem fx:id="textFiles" mnemonicParsing="false" onAction="#showTextFiles" text="Text Files" />
@@ -78,18 +54,49 @@
             <MenuItem fx:id="pptxFiles" mnemonicParsing="false" text="PowerPoint Presentations" />
         </items>
          <font>
-            <Font size="14.0" />
+            <Font name="SansSerif Regular" size="18.0" />
          </font>
       </MenuButton>
-      <MenuButton layoutX="633.0" layoutY="109.0" mnemonicParsing="false" style="-fx-alignment: #002b43;" text="SORT BY" textFill="WHITE">
+      <MenuButton layoutX="651.0" layoutY="92.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="145.0" style="-fx-alignment: #002b43;" text="SORT BY" textFill="WHITE" wrapText="true" AnchorPane.rightAnchor="98.0" AnchorPane.topAnchor="92.0">
          <items>
             <MenuItem fx:id="dateDesc" mnemonicParsing="false" text="Date Uploaded (Newest to Oldest)" />
             <MenuItem mnemonicParsing="false" text="Date Uploaded (Oldest to Newest)" />
          </items>
          <font>
-            <Font size="14.0" />
+            <Font name="SansSerif Regular" size="18.0" />
          </font>
       </MenuButton>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="1.0" layoutY="47.0" prefHeight="568.0" prefWidth="260.0" />
+      <Pane layoutX="-9.0" layoutY="-3.0" prefHeight="68.0" prefWidth="1059.0" styleClass="navigation-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="44.0" layoutY="23.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Lighting specularConstant="2.0" specularExponent="0.0">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+            </JFXHamburger>
+            <Label layoutX="94.0" layoutY="-1.0" prefHeight="67.0" prefWidth="123.0" text="File Share" textFill="WHITE">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <JFXButton fx:id="uploadBut" layoutX="464.0" layoutY="491.0" onAction="#upload" prefHeight="51.0" prefWidth="151.0" styleClass="categories-button" text="UPLOAD" textFill="WHITE" AnchorPane.rightAnchor="262.66666666666663">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXButton>
    </children>
+   <opaqueInsets>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </opaqueInsets>
 </AnchorPane>

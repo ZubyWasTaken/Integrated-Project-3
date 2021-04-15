@@ -86,9 +86,6 @@ public class homeController implements Initializable {
     private Label username;
 
     @FXML
-    private Label feedTitle;
-
-    @FXML
     private Label lblArticle1;
 
     @FXML
@@ -153,6 +150,15 @@ public class homeController implements Initializable {
 
     @FXML
     private Label userUsername;
+    
+    @FXML
+    private Label fname;
+    
+    @FXML
+    private Label title;
+    
+    @FXML
+    private Label surname;
 
     private SQLHandler sql = new SQLHandler();
     int count = 0;
@@ -195,7 +201,7 @@ public class homeController implements Initializable {
 
     @FXML
     private void getOnlineUser(MouseEvent event) throws SQLException {
-
+        
         TablePosition pos = (TablePosition) usersOnline.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         User item = usersOnline.getItems().get(index);
@@ -204,7 +210,10 @@ public class homeController implements Initializable {
         User user = new User(username);
         userDetails.setVisible(true);
         userUsername.setText(user.getUsername());
-        InputStream fs = sql.getImage(user.getUserID());
+        fname.setText(user.getFirstname());
+        surname.setText(user.getSurname());
+        title.setText(user.fetchTitle(user.getTitleId()));
+        InputStream fs= user.getImage();
         javafx.scene.image.Image image = new javafx.scene.image.Image(fs);
         profilePic.setImage(image);
     }
@@ -329,8 +338,6 @@ public class homeController implements Initializable {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
-                //Sets feed title to inform user to select a feed
-                feedTitle.setText("Please Select a Feed.");
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
                 } catch (SQLException ex) {

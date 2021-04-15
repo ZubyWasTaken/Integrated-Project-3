@@ -10,7 +10,6 @@ import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import ip3.Drawer;
 import ip3.Post;
@@ -33,7 +32,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -64,22 +66,24 @@ public class ChatController implements Initializable {
 
     @FXML
     private JFXButton sgnOutBut;
-
+    
     @FXML
-    public static JFXListView<String> onlineUsers;
+    private TableView<User> online;
+    
+    @FXML
+    private TableColumn<User,String> user;
 
     String username;
     int userID;
     User currentUser;
     int count = 0;
     SQLHandler sql = new SQLHandler();
+    ObservableList<User> data = FXCollections.observableArrayList();
 
     Timestamp now = new Timestamp(System.currentTimeMillis());
 
     public void setData(User user) throws SQLException {
         currentUser = user;
-        count = sql.countUsersOnline(currentUser.getUserID(), currentUser.getCatId(), currentUser.getUniId());
-
     }
 
     @FXML
@@ -106,11 +110,17 @@ public class ChatController implements Initializable {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 System.out.println("Working?");
                 username = currentUser.getUsername();
-             
-
-              
-                usersOnline.setText(String.valueOf(count));
+              try {
+                    data = sql.showChatUsers(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                online.setItems(data);
+                int rows = online.getItems().size();
+                usersOnline.setText(String.valueOf(rows));
                 userID = currentUser.getUserID();
+      
 
             }
         });

@@ -181,10 +181,10 @@ public class HomeTutorController implements Initializable {
         userUsername.setText(user.getUsername());
         fname.setText(user.getFirstname());
         surname.setText(user.getSurname());
-        title.setText(user.fetchTitle(user.getTitleId()));
-        InputStream fs= user.getImage();
-        Image image = new Image(fs);
-        profilePic.setImage(image);
+        //title.setText(user.fetchTitle(user.getTitleId()));
+        //InputStream fs= user.getImage();
+        //Image image = new Image(fs);
+        //profilePic.setImage(image);
     }
 
     
@@ -810,15 +810,7 @@ public class HomeTutorController implements Initializable {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 
                 questionsCount.setText(Integer.toString(count));
-                username.setText(currentUser.getUsername());
-                try {
-                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(),currentUser.getUserID());
-                } catch (SQLException ex) {
-                    Logger.getLogger(homeController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                user.setCellValueFactory(new PropertyValueFactory<>("username"));
-                usersOnline.setItems(data);
+                
     for (Label label : Arrays.asList(lblArticle1, lblArticle2, lblArticle3, lblArticle4, lblArticle5)) {
                     //label.setVisible(false);
                 }

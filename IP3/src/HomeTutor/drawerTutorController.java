@@ -29,11 +29,11 @@ public class drawerTutorController implements Initializable {
     User currentUser;
 
     @FXML
-    private HBox homeBut;
+    private JFXButton homeBut;
     @FXML
-    private HBox qaBut;
+    private JFXButton qaBut;
     @FXML
-    private HBox accBut;
+    private JFXButton accBut;
     @FXML
     private JFXButton sgnOutBut;
     @FXML
@@ -41,7 +41,7 @@ public class drawerTutorController implements Initializable {
     @FXML
     private ImageView profilePic;
     @FXML
-    private void home(MouseEvent event){
+    private void home(ActionEvent event){
      
             SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new HomeTutor(currentUser));
        
@@ -49,12 +49,12 @@ public class drawerTutorController implements Initializable {
     
    
     @FXML
-    private void qa(MouseEvent event){
+    private void qa(ActionEvent event){
            SwitchWindow.switchWindow((Stage) qaBut.getScene().getWindow(), new QA_Tutor(currentUser));
     } 
 
     @FXML
-    private void acc (MouseEvent event){
+    private void acc (ActionEvent event){
            SwitchWindow.switchWindow((Stage) accBut.getScene().getWindow(), new Edit(currentUser)); 
     
     }
@@ -68,7 +68,7 @@ public class drawerTutorController implements Initializable {
         userUsername.setText(currentUser.getUsername());
         InputStream fs = null;
                 try {
-                    fs = currentUser.getImage();
+                   fs = currentUser.getImage();
                 } catch (SQLException ex) {
                     Logger.getLogger(drawerTutorController.class.getName()).log(Level.SEVERE, null, ex);
                 }
