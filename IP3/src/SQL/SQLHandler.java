@@ -613,6 +613,8 @@ public class SQLHandler {
             query.executeUpdate();
         query.close();
     }
+    
+    
 
     public ObservableList<User> showUsersOnline(int uniId, int catId, int id) throws SQLException {
         ObservableList<User> output = FXCollections.observableArrayList();

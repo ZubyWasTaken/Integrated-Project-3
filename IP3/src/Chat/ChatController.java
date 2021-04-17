@@ -71,7 +71,7 @@ public class ChatController implements Initializable {
     @FXML
     private JFXButton sgnOutBut;
 
-     @FXML
+    @FXML
     private TableView<User> onlineUser;
 
     @FXML
@@ -82,7 +82,7 @@ public class ChatController implements Initializable {
     User currentUser;
     int count = 0;
     SQLHandler sql = new SQLHandler();
-      ObservableList<User> data = FXCollections.observableArrayList();
+    ObservableList<User> data = FXCollections.observableArrayList();
 
     Timestamp now = new Timestamp(System.currentTimeMillis());
 
@@ -116,25 +116,17 @@ public class ChatController implements Initializable {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
 
                 username = currentUser.getUsername();
-try {
-                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
-                } catch (SQLException ex) {
-                    Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                user.setCellValueFactory(new PropertyValueFactory<>("username"));
-                onlineUser.setItems(data);
-                usersOnline.setText(String.valueOf(count-1));
-                userID = currentUser.getUserID();
 
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
                 } catch (SQLException ex) {
                     Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
                 user.setCellValueFactory(new PropertyValueFactory<>("username"));
                 onlineUser.setItems(data);
+                int rows = onlineUser.getItems().size();
+                usersOnline.setText(String.valueOf(rows));
+              
             }
         });
 
