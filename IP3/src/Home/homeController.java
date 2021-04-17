@@ -30,11 +30,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+//import java.awt.TextArea;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
@@ -42,10 +44,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 /**
@@ -154,6 +159,18 @@ public class homeController implements Initializable {
     @FXML
     private Label userUsername;
 
+    @FXML
+    private JFXButton infoChat;
+
+    @FXML
+    private JFXButton infoFile;
+
+    @FXML
+    private JFXButton infoQNA;
+
+    @FXML
+    private TextFlow info;
+
     private SQLHandler sql = new SQLHandler();
     int count = 0;
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -216,14 +233,16 @@ public class homeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      //**SETTING DISPLAY AS UK (FIRST BUTTON)**//
-        
+        //**SETTING DISPLAY AS UK (FIRST BUTTON)**//
+        handleMouseEvents();
         btnUK.setDisable(true);
         btnWorld.setDisable(false);
         btnBusiness.setDisable(false);
         btnTech.setDisable(false);
         btnPolitics.setDisable(false);
         btnScience.setDisable(false);
+
+        info.setVisible(false);
 
         //This reads the current articles on BBC (https://www.bbc.co.uk/news/uk)
         //The articles will change as the news updates on BBC
@@ -329,8 +348,6 @@ public class homeController implements Initializable {
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
                 username.setText(currentUser.getUsername());
 
-               
-                
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
                 } catch (SQLException ex) {
@@ -990,5 +1007,77 @@ public class homeController implements Initializable {
         for (Hyperlink hyperlink : Arrays.asList(articleHyperlink1, articleHyperlink2, articleHyperlink3, articleHyperlink4, articleHyperlink5)) {
             hyperlink.setVisible(true);
         }
+    }
+
+    private void handleMouseEvents() {
+        infoQNA.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                info.setVisible(true);
+                
+                Text text = new Text("Ask Tutors in your course questions related to your subject.\nTeachers will"
+                        + " respond within 3 days.\nStudents can also help out with questions and further discussions.\n"
+                        + "Mark a question as resolved when you feel your question has been answered!");
+ text.setStyle("-fx-font: 16 arial;");
+ 
+                info.getChildren().add(text);
+            }
+        });
+
+        infoQNA.addEventHandler(MouseEvent.MOUSE_EXITED,
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                info.setVisible(false);
+              
+                info.getChildren().clear();
+            }
+        });
+         infoChat.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                info.setVisible(true);
+                
+                Text text = new Text("Chat informally as a group with other students in your course.\n"
+                        + "Ask each other questions, discuss lectures or even discuss todays top stories from the BBC News Feed!");
+  text.setStyle("-fx-font: 16 arial;");
+                info.getChildren().add(text);
+            }
+        });
+
+        infoChat.addEventHandler(MouseEvent.MOUSE_EXITED,
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                info.setVisible(false);
+              
+                info.getChildren().clear();
+            }
+        });
+         infoFile.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                info.setVisible(true);
+                
+                Text text = new Text("Upload and download files with other students.\n"
+                        + "Students can share images, text documents and presentations.\n"
+                        + "Maybe you want to share useful lecture notes with your peers or get feedback on a presentation you created!");
+  text.setStyle("-fx-font: 16 arial;");
+                info.getChildren().add(text);
+            }
+        });
+
+        infoFile.addEventHandler(MouseEvent.MOUSE_EXITED,
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                info.setVisible(false);
+              
+                info.getChildren().clear();
+            }
+        });
     }
 }

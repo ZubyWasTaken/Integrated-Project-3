@@ -190,7 +190,7 @@ public class SQLHandler {
            
     }
        
-        System.out.println("Success");
+       
         return blob;
     }
     

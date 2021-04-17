@@ -229,4 +229,27 @@
     -fx-border-color: black;
 }
 
+.circle-home{
+     -fx-background-radius: 30em; 
+                -fx-min-width: 100px; 
+                -fx-min-height: 100px; 
+                -fx-max-width: 100px; 
+                -fx-max-height: 100px;
+                -fx-background-color:  -fx-darkblue;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+   
+}
+.circle-home:hover {
+   
+-fx-background-color: #a8d6c9;
+-fx-text-fill: black;
+  -fx-min-width: 105px; 
+                -fx-min-height: 105px; 
+                -fx-max-width: 105px; 
+                -fx-max-height: 105px;
+}
+
+
+
 
