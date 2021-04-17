@@ -100,7 +100,7 @@
                   </Label>
                </children>
             </HBox>
-            <TableView fx:id="usersOnline1" prefHeight="498.0" prefWidth="218.0" stylesheets="@../Resources/css.css">
+            <TableView fx:id="onlineUser" prefHeight="498.0" prefWidth="218.0" stylesheets="@../Resources/css.css">
                <placeholder>
                   <Label text="No users online" />
                </placeholder>
@@ -117,6 +117,6 @@
             </TableView>
          </children>
       </VBox>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-246.0" layoutY="14.0" prefHeight="568.0" prefWidth="260.0" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutY="46.0" prefHeight="568.0" prefWidth="260.0" />
    </children>
 </Pane>
