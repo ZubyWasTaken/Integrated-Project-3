@@ -126,7 +126,7 @@ public class ChatController implements Initializable {
                 onlineUser.setItems(data);
                 int rows = onlineUser.getItems().size();
                 usersOnline.setText(String.valueOf(rows));
-              
+                userID = currentUser.getUserID();
             }
         });
 
