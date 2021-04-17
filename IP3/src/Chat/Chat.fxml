@@ -3,11 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -58,23 +61,24 @@
             </VBox>
          </children>
       </HBox>
-      <VBox layoutX="229.0" layoutY="117.0" prefHeight="501.0" prefWidth="498.0">
+      <VBox layoutX="216.0" layoutY="117.0" prefHeight="498.0" prefWidth="511.0">
          <children>
-            <JFXTextArea fx:id="viewMsg" editable="false" prefHeight="467.0" prefWidth="498.0">
+            <JFXTextArea fx:id="viewMsg" editable="false" prefHeight="447.0" prefWidth="481.0">
                <padding>
                   <Insets left="10.0" />
                </padding>
             </JFXTextArea>
-            <HBox alignment="CENTER" prefHeight="107.0" prefWidth="485.0" style="-fx-background-color: white; -fx-border-color: black;">
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="498.0">
                <children>
-                  <JFXTextArea fx:id="messageArea" prefHeight="49.0" prefWidth="350.0" />
-                  <JFXButton fx:id="sendMsg" alignment="CENTER" contentDisplay="CENTER" onAction="#sendMsg" prefHeight="45.0" prefWidth="155.0" styleClass="categories-button" text="Send">
+                  <HBox prefHeight="61.0" prefWidth="412.0" style="-fx-background-color: white; -fx-border-color: black;">
+                     <children>
+                        <JFXTextArea fx:id="messageArea" prefHeight="61.0" prefWidth="401.0" />
+                     </children>
+                  </HBox>
+                  <JFXButton fx:id="sendMsg" alignment="CENTER" contentDisplay="CENTER" onAction="#sendMsg" prefHeight="53.0" prefWidth="125.0" styleClass="categories-button" text="Send">
                      <font>
                         <Font size="24.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </JFXButton>
                </children>
             </HBox>
@@ -96,9 +100,23 @@
                   </Label>
                </children>
             </HBox>
-            <JFXListView fx:id="onlineUsers" prefHeight="501.0" prefWidth="218.0" />
+            <TableView fx:id="usersOnline1" prefHeight="498.0" prefWidth="218.0" stylesheets="@../Resources/css.css">
+               <placeholder>
+                  <Label text="No users online" />
+               </placeholder>
+               <columns>
+                  <TableColumn fx:id="user" editable="false" maxWidth="305.0" prefWidth="217.0" resizable="false" text="Online" />
+               </columns>
+               <styleClass>
+                  <String fx:value="table-row-cell" />
+                  <String fx:value="table" />
+               </styleClass>
+               <effect>
+                  <InnerShadow color="#9c8e8e" />
+               </effect>
+            </TableView>
          </children>
       </VBox>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutY="49.0" prefHeight="568.0" prefWidth="260.0" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="-246.0" layoutY="14.0" prefHeight="568.0" prefWidth="260.0" />
    </children>
 </Pane>

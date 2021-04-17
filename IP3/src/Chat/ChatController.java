@@ -18,6 +18,7 @@ import ip3.SwitchWindow;
 import ip3.User;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.SQLException;
@@ -33,7 +34,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -65,14 +71,18 @@ public class ChatController implements Initializable {
     @FXML
     private JFXButton sgnOutBut;
 
+     @FXML
+    private TableView<User> onlineUser;
+
     @FXML
-    public static JFXListView<String> onlineUsers;
+    private TableColumn<User, String> user;
 
     String username;
     int userID;
     User currentUser;
     int count = 0;
     SQLHandler sql = new SQLHandler();
+      ObservableList<User> data = FXCollections.observableArrayList();
 
     Timestamp now = new Timestamp(System.currentTimeMillis());
 
@@ -90,8 +100,8 @@ public class ChatController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-                final int MAX_CHARS = 500;
-         messageArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        final int MAX_CHARS = 500;
+        messageArea.setTextFormatter(new TextFormatter<String>((TextFormatter.Change change) -> change.getControlNewText().length() <= MAX_CHARS ? change : null));
         try {
             displayMsgs();
         } catch (SQLException ex) {
@@ -104,19 +114,32 @@ public class ChatController implements Initializable {
                 drawer.setDisable(true);
                 Drawer newdrawer = new Drawer();
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                System.out.println("Working?");
-                username = currentUser.getUsername();
-             
 
-              
-                usersOnline.setText(String.valueOf(count));
+                username = currentUser.getUsername();
+try {
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                onlineUser.setItems(data);
+                usersOnline.setText(String.valueOf(count-1));
                 userID = currentUser.getUserID();
 
+                try {
+                    data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                user.setCellValueFactory(new PropertyValueFactory<>("username"));
+                onlineUser.setItems(data);
             }
         });
 
         try {
-           
+
             // Create a socket to connect to the server
             Socket socket = new Socket(ConnectionUtil.host, ConnectionUtil.port);
 
@@ -133,7 +156,7 @@ public class ChatController implements Initializable {
 
         } catch (IOException ex) {
 
-              viewMsg.appendText(ex.toString() + '\n');
+            viewMsg.appendText(ex.toString() + '\n');
         }
     }
 
@@ -147,6 +170,7 @@ public class ChatController implements Initializable {
             int id = post.getSender();
             userdata = sql.searchByID(id);
             name = userdata.get(1);
+
             viewMsg.appendText("[" + name + "]: " + msg + "\n");
         }
 
