@@ -82,7 +82,7 @@ public class InterestController implements Initializable {
     ObservableList<Categories> data2 = FXCollections.observableArrayList();
     ObservableList<String> namesCat = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
-    String firstname, surname, username, password, email, userDob;
+    String firstname, surname, username, password, email, userDob, imgPath;
     LocalDate dob;
     int uniId;
     int catId;
@@ -106,7 +106,8 @@ public class InterestController implements Initializable {
         username = currentUser.getUsername().trim();
         password = currentUser.getPassword().trim();
         email = getemail.getText().trim();
-
+ imgPath = locImg.getText().trim();
+ System.out.println(imgPath);
         dob = getdob.getValue();
         if (dob != null) {
             userDob = dob.toString();
@@ -173,6 +174,15 @@ public class InterestController implements Initializable {
             tray.setAnimationType(type);
             tray.setTitle("Register");
             tray.setMessage("Date of birth empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+        }else if (imgPath.isEmpty()) {
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please select a profile picture");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
 
@@ -260,13 +270,10 @@ public class InterestController implements Initializable {
     private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
         User user = new User(username);
 
-        if (locImg.getText().isEmpty()) {
-            image = new File("src/Resources/noPic.png");
+             image = new File(locImg.getText());
+                 
 
-        } else {
-            image = new File(locImg.getText());
-
-        }
+        
         FileInputStream fis = new FileInputStream(image);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
