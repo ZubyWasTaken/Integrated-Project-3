@@ -128,7 +128,7 @@ public class QA_TutorController implements Initializable {
             @Override
             public void run() {
 
-                username.setText(currentUser.getUsername());
+                username.setText(currentUser.getFirstname());
 
                 try {
                     loadAllQs();

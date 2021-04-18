@@ -8,16 +8,26 @@ import Home.Home;
 import HomeTutor.HomeTutor;
 import LoginRegister.LoginRegister;
 import QA_Tutor.QA_Tutor;
+import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
+import ip3.Drawer;
 import ip3.SwitchWindow;
 import ip3.User;
+import java.io.InputStream;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -38,7 +48,14 @@ public class drawerController implements Initializable {
     
     @FXML
     private JFXButton fileShare;
+    
+        @FXML
+    private ImageView drawerPfp;
 
+    @FXML
+    private Label drawerName;
+
+SQLHandler sql=new SQLHandler();       
 
     @FXML
     private void home(Event event){
@@ -92,6 +109,25 @@ public class drawerController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+         Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+               String username = currentUser.getUsername();
+               drawerName.setText(username);
+                InputStream fs;
+                try {
+                    fs = sql.getImage(currentUser.getUserID());
+                    Image image = new Image(fs);
+                      drawerPfp.setImage(image);
+                } catch (SQLException ex) {
+                    Logger.getLogger(drawerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+        
+              
+
+            }
+        });
     }
     
         
