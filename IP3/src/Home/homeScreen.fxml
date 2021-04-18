@@ -63,7 +63,7 @@
             </HBox>
             <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
                <children>
-                  <JFXButton fx:id="sgnOutBut" onAction="#signOut">
+                  <JFXButton fx:id="sgnOutBut" onAction="#signOut" styleClass="icons">
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                            <image>

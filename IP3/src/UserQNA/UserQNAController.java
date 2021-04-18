@@ -556,13 +556,20 @@ public class UserQNAController implements Initializable {
 
     @FXML
     private void showMyQs(ActionEvent event) throws SQLException {
+
         data.clear();
         feed.getItems().clear();
         data = sql.showQuestionsTable(currentUser.getCatId(), currentUser.getUniId());
+        FXCollections.reverse(data);
         data.forEach((_item) -> {
+            User tempUser = _item.getSender();
+          
+
             try {
-                if (currentUser.equals(_item.getSender()) == true) {
+
+                if (tempUser.getUserID() == currentUser.getUserID()) {
                     displayQs(_item);
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);

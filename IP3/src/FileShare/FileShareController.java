@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package FileShare;
+import LoginRegister.LoginRegister;
 import SQL.SQLHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
@@ -98,6 +99,9 @@ public class FileShareController implements Initializable {
     
     @FXML
     private JFXButton uploadBut;
+    
+   @FXML
+    private JFXButton sgnOutBut;
    
     byte[] file=null;
     User currentUser;
@@ -262,13 +266,27 @@ private void upload(ActionEvent event) throws IOException, FileNotFoundException
                    
             }
    }
- 
-@FXML
+ @FXML
 private void showImageFiles(ActionEvent event) throws SQLException{
     
     ObservableList<AppFiles> filtFile =FXCollections.observableArrayList();
     data.forEach((_item) -> {
         String[] strs = {"png", "jpg", "jpeg", "gif", "eps", "raw","bmp","tiff","tif"};
+        List<String> elements = new ArrayList<>();
+        elements.addAll(Arrays.asList(strs));
+        if (elements.contains(_item.getExtension())){
+            filtFile.add(_item);     
+        }    
+    });
+          displayFiles(filtFile);
+          files.refresh();
+}
+@FXML
+private void showPowerpoint(ActionEvent event) throws SQLException{
+    
+    ObservableList<AppFiles> filtFile =FXCollections.observableArrayList();
+    data.forEach((_item) -> {
+        String[] strs = {"pptx", "pptm", "ppt", "ppsx", "ppsm", "pps","potx","potm","pot","otp","odp","key"};
         List<String> elements = new ArrayList<>();
         elements.addAll(Arrays.asList(strs));
         if (elements.contains(_item.getExtension())){
@@ -326,6 +344,11 @@ private void uploadFiles(File item) throws FileNotFoundException, IOException, S
     sql.uploadFile(file,currentUser.getUserID(),fileName.toString(), size);
 }
 }
+@FXML
+    private void signOut(ActionEvent event) throws SQLException {
+        sql.updateLogin(currentUser.getUserID(), false);
+        SwitchWindow.switchWindow((Stage) sgnOutBut.getScene().getWindow(), new LoginRegister());
+    }
 
 
 }

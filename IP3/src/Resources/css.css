@@ -249,6 +249,15 @@
                 -fx-max-width: 105px; 
                 -fx-max-height: 105px;
 }
+.icons:hover {
+   
+-fx-background-color: #a8d6c9;
+
+}
+
+.menu-bar{
+    -fx-cursor: hand;
+}
 
 
 

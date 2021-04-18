@@ -526,6 +526,7 @@ public class SQLHandler {
         query.close();
         return output;
 }
+    
 
         public void addReply(String replyText, int id, int userID) throws SQLException {
         String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
