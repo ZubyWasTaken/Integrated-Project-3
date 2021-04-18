@@ -346,7 +346,7 @@ public class homeController implements Initializable {
 
                 drawer.setDisable(true);
                 newdrawer.drawerPullout(drawer, currentUser, hamburger);
-                username.setText(currentUser.getUsername());
+                username.setText(currentUser.getFirstname());
 
                 try {
                     data = sql.showUsersOnline(currentUser.getUniId(), currentUser.getCatId(), currentUser.getUserID());

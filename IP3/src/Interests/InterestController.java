@@ -22,9 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -59,7 +56,7 @@ public class InterestController implements Initializable {
     //FXML//
     @FXML
     JFXTextField getfname;
-       @FXML
+    @FXML
     AnchorPane pane;
     @FXML
     JFXTextField getsurname;
@@ -76,15 +73,17 @@ public class InterestController implements Initializable {
 
     @FXML
     JFXTextField locImg;
-    
-      byte[] photo=null;
+
+    byte[] photo = null;
+    File image;
 
     //Variables//
     LocalDate date = LocalDate.now();
     ObservableList<Categories> data2 = FXCollections.observableArrayList();
     ObservableList<String> namesCat = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
-    String firstname, surname, username, password, email, dob;
+    String firstname, surname, username, password, email, userDob;
+    LocalDate dob;
     int uniId;
     int catId;
     int title_id = 1;
@@ -100,17 +99,66 @@ public class InterestController implements Initializable {
     @FXML
     private void register(ActionEvent event) throws SQLException, ParseException, IOException {
 
-        firstname = getfname.getText();
-        firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
-        surname = getsurname.getText();
-        surname = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase();
-        username = currentUser.getUsername();
-        password = currentUser.getPassword();
-        email = getemail.getText();
-        email = email.substring(0, 1).toUpperCase() + email.substring(1).toLowerCase();
-        dob = getdob.getValue().toString();
+        firstname = getfname.getText().trim();
 
-        if (User.isValid(email) == false) {
+        surname = getsurname.getText().trim();
+
+        username = currentUser.getUsername().trim();
+        password = currentUser.getPassword().trim();
+        email = getemail.getText().trim();
+
+        dob = getdob.getValue();
+        if (dob != null) {
+            userDob = dob.toString();
+        } else {
+            userDob = "";
+        }
+//        } else {
+//            tray.setAnimationType(type);
+//            tray.setTitle("Register");
+//            tray.setMessage("Enter a date");
+//            tray.setNotificationType(NotificationType.ERROR);
+//            tray.showAndDismiss(Duration.millis(3000));
+//
+//            registerFailed();
+//            return;
+//        }
+//        
+
+        if (userDob.isEmpty() & dob == null & firstname.isEmpty() & surname.isEmpty() & email.isEmpty()) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please enter all details");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (firstname.isEmpty()) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please enter first name.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (surname.isEmpty()) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please enter surname.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (User.isValid(email) == false) {
 
             tray.setAnimationType(type);
             tray.setTitle("Register");
@@ -121,24 +169,31 @@ public class InterestController implements Initializable {
             registerFailed();
             return;
 
-        }
-
-        if (User.matchName(firstname) == true || User.matchName(surname) == true) {
-
+        } else if (userDob.isEmpty()) {
+            tray.setAnimationType(type);
             tray.setTitle("Register");
-            tray.setMessage("Name invalid.");
+            tray.setMessage("Date of birth empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
 
             registerFailed();
             return;
 
-        }
-        if (dob.isEmpty() || firstname.isEmpty() || surname.isEmpty() || email.isEmpty()) {
+        } else if (catId == 0) {
 
             tray.setAnimationType(type);
             tray.setTitle("Register");
-            tray.setMessage("Please enter all details");
+            tray.setMessage("Please select an interest");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (User.matchName(firstname) == true || User.matchName(surname) == true) {
+
+            tray.setTitle("Register");
+            tray.setMessage("Name invalid.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
 
@@ -155,8 +210,10 @@ public class InterestController implements Initializable {
                 registerFailed();
 
             } else {
-
-                User.createUser(username, password, firstname, surname, dob, email, uniId, catId, title_id);
+                String newSurn = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase();
+                String newfirst = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
+                String newEmail = email.toLowerCase();
+                User.createUser(username, password, newfirst, newSurn, userDob, newEmail, uniId, catId, title_id);
 
                 tray.setTitle("Register");
                 tray.setMessage("Welcome to StudyBudz, " + username + "!");
@@ -182,7 +239,6 @@ public class InterestController implements Initializable {
 //        byte[] photo = Files.readAllBytes(path);
 //        sql.addImage(photo, user.getUserID());
 //    }
-
     @FXML
     private void cancel(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new LoginRegister());
@@ -204,7 +260,13 @@ public class InterestController implements Initializable {
     private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
         User user = new User(username);
 
-        File image = new File(locImg.getText());
+        if (locImg.getText().isEmpty()) {
+            image = new File("src/Resources/noPic.png");
+
+        } else {
+            image = new File(locImg.getText());
+
+        }
         FileInputStream fis = new FileInputStream(image);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
@@ -213,7 +275,6 @@ public class InterestController implements Initializable {
         }
         photo = bos.toByteArray();
         sql.addImage(photo, user.getUserID());
-
     }
 
     @FXML
@@ -242,7 +303,7 @@ public class InterestController implements Initializable {
                 super.updateItem(item, empty);
                 if (item.isAfter(maxDate.getValue())) { //Disable all dates after required date
                     setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;"); //To set background on different color
+                    getStyleClass().add("disabled-calendar"); //To set background on different color
                 }
             }
 

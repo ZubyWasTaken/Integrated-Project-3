@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id = "pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="587.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="587.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interests.InterestController">
    <children>
       <Pane prefHeight="60.0" prefWidth="587.0" style="-fx-background-color: #7f948f;">
          <children>
@@ -41,8 +41,16 @@
          <font>
             <Font size="16.0" />
          </font></JFXTextField>
-      <JFXDatePicker fx:id="getdob" defaultColor="#002b43" layoutX="330.0" layoutY="247.0" overLay="true" prefHeight="28.0" prefWidth="179.0" promptText="Date of Birth" styleClass="text-area" />
+      <JFXDatePicker fx:id="getdob" defaultColor="#002b43" layoutX="330.0" layoutY="248.0" prefHeight="37.0" prefWidth="186.0" promptText="Date of Birth" styleClass="text-area" />
       <JFXComboBox fx:id="catSelect" focusColor="#a8d6c9" layoutX="97.0" layoutY="344.0" prefHeight="25.0" prefWidth="179.0" promptText="Select Interest" styleClass="text-area" />
+      <JFXTextField fx:id="locImg" editable="false" focusColor="#a8d6c9" layoutX="327.0" layoutY="344.0" prefHeight="37.0" prefWidth="149.0" promptText="Surname" styleClass="text-area" text="Upload Profile Pic">
+         <effect>
+            <DropShadow color="TRANSPARENT" />
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXTextField>
       <JFXButton fx:id="registerBut" buttonType="RAISED" layoutX="398.0" layoutY="451.0" onAction="#register" prefHeight="35.0" prefWidth="100.0" styleClass="categories-button" text="SIGN UP" textFill="WHITE">
          <font>
             <Font size="16.0" />
@@ -51,18 +59,13 @@
          <font>
             <Font size="16.0" />
          </font></JFXButton>
-      <JFXTextField fx:id="locImg" focusColor="#a8d6c9" layoutX="327.0" layoutY="344.0" prefHeight="37.0" prefWidth="149.0" promptText="Surname" styleClass="text-area" text="Upload Profile Pic">
-         <effect>
-            <DropShadow color="TRANSPARENT" />
-         </effect>
-         <font>
-            <Font size="16.0" />
-         </font>
-      </JFXTextField>
       <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="476.0" layoutY="347.0" onAction="#upload">
          <graphic>
             <FontAwesomeIcon glyphName="SEARCH" size="2em" />
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
    </children>
 </AnchorPane>
