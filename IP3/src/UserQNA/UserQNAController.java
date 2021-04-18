@@ -249,14 +249,11 @@ public class UserQNAController implements Initializable {
         datePosted.setText("Date Posted: " + reply.getDate());
         datePosted.setStyle("-fx-padding: 0 20 5 0;");
 
-       
-        
         VBox container = new VBox();
         container.setSpacing(5);
         container.setMaxWidth(repliesView.getWidth() - 35);
         container.setAlignment(Pos.TOP_LEFT);
         container.setId(String.valueOf(reply.getId()));
-      
 
         //Setting the boxes
         VBox quest = new VBox();
@@ -276,7 +273,7 @@ public class UserQNAController implements Initializable {
         answerhbox.setAlignment(Pos.CENTER_RIGHT);
         answerhbox.getChildren().addAll(author, profilePic, datePosted);
         answerhbox.setSpacing(5);
-        
+
         container.getChildren().add(quest);
         container.getChildren().add(answers);
 
@@ -451,7 +448,6 @@ public class UserQNAController implements Initializable {
         container.setMaxWidth(feed.getWidth() - 32);
         container.setAlignment(Pos.TOP_LEFT);
         container.setId(String.valueOf(question.getId()));
-      
 
         //Setting the boxes
         VBox quest = new VBox();
@@ -471,7 +467,7 @@ public class UserQNAController implements Initializable {
         answerhbox.setAlignment(Pos.CENTER_RIGHT);
         answerhbox.getChildren().addAll(resolved, author, profilePic, datePosted, btn);
         answerhbox.setSpacing(5);
-        
+
         container.getChildren().add(quest);
         container.getChildren().add(answers);
 
@@ -492,8 +488,11 @@ public class UserQNAController implements Initializable {
         try {
             Question currentQuestion = Question.search(questionid);
             Text text = new Text(currentQuestion.getText());
+
+            text.setStyle("-fx-font: 16 arial;");
+
             repliesQ.getChildren().add(text);
-            System.out.println(currentQuestion.getText());
+
         } catch (SQLException | IOException ex) {
             Logger.getLogger(UserQNAController.class.getName()).log(Level.SEVERE, null, ex);
         }
