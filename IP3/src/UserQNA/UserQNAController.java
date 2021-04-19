@@ -96,7 +96,7 @@ public class UserQNAController implements Initializable {
     private JFXButton refreshBtn;
 
     public int questionid;
-    Timestamp now = new Timestamp(System.currentTimeMillis());
+    Timestamp now = new Timestamp(System.currentTimeMillis() - 3600000);
     ObservableList<Question> data = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
 
