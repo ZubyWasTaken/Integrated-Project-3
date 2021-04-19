@@ -252,6 +252,7 @@
 .icons:hover {
    
 -fx-background-color: #a8d6c9;
+  -fx-cursor: hand;
 
 }
 

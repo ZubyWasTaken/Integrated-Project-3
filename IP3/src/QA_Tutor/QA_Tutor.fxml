@@ -25,7 +25,7 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: grey;">
                <children>
-                  <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" minWidth="56.0" onAction="#refresh" prefHeight="38.0">
+                  <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" minWidth="56.0" onAction="#refresh" prefHeight="38.0" styleClass="icons">
                      <graphic>
                         <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
                      </graphic>
