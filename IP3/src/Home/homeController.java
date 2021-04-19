@@ -173,7 +173,7 @@ public class homeController implements Initializable {
 
     private SQLHandler sql = new SQLHandler();
     int count = 0;
-    Timestamp now = new Timestamp(System.currentTimeMillis());
+    Timestamp now = new Timestamp(System.currentTimeMillis() - 3600000);
     ObservableList<User> data = FXCollections.observableArrayList();
 
     public void setData(User user) throws SQLException {

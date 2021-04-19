@@ -147,7 +147,7 @@ public class HomeTutorController implements Initializable {
     ObservableList<User> data = FXCollections.observableArrayList();
     private SQLHandler sql = new SQLHandler();
     User currentUser;
-    Timestamp now = new Timestamp(System.currentTimeMillis());
+    Timestamp now = new Timestamp(System.currentTimeMillis() - 3600000);
     int count;
     
     public void setData(User user) throws SQLException {
@@ -161,7 +161,7 @@ public class HomeTutorController implements Initializable {
     
     @FXML
     private void getOnlineUser(MouseEvent event) throws SQLException {
-        
+
         TablePosition pos = (TablePosition) usersOnline.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         User item = usersOnline.getItems().get(index);
