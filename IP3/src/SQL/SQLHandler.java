@@ -174,7 +174,17 @@ public class SQLHandler {
             query.executeUpdate();
         query.close();
     }
-    
+
+    //------------------//
+    //DELETE USER ACCOUNT  //
+    //------------------//
+    public void deleteAccount( int id) throws SQLException{
+        String sql = "DELETE FROM Users WHERE id =\"" +id + "\"";
+        query = conn.prepareStatement(sql);
+        query.executeUpdate();
+        query.close();
+    }
+
     //------------------//
    //DELETE USER ACCOUNT  //
   //------------------//
@@ -201,8 +211,22 @@ public class SQLHandler {
            
     }
        
-        System.out.println("Success");
+       
         return blob;
+    }
+
+    public String getTitle(int titleId) throws SQLException {
+        String title=null;
+        String sql = "SELECT name FROM titles WHERE id =\""+titleId+"\"";
+        query = conn.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+
+        while (rs.next()) {
+
+            title = rs.getString("name");
+        }
+        query.close();
+        return title;
     }
     
     
@@ -372,7 +396,7 @@ public class SQLHandler {
    
     
     public void updateSurname(int userID, String surname) throws SQLException {
-         String sql = "UPDATE Users SET sruname=? WHERE  id=\""+userID+"\"";
+         String sql = "UPDATE Users SET surname=? WHERE  id=\""+userID+"\"";
         query = conn.prepareStatement(sql);
             query.setString(1,surname);
             query.executeUpdate();
@@ -552,6 +576,7 @@ public class SQLHandler {
         query.close();
         return output;
 }
+    
 
         public void addReply(String replyText, int id, int userID) throws SQLException {
         String sql = "INSERT INTO Replies ( quest_id, text, user_id) VALUES(?,?,?)";
@@ -639,6 +664,8 @@ public class SQLHandler {
             query.executeUpdate();
         query.close();
     }
+    
+    
 
     public ObservableList<User> showUsersOnline(int uniId, int catId, int id) throws SQLException {
         ObservableList<User> output = FXCollections.observableArrayList();

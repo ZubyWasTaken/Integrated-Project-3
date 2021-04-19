@@ -43,7 +43,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
-import net.synedra.validatorfx.Validator;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -53,9 +52,12 @@ import tray.notification.TrayNotification;
  * @author erino
  */
 public class InterestController implements Initializable {
+
     //FXML//
     @FXML
     JFXTextField getfname;
+    @FXML
+    AnchorPane pane;
     @FXML
     JFXTextField getsurname;
     @FXML
@@ -68,232 +70,269 @@ public class InterestController implements Initializable {
     JFXComboBox catSelect;
     @FXML
     JFXButton cancelBut;
-    @FXML
-    AnchorPane pane;
+
     @FXML
     JFXTextField locImg;
-    
-    
+
+    byte[] photo = null;
+    File image;
+
     //Variables//
     LocalDate date = LocalDate.now();
     ObservableList<Categories> data2 = FXCollections.observableArrayList();
     ObservableList<String> namesCat = FXCollections.observableArrayList();
     SQLHandler sql = new SQLHandler();
-    String firstname, surname, username, password, email, dob;
+    String firstname, surname, username, password, email, userDob, imgPath;
+    LocalDate dob;
     int uniId;
     int catId;
     int title_id = 1;
     User currentUser;
     TrayNotification tray = new TrayNotification();
     AnimationType type = AnimationType.POPUP;
-    byte[] photo=null;
-    private Validator validator = new Validator();
-    
+
     public void setData(User user) {
-    currentUser = user;
-    tray.setAnimationType(type);
+        currentUser = user;
+        tray.setAnimationType(type);
     }
-    
+
     @FXML
-    private void upload(ActionEvent event){
-    FileChooser fc = new FileChooser();
-    fc.setTitle("Open File Dialog");
-    Stage stage = (Stage)pane.getScene().getWindow();
-    File file = fc.showOpenDialog(stage);
-    if (file !=null)
-    {
-        String location=file.getAbsolutePath();
-        Image image = new Image (file.toURI().toString());
-        locImg.setText(location);
-             
-    }
-    }
-    
-    private void register() throws SQLException, ParseException, IOException {
-            uniId=User.fetchUniId(email);
-            User.createUser(currentUser.getUsername(), currentUser.getPassword(), firstname, surname, dob, email, uniId, catId, title_id);
-        
+    private void register(ActionEvent event) throws SQLException, ParseException, IOException {
+
+        firstname = getfname.getText().trim();
+
+        surname = getsurname.getText().trim();
+
+        username = currentUser.getUsername().trim();
+        password = currentUser.getPassword().trim();
+        email = getemail.getText().trim();
+ imgPath = locImg.getText().trim();
+ System.out.println(imgPath);
+        dob = getdob.getValue();
+        if (dob != null) {
+            userDob = dob.toString();
+        } else {
+            userDob = "";
+        }
+//        } else {
+//            tray.setAnimationType(type);
+//            tray.setTitle("Register");
+//            tray.setMessage("Enter a date");
+//            tray.setNotificationType(NotificationType.ERROR);
+//            tray.showAndDismiss(Duration.millis(3000));
+//
+//            registerFailed();
+//            return;
+//        }
+//        
+
+        if (userDob.isEmpty() & dob == null & firstname.isEmpty() & surname.isEmpty() & email.isEmpty()) {
+
+            tray.setAnimationType(type);
             tray.setTitle("Register");
-            tray.setMessage("Welcome to StudyBudz, " + username + "!");
-            tray.setNotificationType(NotificationType.SUCCESS);
-            tray.showAndDismiss(Duration.millis(3000));  
-            User user = new User(currentUser.getUsername()); 
-            setImage(currentUser.getUsername());
-            SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user)); 
+            tray.setMessage("Please enter all details");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (firstname.isEmpty()) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please enter first name.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (surname.isEmpty()) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please enter surname.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (User.isValid(email) == false) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Email Invalid");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (userDob.isEmpty()) {
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Date of birth empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+        }else if (imgPath.isEmpty()) {
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please select a profile picture");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (catId == 0) {
+
+            tray.setAnimationType(type);
+            tray.setTitle("Register");
+            tray.setMessage("Please select an interest");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+
+        } else if (User.matchName(firstname) == true || User.matchName(surname) == true) {
+
+            tray.setTitle("Register");
+            tray.setMessage("Name invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            registerFailed();
+            return;
+        } else {
+            uniId = User.fetchUniId(email);
+            if (uniId == 0) {
+
+                tray.setTitle("Register");
+                tray.setMessage("Please use a valid university email");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+                registerFailed();
+
+            } else {
+                String newSurn = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase();
+                String newfirst = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
+                String newEmail = email.toLowerCase();
+                User.createUser(username, password, newfirst, newSurn, userDob, newEmail, uniId, catId, title_id);
+
+                tray.setTitle("Register");
+                tray.setMessage("Welcome to StudyBudz, " + username + "!");
+                tray.setNotificationType(NotificationType.SUCCESS);
+                tray.showAndDismiss(Duration.millis(3000));
+                User user = new User(username);
+                setImage(username);
+                SwitchWindow.switchWindow((Stage) registerBut.getScene().getWindow(), new Home(user));
             }
-         
-private void setImage(String username) throws FileNotFoundException, SQLException, IOException{
-        User user = new User(username); 
-        
-         File image = new File (locImg.getText());
-         FileInputStream fis = new FileInputStream(image);
-         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-         byte[] buf = new byte[1024];
-         for (int readNum; (readNum=fis.read(buf))!=-1;){
-             bos.write(buf,0,readNum);
-         }
-         photo=bos.toByteArray();
-         sql.addImage(photo,user.getUserID());
-
-
-}
-    
-    @FXML
-    private void cancel(ActionEvent event){
-        SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new LoginRegister()); 
+        }
     }
-  
-    
+
+    private void registerFailed() {
+        Shaker shake = new Shaker(registerBut);
+        shake.shake();
+        getfname.requestFocus();
+    }
+
+//    private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
+//        User user = new User(username);
+//        File image = new File("src/SQL/files/noPic.png");
+//        Path path = Paths.get("src/SQL/files/noPic.png");
+//        byte[] photo = Files.readAllBytes(path);
+//        sql.addImage(photo, user.getUserID());
+//    }
+    @FXML
+    private void cancel(ActionEvent event) {
+        SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new LoginRegister());
+    }
+
     //Adding categories for selection
-    private void catPopulate(){
-          try {
+    private void catPopulate() {
+        try {
             data2 = sql.showCategories();
         } catch (SQLException ex) {
             Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Categories c:data2)
-        {
+        for (Categories c : data2) {
             namesCat.add(c.getName());
         }
         catSelect.setItems(namesCat);
-}
-     
+    }
+
+    private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
+        User user = new User(username);
+
+             image = new File(locImg.getText());
+                 
+
+        
+        FileInputStream fis = new FileInputStream(image);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+            bos.write(buf, 0, readNum);
+        }
+        photo = bos.toByteArray();
+        sql.addImage(photo, user.getUserID());
+    }
+
+    @FXML
+    private void upload(ActionEvent event) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Open File Dialog");
+        Stage stage = (Stage) pane.getScene().getWindow();
+        File file = fc.showOpenDialog(stage);
+        if (file != null) {
+            String location = file.getAbsolutePath();
+            Image image = new Image(file.toURI().toString());
+            locImg.setText(location);
+
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    DatePicker maxDate = new DatePicker(); // DatePicker, used to define max date available
-    maxDate.setValue(date); // Max date available will be now
-    final Callback<DatePicker, DateCell> dayCellFactory;
+        DatePicker maxDate = new DatePicker(); // DatePicker, used to define max date available
+        maxDate.setValue(date); // Max date available will be now
+        final Callback<DatePicker, DateCell> dayCellFactory;
 
-    dayCellFactory = (final DatePicker datePicker) -> new DateCell() {
-    @Override
-    public void updateItem(LocalDate item, boolean empty) {
-        super.updateItem(item, empty);
-        if (item.isAfter(maxDate.getValue())) { //Disable all dates after required date
-            setDisable(true);
-            getStyleClass().add("disabled-calendar"); //To set background on different color
-        }
-    }
-    
-};
-        // update DatePicker cell factory
-       getdob.setDayCellFactory(dayCellFactory);
-       catPopulate();
-       
-       //Getting the id for the selected cateogry
-       catSelect.setOnAction(new EventHandler() {
-        @Override
-        public void handle(Event event) {
-            String tempcat = (String) catSelect.getSelectionModel().getSelectedItem();
-            try {
-                 catId = Categories.fetchCatId(tempcat);
-            } catch (SQLException ex) {
-                Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+        dayCellFactory = (final DatePicker datePicker) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item.isAfter(maxDate.getValue())) { //Disable all dates after required date
+                    setDisable(true);
+                    getStyleClass().add("disabled-calendar"); //To set background on different color
+                }
             }
-            
-        }
-    });
-        registerBut.disableProperty().bind(validator.containsErrorsProperty());
-        registerBut.disableProperty().bind(validator.containsWarningsProperty());
-        validator.createCheck()
-                   .dependsOn("fname",getfname.textProperty())
-                   .withMethod(c->{
-                       firstname = c.get("fname");
-                       if (firstname.isEmpty()){
-                          c.warn("Please enter a first name.");
-                       }
-                       else {                      
-                        if ((User.matchName(firstname) == true)) {
-                            c.error("Please, enter a valid name.");
-                        }
-                        else{
-                           firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase(); 
-                        }
-                       }
-                        
-                   })
-                   .decorates(getfname)
-                   .immediate();
-        validator.createCheck()
-                   .dependsOn("surname",getsurname.textProperty())
-                   .withMethod(c->{
-                       surname = c.get("surname");
-                       if (surname.isEmpty()){
-                          c.warn("Please enter a surname.");
-                       }
-                       else {                      
-                        if ((User.matchName(surname) == true)) {
-                            c.error("Please, enter a valid name.");
-                        }
-                        else{
-                           surname = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase(); 
-                        }
-                       }
-                        
-                   })
-                   .decorates(getsurname)
-                   .immediate();
-        validator.createCheck()
-                   .dependsOn("email",getemail.textProperty())
-                   .withMethod(c->{
-                       email = c.get("email");
-                       if (email.isEmpty()){
-                          c.warn("Please enter an email.");
-                       }
-                       else {                      
-                        if ((User.isValid(email) == false)) {
-                            c.error("Please, enter a valid email.");
-                        }
-                        else{
-                           email = email.substring(0, 1).toUpperCase() + email.substring(1).toLowerCase();; 
-                        }
-                       }
-                        
-                   })
-                   .decorates(getemail)
-                   .immediate();
-         validator.createCheck()
-                   .dependsOn("dob",getdob.dayCellFactoryProperty())
-                   .withMethod(c->{
-                       dob = c.get("dob").toString();
-                       if (dob.isEmpty()){
-                          c.warn("Please select a date of birth.");
-                       }
-                       
-                   })
-                   .decorates(getdob)
-                   .immediate();
-    
-    validator.createCheck()
-                   .dependsOn("pic",locImg.textProperty())
-                   .withMethod(c->{
-                       String loc = c.get("pic");
-                       if (loc.isEmpty()){
-                          c.warn("Please select a picture.");
-                       }
-                   })
-                   .decorates(locImg)
-                   .immediate();
-    
-    validator.createCheck()
-                   .dependsOn("cat",catSelect.valueProperty())
-                   .withMethod(c->{
-                       if (catId==0){
-                          c.warn("Please select a category.");
-                       }
-                   })
-                   .decorates(catSelect)
-                   .immediate();
-        registerBut.setOnAction(e -> {
-        try {
-            register();
-        } catch (SQLException | ParseException | IOException ex) {
-            Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    });
-    }
 
+        };
+        // update DatePicker cell factory
+        getdob.setDayCellFactory(dayCellFactory);
+        catPopulate();
+
+        //Getting the id for the selected cateogry
+        catSelect.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String tempcat = (String) catSelect.getSelectionModel().getSelectedItem();
+                try {
+                    catId = Categories.fetchCatId(tempcat);
+                } catch (SQLException ex) {
+                    Logger.getLogger(InterestController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+
+    }
 
 }
-
-   
-

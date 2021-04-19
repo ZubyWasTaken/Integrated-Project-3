@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -11,25 +12,77 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane id="AnchorPane" minWidth="-Infinity" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="859.0" stylesheets="@../Resources/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Home.homeController">
     <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#002b43" height="37.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" width="590.0">
+         <effect>
+            <InnerShadow color="#9c8e8e" />
+         </effect>
+      </Rectangle>
         <Label fx:id="labelWelcome" alignment="CENTER" layoutX="528.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="224.0" text="Welcome Back! ">
          <font>
             <Font size="28.0" />
          </font></Label>
-      <TableView fx:id="usersOnline" layoutX="554.0" layoutY="72.0" onMouseClicked="#getOnlineUser" prefHeight="94.0" prefWidth="305.0" stylesheets="@../Resources/css.css" AnchorPane.bottomAnchor="448.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="73.0">
+      <HBox prefHeight="49.0" prefWidth="859.0" style="-fx-background-color: #7f948f;">
+         <children>
+            <HBox prefHeight="67.0" prefWidth="374.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
+                     <children>
+                        <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXHamburger>
+                     </children>
+                  </VBox>
+                  <Label fx:id="labelWelcome1" alignment="CENTER" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome,">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets left="2.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label fx:id="username" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="143.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
+               <children>
+                  <JFXButton fx:id="sgnOutBut" onAction="#signOut" styleClass="icons">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="415.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <TableView fx:id="usersOnline" layoutX="554.0" layoutY="49.0" onMouseClicked="#getOnlineUser" prefHeight="121.0" prefWidth="306.0" stylesheets="@../Resources/css.css">
          <placeholder>
             <Label text="No users online" />
          </placeholder>
@@ -44,7 +97,7 @@
             <InnerShadow color="#9c8e8e" />
          </effect>
       </TableView>
-      <VBox layoutX="554.0" layoutY="169.0" prefHeight="448.0" prefWidth="305.0" style="-fx-background-color: white; -fx-border-color: black;" AnchorPane.bottomAnchor="-0.0" AnchorPane.rightAnchor="0.0">
+      <VBox layoutX="554.0" layoutY="169.0" prefHeight="448.0" prefWidth="305.0" style="-fx-background-color: white; -fx-border-color: black;">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="140.0" prefWidth="224.0" spacing="5">
                <children>
@@ -55,7 +108,7 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="41.0" prefWidth="224.0" spacing="3.0">
                      <children>
-                        <JFXButton fx:id="btnUK" onAction="#UKFeed" prefHeight="35.0" prefWidth="85.0" styleClass="categories-button" text="UK">
+                        <JFXButton fx:id="btnUK" onAction="#UKFeed" prefHeight="37.0" prefWidth="90.0" styleClass="categories-button" text="UK">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -65,7 +118,7 @@
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="btnBusiness" onAction="#businessFeed" prefHeight="35.0" prefWidth="101.0" styleClass="categories-button" text="Business">
+                        <JFXButton fx:id="btnBusiness" onAction="#businessFeed" prefHeight="37.0" prefWidth="90.0" styleClass="categories-button" text="Business">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -84,7 +137,7 @@
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="btnScience" onAction="#scienceFeed" prefHeight="33.0" prefWidth="105.0" styleClass="categories-button" text="Science">
+                        <JFXButton fx:id="btnScience" onAction="#scienceFeed" prefHeight="37.0" prefWidth="90.0" styleClass="categories-button" text="Science">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -93,7 +146,7 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="337.0" prefWidth="303.0">
+            <VBox alignment="CENTER" prefHeight="532.0" prefWidth="289.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
@@ -187,121 +240,120 @@
             <InnerShadow color="#796f6f" />
          </effect>
       </VBox>
-      <Label fx:id="repliesCount" layoutX="402.0" layoutY="312.0" prefHeight="17.0" prefWidth="32.0" textFill="WHITE">
+      <AnchorPane fx:id="userDetails" layoutX="554.0" layoutY="85.0" prefHeight="85.0" prefWidth="306.0" style="-fx-background-color: white;" visible="false">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="84.0" prefWidth="306.0" spacing="10.0">
+               <children>
+                  <ImageView fx:id="profilePic" fitHeight="85.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="userUsername" prefHeight="26.0" prefWidth="125.0">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/x-mark.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <effect>
+            <InnerShadow color="#9c8e8e" />
+         </effect>
+      </AnchorPane>
+      <JFXButton fx:id="chat" contentDisplay="GRAPHIC_ONLY" layoutX="239.0" layoutY="262.0" onAction="#chat" prefHeight="55.0" prefWidth="186.0" styleClass="circle-home" text="Chat">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="SEND" size="2.8EM" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="teacherQNA" contentDisplay="GRAPHIC_ONLY" layoutX="73.0" layoutY="258.0" maxHeight="55.0" maxWidth="171.0" onAction="#questionAnswer" prefHeight="55.0" prefWidth="171.0" styleClass="circle-home" text="Teacher QnA">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="PENCIL" size="3.5EM" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="shareFiles" contentDisplay="GRAPHIC_ONLY" layoutX="396.0" layoutY="262.0" maxHeight="67.0" maxWidth="90.0" onAction="#fileShare" prefHeight="67.0" prefWidth="90.0" styleClass="circle-home" text="File Share">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="FILE" size="2.8em" />
+         </graphic>
+      </JFXButton>
+      <Label layoutX="36.0" layoutY="53.0" prefHeight="27.0" prefWidth="79.0" text="You have" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="repliesCount" layoutX="110.0" layoutY="53.0" prefHeight="27.0" prefWidth="26.0" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="userDetails" layoutX="314.0" layoutY="76.0" prefHeight="288.0" prefWidth="239.0" style="-fx-background-color: white;" visible="false" AnchorPane.rightAnchor="306.0" AnchorPane.topAnchor="76.0">
-         <children>
-            <ImageView fx:id="profilePic" fitHeight="106.0" fitWidth="201.0" layoutX="19.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="101.0" AnchorPane.leftAnchor="19.0" />
-            <Button layoutX="202.0" layoutY="20.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="35.0" style="-fx-background-color: none;" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../OneDrive%20-%20GLASGOW%20CALEDONIAN%20UNIVERSITY/Uni/IP3/IP3/src/Resources/x-mark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Label fx:id="userUsername" layoutX="18.0" layoutY="26.0" prefHeight="26.0" prefWidth="125.0" textFill="#4a4a4a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="fname" layoutX="14.0" layoutY="206.0" prefHeight="26.0" prefWidth="103.0" textFill="#4a4a4a" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="122.0">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="surname" layoutX="125.0" layoutY="206.0" prefHeight="26.0" prefWidth="113.0" textFill="#4a4a4a" AnchorPane.rightAnchor="10.0">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="title" layoutX="14.0" layoutY="251.0" prefHeight="26.0" prefWidth="125.0" textFill="#4a4a4a" AnchorPane.leftAnchor="14.0">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-         </children>
-         <effect>
-            <DropShadow radius="8.0225" width="13.09" />
-         </effect>
-      </AnchorPane>
-      <AnchorPane layoutX="20.0" layoutY="20.0" prefHeight="73.0" prefWidth="839.0" styleClass="navigation-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <JFXHamburger fx:id="hamburger" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="25.0" AnchorPane.leftAnchor="40.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <effect>
-                  <Lighting specularConstant="2.0" specularExponent="0.0">
-                     <bumpInput>
-                        <Shadow />
-                     </bumpInput>
-                     <light>
-                        <Light.Distant />
-                     </light>
-                  </Lighting>
-               </effect>
-            </JFXHamburger>
-            <Label fx:id="labelWelcome1" alignment="CENTER" layoutX="92.0" layoutY="5.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="130.0" text="Welcome," textFill="WHITE" AnchorPane.leftAnchor="92.0">
-               <font>
-                  <Font name="SansSerif Regular" size="24.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets left="2.0" />
-               </opaqueInsets>
-            </Label>
-            <Label fx:id="username" layoutX="217.0" layoutY="9.0" minHeight="16" minWidth="69" prefHeight="48.0" prefWidth="150.0" textFill="WHITE">
-               <font>
-                  <Font name="SansSerif Regular" size="24.0" />
-               </font>
-            </Label>
-            <JFXButton fx:id="sgnOutBut" layoutX="528.0" layoutY="10.0" onAction="#signOut" prefHeight="48.0" prefWidth="192.0" text="Sign Out" textFill="WHITE" AnchorPane.rightAnchor="1.3333333333333712" AnchorPane.topAnchor="10.0">
-               <graphic>
-                  <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Resources/logout.png" />
-                     </image>
-                     <effect>
-                        <Lighting specularConstant="2.0" specularExponent="0.0">
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </effect>
-                  </ImageView>
-               </graphic>
-               <font>
-                  <Font name="SansSerif Regular" size="18.0" />
-               </font>
-            </JFXButton>
-         </children>
-      </AnchorPane>
-      <JFXButton fx:id="chat" layoutX="179.0" layoutY="170.0" onAction="#chat" prefHeight="55.0" prefWidth="186.0" styleClass="home-button" text="Chat">
+      <Label layoutX="145.0" layoutY="53.0" prefHeight="27.0" prefWidth="210.0" text="new replies to your questions" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="20.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="teacherQNA" layoutX="178.0" layoutY="306.0" onAction="#questionAnswer" prefHeight="55.0" prefWidth="186.0" styleClass="home-button" text="Teacher QnA">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="shareFiles" layoutX="179.0" layoutY="439.0" onAction="#fileShare" prefHeight="55.0" prefWidth="186.0" styleClass="home-button" text="File Share">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </JFXButton>
-      <Label layoutX="398.0" layoutY="322.0" prefHeight="27.0" prefWidth="42.0" text="replies">
-         <font>
-            <Font size="14.0" />
+            <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutX="9.0" layoutY="73.0" prefHeight="595.0" prefWidth="362.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="73.0" />
+      <Label layoutX="39.0" layoutY="367.0" text="Teacher QnA">
+         <font>
+            <Font name="Arial Bold" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="249.0" layoutY="367.0" text="Chat">
+         <font>
+            <Font name="Arial Bold" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="378.0" layoutY="367.0" text="File Share">
+         <font>
+            <Font name="Arial Bold" size="22.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="infoChat" contentDisplay="GRAPHIC_ONLY" layoutX="304.0" layoutY="367.0" prefHeight="55.0" prefWidth="186.0" style="-fx-background-color: #002b43; -fx-background-radius: 30em; -fx-min-height: 26px; -fx-min-width: 26px; -fx-max-width: 26px; -fx-max-height: 26px;" text="Chat">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="QUESTION" />
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="infoFile" contentDisplay="GRAPHIC_ONLY" layoutX="489.0" layoutY="367.0" prefHeight="55.0" prefWidth="186.0" style="-fx-background-color: #002b43; -fx-background-radius: 30em; -fx-min-height: 26px; -fx-min-width: 26px; -fx-max-width: 26px; -fx-max-height: 26px;" text="Chat">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="QUESTION" />
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="infoQNA" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="367.0" prefHeight="55.0" prefWidth="186.0" style="-fx-background-color: #002b43; -fx-background-radius: 30em; -fx-min-height: 26px; -fx-min-width: 26px; -fx-max-width: 26px; -fx-max-height: 26px;" text="Chat">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="QUESTION" />
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <TextFlow fx:id="info" layoutX="87.0" layoutY="438.0" prefHeight="128.0" prefWidth="390.0" style="-fx-background-color: transparent;" visible="false" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" layoutY="47.0" prefHeight="568.0" prefWidth="260.0" />
     </children>
 </AnchorPane>
