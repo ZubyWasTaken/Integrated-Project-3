@@ -4,6 +4,7 @@ import SQL.SQLHandler;
 
 import static java.lang.Integer.parseInt;
 
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -210,5 +211,15 @@ public class User {
 
     public void updateLogin(boolean login) throws SQLException {
         sql.updateLogin(userid, login);
+    }
+
+    public InputStream getImage() throws SQLException{
+        InputStream blob = sql.getImage(userid);
+        return blob;
+    }
+
+    public String fetchTitle(int titleId) throws SQLException{
+        String category=sql.getTitle(catId);
+        return category;
     }
 }

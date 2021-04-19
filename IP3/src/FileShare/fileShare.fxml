@@ -10,6 +10,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,7 +21,7 @@
    <children>
       <HBox layoutX="-3.0" layoutY="-2.0" prefHeight="49.0" prefWidth="1044.0" style="-fx-background-color: #7f948f;">
          <children>
-            <HBox prefHeight="69.0" prefWidth="419.0">
+            <HBox prefHeight="49.0" prefWidth="1051.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="18.0" prefWidth="79.0">
                      <children>
@@ -39,6 +41,22 @@
                         </Label>
                      </children>
                   </VBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="832.0">
+                     <children>
+                        <JFXButton fx:id="sgnOutBut" contentDisplay="GRAPHIC_ONLY" onAction="#signOut" styleClass="icons">
+                           <graphic>
+                              <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/logout.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                  </HBox>
                </children></HBox>
          </children>
       </HBox>
@@ -72,10 +90,10 @@
       </JFXButton>
       <MenuButton layoutX="544.0" layoutY="109.0" mnemonicParsing="false" style="-fx-background-color: #002b43;" text="SHOW" textFill="WHITE">
         <items>
-            <MenuItem fx:id="allFiles" mnemonicParsing="false" onAction="#showAllFiles" text="All Files" />
-          <MenuItem fx:id="textFiles" mnemonicParsing="false" onAction="#showTextFiles" text="Text Files" />
-          <MenuItem fx:id="imageFiles" mnemonicParsing="false" onAction="#showImageFiles" text="Images" />
-            <MenuItem fx:id="pptxFiles" mnemonicParsing="false" text="PowerPoint Presentations" />
+            <MenuItem fx:id="allFiles" mnemonicParsing="false" onAction="#showAllFiles" styleClass="menu-bar" text="All Files" />
+          <MenuItem fx:id="textFiles" mnemonicParsing="false" onAction="#showTextFiles" styleClass="menu-bar" text="Text Files" />
+          <MenuItem fx:id="imageFiles" mnemonicParsing="false" onAction="#showImageFiles" styleClass="menu-bar" text="Images" />
+            <MenuItem fx:id="pptxFiles" mnemonicParsing="false" onAction="#showPowerpoint" styleClass="menu-bar" text="PowerPoint Presentations" />
         </items>
          <font>
             <Font size="14.0" />
@@ -83,8 +101,8 @@
       </MenuButton>
       <MenuButton layoutX="633.0" layoutY="109.0" mnemonicParsing="false" style="-fx-alignment: #002b43;" text="SORT BY" textFill="WHITE">
          <items>
-            <MenuItem fx:id="dateDesc" mnemonicParsing="false" text="Date Uploaded (Newest to Oldest)" />
-            <MenuItem mnemonicParsing="false" text="Date Uploaded (Oldest to Newest)" />
+            <MenuItem fx:id="dateDesc" mnemonicParsing="false" styleClass="menu-bar" text="Date Uploaded (Newest to Oldest)" />
+            <MenuItem mnemonicParsing="false" styleClass="menu-bar" text="Date Uploaded (Oldest to Newest)" />
          </items>
          <font>
             <Font size="14.0" />

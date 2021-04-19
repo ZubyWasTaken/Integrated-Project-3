@@ -50,7 +50,7 @@
             </HBox>
             <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="66.0">
                <children>
-                  <Button fx:id="btnHome" mnemonicParsing="false" onAction="#goHome" prefHeight="40.0" prefWidth="37.0" style="-fx-background-color: none;">
+                  <Button fx:id="btnHome" mnemonicParsing="false" onAction="#goHome" prefHeight="40.0" prefWidth="37.0" style="-fx-background-color: none;" styleClass="icons">
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -109,8 +109,8 @@
                      <children>
                         <MenuButton fx:id="sortMenu1" layoutX="543.0" layoutY="13.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="104.0" text="Sort By:" textAlignment="JUSTIFY" textFill="WHITE">
                            <items>
-                              <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
-                              <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
+                              <MenuItem mnemonicParsing="false" onAction="#showAllQs" styleClass="menu-bar" text="Date posted (Newest to Oldest)" />
+                              <MenuItem mnemonicParsing="false" onAction="#sortAsc" styleClass="menu-bar" text="Date posted (Oldest to Newest)" />
                            </items>
                            <effect>
                               <DropShadow color="#777070" height="14.0" offsetX="2.0" offsetY="2.0" radius="4.75" width="7.0" />
@@ -124,10 +124,10 @@
                         </MenuButton>
                         <MenuButton fx:id="showMenu1" layoutX="445.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Show" textFill="WHITE">
                            <items>
-                              <MenuItem fx:id="allQs1" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
-                              <MenuItem mnemonicParsing="false" onAction="#showMyQs" text="Only my Questions" />
-                              <MenuItem fx:id="resolvedQs1" mnemonicParsing="false" onAction="#showResolvedQs" text="Only Resolved Questions" />
-                              <MenuItem fx:id="unresolvedQs1" mnemonicParsing="false" onAction="#showUnresolvedQs" text="Only Unresolved Questions" />
+                              <MenuItem fx:id="allQs1" mnemonicParsing="false" onAction="#showAllQs" styleClass="menu-bar" text="All Questions" />
+                              <MenuItem mnemonicParsing="false" onAction="#showMyQs" styleClass="menu-bar" text="Only my Questions" />
+                              <MenuItem fx:id="resolvedQs1" mnemonicParsing="false" onAction="#showResolvedQs" styleClass="menu-bar" text="Only Resolved Questions" />
+                              <MenuItem fx:id="unresolvedQs1" mnemonicParsing="false" onAction="#showUnresolvedQs" styleClass="menu-bar" text="Only Unresolved Questions" />
                            </items>
                            <effect>
                               <DropShadow color="#777070" height="5.25" offsetX="2.0" offsetY="2.0" radius="0.8125" width="0.0" />
@@ -139,10 +139,13 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </MenuButton>
-                        <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="9.0" onAction="#refresh">
+                        <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="9.0" onAction="#refresh" styleClass="icons">
                            <graphic>
                               <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
                            </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </JFXButton>
                      </children>
                   </Pane>

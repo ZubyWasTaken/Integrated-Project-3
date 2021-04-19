@@ -47,7 +47,7 @@
                <children>
                   <JFXButton fx:id="sgnOutBut" onAction="#signOut">
                      <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" styleClass="icons">
                            <image>
                               <Image url="@../Resources/logout.png" />
                            </image>

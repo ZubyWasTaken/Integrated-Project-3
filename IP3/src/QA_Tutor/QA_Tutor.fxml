@@ -25,15 +25,15 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: grey;">
                <children>
-                  <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" minWidth="56.0" onAction="#refresh" prefHeight="38.0">
+                  <JFXButton fx:id="refreshBtn" contentDisplay="GRAPHIC_ONLY" minWidth="56.0" onAction="#refresh" prefHeight="38.0" styleClass="icons">
                      <graphic>
                         <FontAwesomeIcon glyphName="REFRESH" size="2.5em" />
                      </graphic>
                   </JFXButton>
                   <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Sort By:" textFill="WHITE">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#sortAsc" text="Date posted (Oldest to Newest)" />
-                        <MenuItem mnemonicParsing="false" onAction="#showAllQs" text="Date posted (Newest to Oldest)" />
+                        <MenuItem mnemonicParsing="false" onAction="#sortAsc" styleClass="menu-bar" text="Date posted (Oldest to Newest)" />
+                        <MenuItem mnemonicParsing="false" onAction="#showAllQs" styleClass="menu-bar" text="Date posted (Newest to Oldest)" />
                      </items>
                      <font>
                         <Font size="14.0" />
@@ -44,9 +44,9 @@
                   </MenuButton>
                   <MenuButton fx:id="showMenu" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Show" textFill="WHITE">
                      <items>
-                        <MenuItem fx:id="allQs" mnemonicParsing="false" onAction="#showAllQs" text="All Questions" />
-                        <MenuItem fx:id="resolvedQs" mnemonicParsing="false" onAction="#showResolvedQs" text="Only Resolved Questions" />
-                        <MenuItem fx:id="unresolvedQs" mnemonicParsing="false" onAction="#showUnresolvedQs" text="Only Unresolved Questions" />
+                        <MenuItem fx:id="allQs" mnemonicParsing="false" onAction="#showAllQs" styleClass="menu-bar" text="All Questions" />
+                        <MenuItem fx:id="resolvedQs" mnemonicParsing="false" onAction="#showResolvedQs" styleClass="menu-bar" text="Only Resolved Questions" />
+                        <MenuItem fx:id="unresolvedQs" mnemonicParsing="false" onAction="#showUnresolvedQs" styleClass="menu-bar" text="Only Unresolved Questions" />
                      </items>
                      <font>
                         <Font size="14.0" />
@@ -109,12 +109,12 @@
          <right>
             <HBox alignment="CENTER" prefHeight="49.0" prefWidth="156.0" spacing="35.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton fx:id="editAcc" contentDisplay="GRAPHIC_ONLY" onAction="#editAccount" prefHeight="58.0" prefWidth="42.0">
+                  <JFXButton fx:id="editAcc" contentDisplay="GRAPHIC_ONLY" onAction="#editAccount" prefHeight="58.0" prefWidth="42.0" styleClass="icons">
                      <graphic>
                         <FontAwesomeIcon glyphName="USER" size="3em" wrappingWidth="25.306867599487305" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="sgnOutBut" contentDisplay="GRAPHIC_ONLY" onAction="#signOut">
+                  <JFXButton fx:id="sgnOutBut" contentDisplay="GRAPHIC_ONLY" onAction="#signOut" styleClass="icons">
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                            <image>
