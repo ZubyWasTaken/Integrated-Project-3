@@ -5,10 +5,9 @@
  */
 package ip3;
 
-import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-import javafx.beans.property.SimpleObjectProperty;
+import java.sql.Timestamp;
 
 /**
  *
@@ -20,12 +19,14 @@ public class AppFiles {
     private Blob fileByte;
     private String size;
     private User author;
+    private Timestamp timestamp;
     
-    public AppFiles(int id, String name, Blob blob, String size, String username) throws SQLException{
+    public AppFiles(int id, String name, Blob blob, String size, String username, Timestamp timestamp) throws SQLException{
         this.id=id;
         this.fileName = name;
         this.fileByte=blob;
         this.size=size;
+        this.timestamp=timestamp;
         this.author = new User(username);
     }
     
@@ -44,6 +45,8 @@ public class AppFiles {
     public String getSize(){
         return this.size;
     }
+
+    public Timestamp getTimestamp() {return this.timestamp;}
     
     public User getAuthor(){
         return this.author;

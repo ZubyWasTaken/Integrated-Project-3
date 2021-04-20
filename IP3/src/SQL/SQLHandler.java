@@ -696,7 +696,7 @@ public class SQLHandler {
 
         ObservableList<AppFiles> output = FXCollections.observableArrayList();
         output.clear();
-        String sql = "SELECT Files.id, Files.name, Files.filetobyte, Files.size, Users.username FROM Files INNER JOIN Users ON\n" +
+        String sql = "SELECT Files.id, Files.name, Files.filetobyte, Files.size, Files.timestamp, Users.username FROM Files INNER JOIN Users ON\n" +
         "Files.user_id= Users.id WHERE Files.user_id =Users.id  AND Users.catid=\"" + cat_id + "\" AND Users.uniid=\"" + uni_id + "\" ORDER BY Files.id DESC";
         query = conn.prepareStatement(sql);
         ResultSet rs = query.executeQuery();
@@ -705,9 +705,10 @@ public class SQLHandler {
             String name = rs.getString("name");
             Blob blob2 = rs.getBlob("filetobyte");
             //InputStream blob = rs.getBinaryStream("filetobyte");
+            Timestamp timestamp = rs.getTimestamp("timestamp");
             String size = rs.getString("size");
             String author = rs.getString("username");
-            output.add(new AppFiles(fileId,name, blob2, size, author));
+            output.add(new AppFiles(fileId,name, blob2, size, author,timestamp));
         }
         query.close();
         return output;

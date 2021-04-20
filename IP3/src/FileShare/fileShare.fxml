@@ -64,46 +64,38 @@
          <font>
             <Font size="16.0" />
          </font></JFXTextField>
-      <TableView fx:id="files" layoutX="91.0" layoutY="150.0" onMouseClicked="#clickItem" prefHeight="304.0" prefWidth="764.0" styleClass="table">
+      <TableView fx:id="files" layoutX="91.0" layoutY="150.0" onMouseClicked="#clickItem" prefHeight="304.0" prefWidth="883.0" styleClass="table">
         <placeholder>
             <Label text="No files uploaded" />
          </placeholder>
           <columns>
-          <TableColumn fx:id="fileName" prefWidth="318.888916015625" text="File Name" />
-          <TableColumn fx:id="fileSize" minWidth="0.0" prefWidth="255.11111450195312" text="Size" />
-            <TableColumn fx:id="fileAuthor" prefWidth="189.11102294921875" text="Uploaded By:" />
+          <TableColumn fx:id="fileName" prefWidth="220.0" text="File Name" />
+          <TableColumn fx:id="fileSize" minWidth="0.0" prefWidth="214.0" text="Size" />
+            <TableColumn fx:id="fileAuthor" prefWidth="223.0" text="Uploaded By:" />
+            <TableColumn fx:id="fileTimestamp" prefWidth="223.0" text="Date Uploaded:" />
         </columns>
       </TableView>
-      <JFXButton fx:id="uploadBut" layoutX="601.0" layoutY="469.0" onAction="#upload" prefHeight="42.0" prefWidth="110.0" styleClass="categories-button" text="UPLOAD" textFill="WHITE">
+      <JFXButton fx:id="uploadBut" layoutX="713.0" layoutY="469.0" onAction="#upload" prefHeight="42.0" prefWidth="110.0" styleClass="categories-button" text="UPLOAD" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <JFXTextField fx:id="fileLoc" layoutX="91.0" layoutY="462.0" prefHeight="42.0" prefWidth="463.0">
+      <JFXTextField fx:id="fileLoc" layoutX="91.0" layoutY="462.0" prefHeight="42.0" prefWidth="595.0" promptText="Filepath">
          <font>
-            <Font size="16.0" />
+            <Font name="System Italic" size="16.0" />
          </font></JFXTextField>
-      <JFXButton fx:id="downloadBut" layoutX="726.0" layoutY="469.0" onAction="#download" prefHeight="42.0" prefWidth="130.0" styleClass="categories-button" text="DOWNLOAD" textFill="WHITE">
+      <JFXButton fx:id="downloadBut" layoutX="844.0" layoutY="469.0" onAction="#download" prefHeight="42.0" prefWidth="130.0" styleClass="categories-button" text="DOWNLOAD" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <MenuButton layoutX="544.0" layoutY="109.0" mnemonicParsing="false" style="-fx-background-color: #002b43;" text="SHOW" textFill="WHITE">
+      <MenuButton layoutX="892.0" layoutY="110.0" mnemonicParsing="false" style="-fx-background-color: #002b43;" text="SHOW" textFill="WHITE">
         <items>
             <MenuItem fx:id="allFiles" mnemonicParsing="false" onAction="#showAllFiles" styleClass="menu-bar" text="All Files" />
           <MenuItem fx:id="textFiles" mnemonicParsing="false" onAction="#showTextFiles" styleClass="menu-bar" text="Text Files" />
           <MenuItem fx:id="imageFiles" mnemonicParsing="false" onAction="#showImageFiles" styleClass="menu-bar" text="Images" />
             <MenuItem fx:id="pptxFiles" mnemonicParsing="false" onAction="#showPowerpoint" styleClass="menu-bar" text="PowerPoint Presentations" />
         </items>
-         <font>
-            <Font size="14.0" />
-         </font>
-      </MenuButton>
-      <MenuButton layoutX="633.0" layoutY="109.0" mnemonicParsing="false" style="-fx-alignment: #002b43;" text="SORT BY" textFill="WHITE">
-         <items>
-            <MenuItem fx:id="dateDesc" mnemonicParsing="false" styleClass="menu-bar" text="Date Uploaded (Newest to Oldest)" />
-            <MenuItem mnemonicParsing="false" styleClass="menu-bar" text="Date Uploaded (Oldest to Newest)" />
-         </items>
          <font>
             <Font size="14.0" />
          </font>
