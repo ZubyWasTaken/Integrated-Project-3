@@ -79,24 +79,24 @@
                         <Font name="SansSerif Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="username" accessibleText="Username" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="202.0" styleClass="text-area" GridPane.rowIndex="3" />
                   <Label prefHeight="21.0" prefWidth="225.0" text="Change Password" textFill="#4a4a4a" GridPane.columnIndex="1">
                      <font>
                         <Font name="SansSerif Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXPasswordField fx:id="newPass1" prefHeight="15.0" prefWidth="328.0" promptText="New password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <JFXPasswordField fx:id="newPass2" prefHeight="25.0" prefWidth="225.0" promptText="Confirm new password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <ImageView fx:id="imageShow" fitHeight="141.0" fitWidth="226.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
+                  <JFXTextField fx:id="username" accessibleText="Username" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="202.0" styleClass="text-area" GridPane.rowIndex="3" />
                   <JFXPasswordField fx:id="oldPass" prefHeight="25.0" prefWidth="225.0" promptText="Old password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <cursor>
                         <Cursor fx:constant="TEXT" />
                      </cursor>
                   </JFXPasswordField>
+                  <JFXPasswordField fx:id="newPass1" prefHeight="15.0" prefWidth="328.0" promptText="New password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXPasswordField fx:id="newPass2" prefHeight="25.0" prefWidth="225.0" promptText="Confirm new password" styleClass="text-area" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
                <padding>
                   <Insets bottom="20.0" />
@@ -154,7 +154,7 @@
                   </Label>
                   <JFXTextField fx:id="fname" accessibleText="first name" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="surname" accessibleText="surname" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXTextField fx:id="email" accessibleText="email adress" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="email" accessibleText="email adress" disable="true" editable="false" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="225.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.rowIndex="3" />
                   <JFXComboBox fx:id="catSelect" accessibleText="interest" focusColor="#a8d6c9" prefHeight="25.0" prefWidth="543.0" styleClass="text-area" unFocusColor="#4a4a4a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
