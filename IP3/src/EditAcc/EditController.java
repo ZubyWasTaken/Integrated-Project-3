@@ -269,6 +269,12 @@ public class EditController implements Initializable {
     @FXML
     private void deleteAccount(ActionEvent event) throws SQLException {
         delete();
+    }
+
+    private void changeDetailsFailed() {
+        Shaker shake = new Shaker(saveBut);
+        shake.shake();
+        saveBut.requestFocus();
 
     }
 
@@ -328,51 +334,52 @@ public class EditController implements Initializable {
     }
 
     private void saveUsername() throws SQLException {
-
-        if (username.getText().isEmpty()) {
+        if (username.getText().equals(currentUser.getUsername())) {
+            return;
+        } else if (username.getText().isEmpty()) {
+            username.setStyle("-jfx-unfocus-color: red;");
             tray.setTitle("Username");
-            tray.setMessage("Username is empty. Try again.");
+            tray.setMessage("Username is empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+
+        } else if (allUsers.contains(username.getText())) {
+            username.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Username");
+            tray.setMessage("This username is taken. Please select a new one");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+        } else if (User.match(username.getText())) {
+            username.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Username");
+            tray.setMessage("Username cannot contain special characters.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+
         } else {
-            Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(username.getText());
-            boolean b = m.find();
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
 
-            if (b) {
-                tray.setTitle("Username");
-                tray.setMessage("Username has special characters. Try again.");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
+            currentUser.setUsername(username.getText());
+            sql.updateUsername(currentUser.getUserID(), currentUser.getUsername());
 
-            } else {
-                //if input username is the same as the users current username
-                // set it to itself, return false
-                if (username.getText().equals(currentUser.getUsername())) {
-                    currentUser.setUsername(username.getText());
-                    sql.updateUsername(currentUser.getUserID(), currentUser.getUsername());
-                    tray.setTitle("Success");
-                    tray.setMessage("All changes are successfully saved.");
-                    tray.setNotificationType(NotificationType.SUCCESS);
-                    tray.showAndDismiss(Duration.millis(3000));
-                } else {
-                    // if user table contains input username
-                    // return true
-
-                    //otherwise set username and return false
-                    if (allUsers.contains(username.getText())) {
-                        tray.setTitle("Username");
-                        tray.setMessage("Username already exists. Try again.");
-                        tray.setNotificationType(NotificationType.ERROR);
-                        tray.showAndDismiss(Duration.millis(3000));
-                    } else {
-                        currentUser.setUsername(username.getText());
-                        sql.updateUsername(currentUser.getUserID(), currentUser.getUsername());
-                    }
-                }
-            }
         }
+
+
     }
+
 
     private void savePic() throws FileNotFoundException, SQLException, IOException {
         if (location != null) {
@@ -383,68 +390,86 @@ public class EditController implements Initializable {
             for (int readNum; (readNum = fis.read(buf)) != -1; ) {
                 bos.write(buf, 0, readNum);
             }
-            photo = bos.toByteArray();
-            sql.updateImage(photo, currentUser.getUserID());
+
             tray.setTitle("Success");
-            tray.setMessage("All changes are successfully saved.");
+            tray.setMessage("Details saved correctly.");
             tray.setNotificationType(NotificationType.SUCCESS);
             tray.showAndDismiss(Duration.millis(3000));
+
+            photo = bos.toByteArray();
+            sql.updateImage(photo, currentUser.getUserID());
         }
     }
 
 
     private void saveFirstName() throws SQLException {
-        if (fname.getText().isEmpty()) {
-            tray.setTitle("First Name");
-            tray.setMessage("First name is empty. Try again.");
+        if (fname.getText().equals(currentUser.getFirstname())) {
+            return;
+        } else if (fname.getText().isEmpty()) {
+            fname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("First name");
+            tray.setMessage("First name is empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+        } else if (User.matchName(fname.getText())) {
+            fname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("First name");
+            tray.setMessage("First invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
         } else {
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
 
-            Matcher m = p.matcher(fname.getText());
-            boolean b = m.find();
-
-            if (b) {
-                tray.setTitle("First Name");
-                tray.setMessage("First name has special characters. Try again.");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-            } else {
-                currentUser.setFirstname(fname.getText());
-                sql.updateFirstname(currentUser.getUserID(), currentUser.getFirstname());
-                tray.setTitle("Success");
-                tray.setMessage("All changes are successfully saved.");
-                tray.setNotificationType(NotificationType.SUCCESS);
-                tray.showAndDismiss(Duration.millis(3000));
-            }
+            currentUser.setFirstname(fname.getText());
+            sql.updateFirstname(currentUser.getUserID(), currentUser.getFirstname());
         }
+
     }
 
     private void saveSurname() throws SQLException {
-        if (surname.getText().isEmpty()) {
-            tray.setTitle("First Name");
-            tray.setMessage("Surname is empty. Try again.");
+        if (surname.getText().equals(currentUser.getSurname())) {
+            return;
+        } else if (surname.getText().isEmpty()) {
+            surname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Surname");
+            tray.setMessage("Surname name is empty.");
             tray.setNotificationType(NotificationType.ERROR);
             tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+        } else if (User.matchName(surname.getText())) {
+            surname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Surname");
+            tray.setMessage("Surname is invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
         } else {
-            Matcher m = p.matcher(surname.getText());
-            boolean b = m.find();
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
 
-            if (b) {
-                tray.setTitle("First Name");
-                tray.setMessage("Surname has special characters. Try again.");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-            } else {
-                currentUser.setSurname(surname.getText());
-                sql.updateSurname(currentUser.getUserID(), currentUser.getSurname());
-                tray.setTitle("Success");
-                tray.setMessage("All changes are successfully saved.");
-                tray.setNotificationType(NotificationType.SUCCESS);
-                tray.showAndDismiss(Duration.millis(3000));
-
-            }
+            currentUser.setSurname(surname.getText());
+            sql.updateSurname(currentUser.getUserID(), currentUser.getSurname());
         }
+
     }
 
     private void saveCategory() throws SQLException {
@@ -458,65 +483,79 @@ public class EditController implements Initializable {
         }
     }
 
+    public Boolean isPassValid() {
+        return h.verifyHash(oldPass.getText(), currentUser.getPassword());
+    }
+
     private void savePassword() throws SQLException {
 
-        if (oldPass.getText().isEmpty()) {
-            changePasswordFailed();
-            tray.setTitle("Password");
-            tray.setMessage("Password field is empty. Try again.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-        }
+        if ((oldPass.getText().isEmpty() & newPass1.getText().isEmpty() & newPass2.getText().isEmpty())) {
+            return;
+        } else if (oldPass.getText().isEmpty()) {
+                tray.setTitle("Old Password");
+                tray.setMessage("Old password is empty.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
 
-        if (currentUser.getPassword().equals(newPass1.getText())) {
-            tray.setTitle("Password");
-            tray.setMessage("New password can't be same as old. Try again.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-        }
-        if(currentUser.getPassword().equals(newPass2.getText())){
-            tray.setTitle("Password");
-            tray.setMessage("New password can't be same as old. Try again.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-        }
+                changeDetailsFailed();
+                return;
+            } else if (isPassValid()) {
 
-        if (h.verifyHash(oldPass.getText(), currentUser.getPassword())) {
-
-
-            if (newPass1.getText().equals(newPass2.getText())) {
-                if (newPass2.getText().length() < 8 || newPass2.getText().length() > 32) {
-                    tray.setTitle("Password");
-                    tray.setMessage("Password must be between 8-32 characters");
+                if ((newPass2.getText().equals(oldPass.getText()) || newPass1.getText().equals(oldPass.getText()))) {
+                    tray.setTitle("New password same as old.");
+                    tray.setMessage("New password can't be the same as old.");
                     tray.setNotificationType(NotificationType.ERROR);
                     tray.showAndDismiss(Duration.millis(3000));
+
+                    changeDetailsFailed();
+                    return;
+                } else if (newPass1.getText().isEmpty() || newPass2.getText().isEmpty()) {
+                    tray.setTitle("New password(s)");
+                    tray.setMessage("New password(s) is empty.");
+                    tray.setNotificationType(NotificationType.ERROR);
+                    tray.showAndDismiss(Duration.millis(3000));
+
+                    changeDetailsFailed();
+                    return;
+                } else if (!newPass1.getText().equals(newPass2.getText())) {
+                    tray.setTitle("New Password");
+                    tray.setMessage("New passwords don't match.");
+                    tray.setNotificationType(NotificationType.ERROR);
+                    tray.showAndDismiss(Duration.millis(3000));
+
+                    changeDetailsFailed();
+                    return;
+                } else if ((newPass2.getLength() < 8 || newPass2.getLength() > 32) && (!newPass1.getText().isEmpty())) {
+                    newPass1.setStyle("-jfx-unfocus-color: #ff0000;");
+                    newPass2.setStyle("-jfx-unfocus-color: red;");
+                    tray.setTitle("New password");
+                    tray.setMessage("New Password must be between 8-32 characters.");
+                    tray.setNotificationType(NotificationType.ERROR);
+                    tray.showAndDismiss(Duration.millis(3000));
+
+                    changeDetailsFailed();
+
+                    return;
                 } else {
-                    newPassword = h.hash(newPass1.getText());
+                    newPassword = h.hash(newPass2.getText());
                     currentUser.setPassword(newPassword);
                     currentUser.editPassword(currentUser);
-                    tray.setTitle("Success");
-                    tray.setMessage("All changes are successfully saved.");
+
+                    tray.setTitle("Password");
+                    tray.setMessage("Password changed successfully");
                     tray.setNotificationType(NotificationType.SUCCESS);
                     tray.showAndDismiss(Duration.millis(3000));
                 }
-            } else {
+            }else{
                 tray.setTitle("Password");
-                tray.setMessage("New passwords don't match. Try again.");
+                tray.setMessage("Old password is invalid.");
                 tray.setNotificationType(NotificationType.ERROR);
                 tray.showAndDismiss(Duration.millis(3000));
+
+                changeDetailsFailed();
+                return;
             }
-        } else {
-            tray.setTitle("Password");
-            tray.setMessage("Old password entered incorrect. Try again.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
         }
 
-    }
 
-    private void changePasswordFailed() {
-        Shaker shake = new Shaker(saveBut);
-        shake.shake();
-        oldPass.requestFocus();
     }
-}
