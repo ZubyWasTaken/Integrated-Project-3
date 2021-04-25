@@ -21,16 +21,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Zuby
  */
-public class UserQNA extends Application{
+public class UserQNA extends Application {
 
     User currentUser;
 
     public void start(Stage stage) throws Exception {
 
-    stage.getIcons().add(new Image("/Resources/icon.png"));
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("userQNAScreen.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
@@ -40,7 +39,7 @@ public class UserQNA extends Application{
         stage.setTitle("UserQNA");
         stage.show();
         stage.centerOnScreen();
-         root.requestFocus();
+        root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
@@ -55,9 +54,9 @@ public class UserQNA extends Application{
         });
     }
 
- public UserQNA(User user) {
-        currentUser=user;
+    public UserQNA(User user) {
+        currentUser = user;
     }
 
-   
+
 }

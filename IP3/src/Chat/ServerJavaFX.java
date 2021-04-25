@@ -12,8 +12,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javafx.application.Application;
+
 import static javafx.application.Application.launch;
+
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -24,21 +27,19 @@ import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
 /**
- *
  * @author erino
- *
+ * <p>
  * This class is server, run this only once.
- *
+ * <p>
  * It also uses TaskClientConnection.java file to use in a thread which
  * represents each new connection
- *
  */
 public class ServerJavaFX extends Application {
 
     public TextArea txtAreaDisplay;
     List<TaskClientConnection> connectionList = new ArrayList<TaskClientConnection>();
 
-   
+
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         // Text area for displaying contents
@@ -86,7 +87,7 @@ public class ServerJavaFX extends Application {
         }).start();
     }
 
-   
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -95,7 +96,7 @@ public class ServerJavaFX extends Application {
     public void broadcast(String message) {
         for (TaskClientConnection clientConnection : this.connectionList) {
             clientConnection.sendMessage(message);
-             
+
         }
 
     }

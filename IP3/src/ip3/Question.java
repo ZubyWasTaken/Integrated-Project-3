@@ -6,30 +6,30 @@
 package ip3;
 
 import SQL.SQLHandler;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
  * @author stani
  */
 public class Question {
     private int id;
     private String text;
-    
+
     private boolean resolved;
     private String date;
     private User sender;
     private static SQLHandler sql = new SQLHandler();
-    
-     /*public Question(int category) throws SQLException {
-        ArrayList<String> questInfo = sql.searchQuestions(category);
-        id = parseInt(questInfo.get(0));
-        cat_id = parseInt(questInfo.get(1));
-        text = questInfo.get(2);
-        sender = parseInt(questInfo.get(3));
-    }
+
+    /*public Question(int category) throws SQLException {
+       ArrayList<String> questInfo = sql.searchQuestions(category);
+       id = parseInt(questInfo.get(0));
+       cat_id = parseInt(questInfo.get(1));
+       text = questInfo.get(2);
+       sender = parseInt(questInfo.get(3));
+   }
 */
     public static Question search(int userquest) throws SQLException, IOException {
         List questionInfo = sql.searchQuestions(userquest);
@@ -42,40 +42,40 @@ public class Question {
 
         return currentQuestion;
     }
-    public Question(int id, String text, String sender, boolean resolved, String date) throws SQLException{
-         this.id=id;
-         this.text=text;
-         this.sender = new User(sender); 
-         this.resolved=resolved;
-         this.date=date;
-         //getReplies();
-     }
-     
-     public int getId(){
-         return this.id;
-     }
-     
-   
-     
-     public String getText(){
-         return this.text;
-     }
-     
-     public User getSender(){
-         return this.sender;
-     }
-     
-     public boolean getResolved(){
-         return this.resolved;
-     }
-     
-     public String getDate(){
-         return this.date;
-     }
-     
-     public static void createQuestion( String text, int sender) throws SQLException{
-         sql.addQuestion(text, sender);
-     }
+
+    public Question(int id, String text, String sender, boolean resolved, String date) throws SQLException {
+        this.id = id;
+        this.text = text;
+        this.sender = new User(sender);
+        this.resolved = resolved;
+        this.date = date;
+        //getReplies();
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+
+    public String getText() {
+        return this.text;
+    }
+
+    public User getSender() {
+        return this.sender;
+    }
+
+    public boolean getResolved() {
+        return this.resolved;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public static void createQuestion(String text, int sender) throws SQLException {
+        sql.addQuestion(text, sender);
+    }
 
     /*private void getReplies() {
         

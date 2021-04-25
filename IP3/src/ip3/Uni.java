@@ -6,11 +6,11 @@
 package ip3;
 
 import SQL.SQLHandler;
+
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
  * @author stani
  */
 public class Uni {
@@ -18,22 +18,26 @@ public class Uni {
     private final String uniName;
     private final String uniLoc;
     private static final SQLHandler sql = new SQLHandler();
-    
-        public Uni(int uniId, String uniName, String uniLoc) {
+
+    public Uni(int uniId, String uniName, String uniLoc) {
         this.uniId = uniId;
         this.uniName = uniName;
         this.uniLoc = uniLoc;
     }
-       public int getId(){
-           return this.uniId;
-       }
-       public String getName(){
-           return this.uniName;
-       }
-       public String getLoc(){
-           return this.uniLoc;
-       }
-       public static int fetchUniId(String tempcat) throws SQLException {
+
+    public int getId() {
+        return this.uniId;
+    }
+
+    public String getName() {
+        return this.uniName;
+    }
+
+    public String getLoc() {
+        return this.uniLoc;
+    }
+
+    public static int fetchUniId(String tempcat) throws SQLException {
         List uniInfo = sql.searchUniTable(tempcat);
 
         int tempUniId = (int) uniInfo.get(0);

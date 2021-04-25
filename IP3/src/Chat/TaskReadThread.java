@@ -8,12 +8,12 @@ package Chat;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+
 import javafx.application.Platform;
 
 /**
- *
  * @author erino
- *
+ * <p>
  * It is used to get input from server simultaneously
  */
 public class TaskReadThread implements Runnable {
@@ -39,14 +39,14 @@ public class TaskReadThread implements Runnable {
 
                 //get input from the client
                 String message = input.readUTF();
-                
-           
+
+
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {
                     //display the message in the textarea
 
                     client.viewMsg.appendText(message + "\n");
-           
+
 
                 });
             } catch (IOException ex) {

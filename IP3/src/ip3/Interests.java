@@ -6,11 +6,11 @@
 package ip3;
 
 import SQL.SQLHandler;
+
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
  * @author stani
  */
 public class Interests {
@@ -18,20 +18,24 @@ public class Interests {
     private final String intName;
     private final int catId;
     private static final SQLHandler sql = new SQLHandler();
-        public Interests(int intId, String intName, int catId) {
+
+    public Interests(int intId, String intName, int catId) {
         this.intId = intId;
         this.intName = intName;
         this.catId = catId;
     }
-       public int getId(){
-           return this.intId;
-       }
-       public String getName(){
-           return this.intName;
-       }
-       public int getCarId(){
-           return this.catId;
-       }
+
+    public int getId() {
+        return this.intId;
+    }
+
+    public String getName() {
+        return this.intName;
+    }
+
+    public int getCarId() {
+        return this.catId;
+    }
        /*
        public static int fetchIntId(String tempcat) throws SQLException {
         List intInfo = sql.searchInterestsTable(tempcat);

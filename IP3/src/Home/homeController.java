@@ -1012,72 +1012,72 @@ public class homeController implements Initializable {
     private void handleMouseEvents() {
         infoQNA.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                info.setVisible(true);
-                
-                Text text = new Text("Ask Tutors in your course questions related to your subject.\nTeachers will"
-                        + " respond within 3 days.\nStudents can also help out with questions and further discussions.\n"
-                        + "Mark a question as resolved when you feel your question has been answered!");
- text.setStyle("-fx-font: 16 arial;");
- 
-                info.getChildren().add(text);
-            }
-        });
+                    @Override
+                    public void handle(MouseEvent e) {
+                        info.setVisible(true);
+
+                        Text text = new Text("Ask Tutors in your course questions related to your subject.\nTeachers will"
+                                + " respond within 3 days.\nStudents can also help out with questions and further discussions.\n"
+                                + "Mark a question as resolved when you feel your question has been answered!");
+                        text.setStyle("-fx-font: 16 arial;");
+
+                        info.getChildren().add(text);
+                    }
+                });
 
         infoQNA.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                info.setVisible(false);
-              
-                info.getChildren().clear();
-            }
-        });
-         infoChat.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    @Override
+                    public void handle(MouseEvent e) {
+                        info.setVisible(false);
+
+                        info.getChildren().clear();
+                    }
+                });
+        infoChat.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                info.setVisible(true);
-                
-                Text text = new Text("Chat informally as a group with other students in your course.\n"
-                        + "Ask each other questions, discuss lectures or even discuss todays top stories from the BBC News Feed!");
-  text.setStyle("-fx-font: 16 arial;");
-                info.getChildren().add(text);
-            }
-        });
+                    @Override
+                    public void handle(MouseEvent e) {
+                        info.setVisible(true);
+
+                        Text text = new Text("Chat informally as a group with other students in your course.\n"
+                                + "Ask each other questions, discuss lectures or even discuss todays top stories from the BBC News Feed!");
+                        text.setStyle("-fx-font: 16 arial;");
+                        info.getChildren().add(text);
+                    }
+                });
 
         infoChat.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                info.setVisible(false);
-              
-                info.getChildren().clear();
-            }
-        });
-         infoFile.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    @Override
+                    public void handle(MouseEvent e) {
+                        info.setVisible(false);
+
+                        info.getChildren().clear();
+                    }
+                });
+        infoFile.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                info.setVisible(true);
-                
-                Text text = new Text("Upload and download files with other students.\n"
-                        + "Students can share images, text documents and presentations.\n"
-                        + "Maybe you want to share useful lecture notes with your peers or get feedback on a presentation you created!");
-  text.setStyle("-fx-font: 16 arial;");
-                info.getChildren().add(text);
-            }
-        });
+                    @Override
+                    public void handle(MouseEvent e) {
+                        info.setVisible(true);
+
+                        Text text = new Text("Upload and download files with other students.\n"
+                                + "Students can share images, text documents and presentations.\n"
+                                + "Maybe you want to share useful lecture notes with your peers or get feedback on a presentation you created!");
+                        text.setStyle("-fx-font: 16 arial;");
+                        info.getChildren().add(text);
+                    }
+                });
 
         infoFile.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                info.setVisible(false);
-              
-                info.getChildren().clear();
-            }
-        });
+                    @Override
+                    public void handle(MouseEvent e) {
+                        info.setVisible(false);
+
+                        info.getChildren().clear();
+                    }
+                });
     }
 }

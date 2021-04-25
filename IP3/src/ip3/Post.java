@@ -6,13 +6,13 @@
 package ip3;
 
 import SQL.SQLHandler;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
 /**
- *
  * @author stani
  */
 public class Post {
@@ -23,7 +23,7 @@ public class Post {
     private String date;
     private static SQLHandler sql = new SQLHandler();
 
-//    //private int replies;
+    //    //private int replies;
 //    public static Post search(int userpost) throws SQLException, IOException {
 //        List questionInfo = sql.searchPosts(userpost);
 //        int id = (int) questionInfo.get(0);

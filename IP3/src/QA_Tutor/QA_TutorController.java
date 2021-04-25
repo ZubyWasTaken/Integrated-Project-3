@@ -19,9 +19,12 @@ import ip3.Question;
 import ip3.Reply;
 import ip3.SwitchWindow;
 import ip3.User;
+
 import java.io.IOException;
 import java.io.InputStream;
+
 import static java.lang.Integer.parseInt;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -30,6 +33,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -236,7 +240,7 @@ public class QA_TutorController implements Initializable {
         container.setMaxWidth(feed.getWidth() - 32);
         container.setAlignment(Pos.TOP_LEFT);
         container.setId(String.valueOf(question.getId()));
-      
+
 
         //Setting the boxes
         VBox quest = new VBox();
@@ -256,13 +260,13 @@ public class QA_TutorController implements Initializable {
         answerhbox.setAlignment(Pos.CENTER_RIGHT);
         answerhbox.getChildren().addAll(resolved, author, profilePic, datePosted, btn);
         answerhbox.setSpacing(5);
-        
+
         container.getChildren().add(quest);
         container.getChildren().add(answers);
 
         //Adding them to the feed
         feed.getItems().addAll(container);
-        
+
 
         //  msgArea.requestFocus();
         loadReplies(btn);
@@ -369,13 +373,13 @@ public class QA_TutorController implements Initializable {
         Label datePosted = new Label();
         datePosted.setText("Date Posted: " + reply.getDate());
         datePosted.setStyle("-fx-padding: 0 20 5 0;");
- 
+
         VBox container = new VBox();
         container.setSpacing(5);
         container.setMaxWidth(repliesView.getWidth() - 35);
         container.setAlignment(Pos.TOP_LEFT);
         container.setId(String.valueOf(reply.getId()));
-      
+
 
         //Setting the boxes
         VBox quest = new VBox();
@@ -395,7 +399,7 @@ public class QA_TutorController implements Initializable {
         answerhbox.setAlignment(Pos.CENTER_RIGHT);
         answerhbox.getChildren().addAll(author, profilePic, datePosted);
         answerhbox.setSpacing(5);
-        
+
         container.getChildren().add(quest);
         container.getChildren().add(answers);
 

@@ -11,7 +11,6 @@ import Interests.InterestController;
 import LoginRegister.LoginRegister;
 import QA_Tutor.QA_Tutor;
 import SQL.SQLHandler;
-import UserQNA.drawerController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
@@ -24,6 +23,7 @@ import ip3.Hash;
 import ip3.Shaker;
 import ip3.SwitchWindow;
 import ip3.User;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,7 +46,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -57,7 +59,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -73,7 +74,7 @@ import tray.notification.TrayNotification;
 public class EditController implements Initializable {
 
     User currentUser;
-    
+
     @FXML
     private AnchorPane pane;
     @FXML
@@ -114,11 +115,10 @@ public class EditController implements Initializable {
     private GridPane accDet;
     @FXML
     private JFXButton deleteBut;
-    
-      @FXML
+
+    @FXML
     private JFXButton homeBut;
 
-    
     SQLHandler sql = new SQLHandler();
     byte[] photo = null;
     String filename = null;
@@ -129,7 +129,10 @@ public class EditController implements Initializable {
     ObservableList<String> namesCat = FXCollections.observableArrayList();
     TrayNotification tray = new TrayNotification();
     AnimationType type = AnimationType.POPUP;
-    
+    Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+    Hash h = new Hash();
+    String newPassword;
+
     @FXML
     private void upload(MouseEvent event) {
         FileChooser fc = new FileChooser();
@@ -140,47 +143,43 @@ public class EditController implements Initializable {
             location = file.getAbsolutePath();
             Image image = new Image(file.toURI().toString());
             imageShow.setImage(image);
-            
+
         }
-        
+
     }
-    
+
     @FXML
     private void save(ActionEvent event) throws FileNotFoundException, IOException, SQLException {
-        usernameSave();
-        picSave();
-        emailSave();
-        fnameSave();
-        surnameSave();
-        catSave();
-        passSave();
-        
-        tray.setTitle("Success");
-        tray.setMessage("All changes are successfully saved.");
-        tray.setNotificationType(NotificationType.SUCCESS);
-        tray.showAndDismiss(Duration.millis(3000));
-        
+
+
+        saveUsername();
+        savePic();
+        saveFirstName();
+        saveSurname();
+        saveCategory();
+        savePassword();
+
         SwitchWindow.switchWindow((Stage) saveBut.getScene().getWindow(), new Edit(currentUser));
     }
-    
+
     @FXML
     private void cancel(ActionEvent event) {
-        
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your changes will not be saved. Do you wish to proceed? ", ButtonType.YES, ButtonType.CANCEL);
         alert.showAndWait();
-        
+
         if (alert.getResult() == ButtonType.YES) {
             SwitchWindow.switchWindow((Stage) cancelBut.getScene().getWindow(), new Edit(currentUser));
-            
+
         }
-        
+
     }
-    
+
     @FXML
     private void goHome(ActionEvent event) {
         SwitchWindow.switchWindow((Stage) homeBut.getScene().getWindow(), new QA_Tutor(currentUser));
     }
-    
+
     @FXML
     private void returnToAcc(ActionEvent event) throws SQLException {
         personalDet.setVisible(false);
@@ -195,15 +194,15 @@ public class EditController implements Initializable {
         accDet.setVisible(false);
         personalTab.setDisable(true);
         accTab.setDisable(false);
-        
+
     }
-    
+
     @FXML
     private void back(ActionEvent event) {
-        
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your changes will not be saved. Do you wish to proceed? ", ButtonType.YES, ButtonType.CANCEL);
         alert.showAndWait();
-        
+
         if (alert.getResult() == ButtonType.YES) {
             if (currentUser.getTitleId() == 1) {
                 SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new Home(currentUser));
@@ -211,13 +210,12 @@ public class EditController implements Initializable {
                 SwitchWindow.switchWindow((Stage) backBut.getScene().getWindow(), new HomeTutor(currentUser));
             }
         }
-        
+
     }
 
     /**
      * Initializes the controller class.
      */
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(new Runnable() {
@@ -228,18 +226,18 @@ public class EditController implements Initializable {
                         drawer.setDisable(true);
                         hamburger.setVisible(false);
                         homeBut.setVisible(true);
-                        
-                    }else{
-                    hamburger.setVisible(true);
-                    Drawer newdrawer = new Drawer();
-                    drawer.setDisable(true);
-                    newdrawer.drawerPullout(drawer, currentUser, hamburger);
+
+                    } else {
+                        hamburger.setVisible(true);
+                        Drawer newdrawer = new Drawer();
+                        drawer.setDisable(true);
+                        newdrawer.drawerPullout(drawer, currentUser, hamburger);
                     }
                     username.setText(currentUser.getUsername());
                     accTab.setDisable(true);
                     InputStream fs = currentUser.getImage();
                     Image image = new Image(fs);
-                    
+
                     imageShow.setImage(image);
                     username.setText(currentUser.getUsername());
                     fname.setText(currentUser.getFirstname());
@@ -247,11 +245,12 @@ public class EditController implements Initializable {
                     email.setText(currentUser.getEmail());
                     catPopulate();
                     catSelect.getSelectionModel().select(currentUser.getCatId() - 1);
-                    
+                    catId = currentUser.getCatId();
+
                 } catch (SQLException ex) {
                     Logger.getLogger(EditController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 catSelect.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
@@ -266,20 +265,26 @@ public class EditController implements Initializable {
             }
         });
     }
-    
+
     @FXML
     private void deleteAccount(ActionEvent event) throws SQLException {
         delete();
-        
     }
-    
+
+    private void changeDetailsFailed() {
+        Shaker shake = new Shaker(saveBut);
+        shake.shake();
+        saveBut.requestFocus();
+
+    }
+
     private void delete() {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Confirmation");
         dialog.setHeaderText("Are you sure? Your account and all related data will be deleted. Enter password to confirm.");
-        
+
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        
+
         PasswordField pwd = new PasswordField();
         HBox content = new HBox();
         content.setAlignment(Pos.CENTER_LEFT);
@@ -293,7 +298,7 @@ public class EditController implements Initializable {
                     try {
                         sql.deleteAccount(currentUser.getUserID());
                         SwitchWindow.switchWindow((Stage) deleteBut.getScene().getWindow(), new LoginRegister());
-                        
+
                     } catch (SQLException ex) {
                         Logger.getLogger(EditController.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -321,149 +326,236 @@ public class EditController implements Initializable {
         }
         catSelect.setItems(namesCat);
     }
-    
+
     public void setData(User user) throws SQLException {
         currentUser = user;
         this.allUsers = allUsers = sql.getAllUsers();
         tray.setAnimationType(type);
     }
-    
-    private void usernameSave() throws SQLException {
-        if (!username.getText().equals(currentUser.getUsername())) {
-            
-            if (allUsers.contains(username.getText())) {
-                
-                tray.setTitle("Username");
-                tray.setMessage("This username is taken. Please select a new one");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-                return;
-            }
+
+    private void saveUsername() throws SQLException {
+        if (username.getText().equals(currentUser.getUsername())) {
+            return;
+        } else if (username.getText().isEmpty()) {
+            username.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Username");
+            tray.setMessage("Username is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+
+        } else if (allUsers.contains(username.getText())) {
+            username.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Username");
+            tray.setMessage("This username is taken. Please select a new one");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+        } else if (User.match(username.getText())) {
+            username.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Username");
+            tray.setMessage("Username cannot contain special characters.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+
+        } else {
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+
             currentUser.setUsername(username.getText());
             sql.updateUsername(currentUser.getUserID(), currentUser.getUsername());
+
         }
-        
-    }
-    
-    private void fnameSave() throws SQLException {
-        if (!fname.getText().equals(currentUser.getFirstname())) {
-            if (User.matchName(fname.getText()) == true) {
-                tray.setTitle("Name");
-                tray.setMessage("Name invalid.");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-                return;
-            } else {
-                currentUser.setFirstname(fname.getText());
-                sql.updateFirstname(currentUser.getUserID(), currentUser.getFirstname());
-            }
-        }
-    }
-    
-    private void passSave() throws SQLException {
-        ArrayList<String> allUsers = new ArrayList<>();
-        Hash h = new Hash();
-        SQLHandler sql = new SQLHandler();
-        String pass = oldPass.getText();
-        String passNew = newPass1.getText();
-        String passNew2 = newPass2.getText();
-        if (!h.verifyHash(pass, currentUser.getPassword())) {
-            
-            tray.setTitle("Password");
-            tray.setMessage("Old password is invalid. Please re-enter");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
-        
-        if (pass.isEmpty() || passNew.isEmpty()) {
-            
-            changePasswordFailed();
-        }
-        
-        if (passNew.length() < 8 || passNew.length() > 32) {
-            
-            tray.setTitle("Password");
-            tray.setMessage("Password must be between 8-32 characters");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        }
-        
-        if (!passNew.equals(passNew2)) {
-            
-            tray.setTitle("Password");
-            tray.setMessage("Passwords do not match. Please try again.");
-            tray.setNotificationType(NotificationType.ERROR);
-            tray.showAndDismiss(Duration.millis(3000));
-            return;
-        } else {
-            passNew = h.hash(passNew);
-            currentUser.setPassword(passNew);
-            currentUser.editPassword(currentUser);
-        }
+
+
     }
 
-    private void changePasswordFailed() {
-        Shaker shake = new Shaker(saveBut);
-        shake.shake();
-        oldPass.requestFocus();
-    }
-    
-    private void surnameSave() throws SQLException {
-        if (!surname.getText().equals(currentUser.getSurname())) {
-            if (User.matchName(fname.getText()) == true) {
-                
-                tray.setTitle("Name");
-                tray.setMessage("Name invalid.");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-                return;
-            } else {
-                currentUser.setSurname(surname.getText());
-                sql.updateSurname(currentUser.getUserID(), currentUser.getSurname());
-            }
-        }
-    }
-    
-    private void picSave() throws FileNotFoundException, SQLException, IOException {
+
+    private void savePic() throws FileNotFoundException, SQLException, IOException {
         if (location != null) {
             File image = new File(location);
             FileInputStream fis = new FileInputStream(image);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
-            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+            for (int readNum; (readNum = fis.read(buf)) != -1; ) {
                 bos.write(buf, 0, readNum);
             }
+
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+
             photo = bos.toByteArray();
             sql.updateImage(photo, currentUser.getUserID());
         }
     }
-    
-    private void emailSave() throws SQLException {
-        if (!email.getText().equals(currentUser.getEmail())) {
-            if (User.isValid(email.getText()) == false) {
-                
-                tray.setTitle("Email");
-                tray.setMessage("Email Invalid");
-                tray.setNotificationType(NotificationType.ERROR);
-                tray.showAndDismiss(Duration.millis(3000));
-                return;
-            } else {
-                
-                currentUser.setEmail(email.getText());
-                currentUser.setUniId(User.fetchUniId(currentUser.getEmail()));
-                sql.updateEmail(currentUser.getUserID(), currentUser.getEmail());
-                sql.updateUni(currentUser.getUserID(), currentUser.getUniId());
-            }
+
+
+    private void saveFirstName() throws SQLException {
+        if (fname.getText().equals(currentUser.getFirstname())) {
+            return;
+        } else if (fname.getText().isEmpty()) {
+            fname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("First name");
+            tray.setMessage("First name is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+        } else if (User.matchName(fname.getText())) {
+            fname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("First name");
+            tray.setMessage("First invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+        } else {
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            currentUser.setFirstname(fname.getText());
+            sql.updateFirstname(currentUser.getUserID(), currentUser.getFirstname());
         }
-        
+
     }
-    
-    private void catSave() throws SQLException {
+
+    private void saveSurname() throws SQLException {
+        if (surname.getText().equals(currentUser.getSurname())) {
+            return;
+        } else if (surname.getText().isEmpty()) {
+            surname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Surname");
+            tray.setMessage("Surname name is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+        } else if (User.matchName(surname.getText())) {
+            surname.setStyle("-jfx-unfocus-color: red;");
+            tray.setTitle("Surname");
+            tray.setMessage("Surname is invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+
+            return;
+        } else {
+            tray.setTitle("Success");
+            tray.setMessage("Details saved correctly.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            currentUser.setSurname(surname.getText());
+            sql.updateSurname(currentUser.getUserID(), currentUser.getSurname());
+        }
+
+    }
+
+    private void saveCategory() throws SQLException {
         if (catId != currentUser.getCatId()) {
             currentUser.setCatId(catId);
             sql.updateCategory(currentUser.getCatId());
+            tray.setTitle("Success");
+            tray.setMessage("All changes are successfully saved.");
+            tray.setNotificationType(NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.millis(3000));
         }
     }
+
+    public Boolean isPassValid() {
+        return h.verifyHash(oldPass.getText(), currentUser.getPassword());
+    }
+
+    private void savePassword() throws SQLException {
+
+        if ((oldPass.getText().isEmpty() & newPass1.getText().isEmpty() & newPass2.getText().isEmpty())) {
+            return;
+        } else if (oldPass.getText().isEmpty()) {
+            tray.setTitle("Old Password");
+            tray.setMessage("Old password is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+        } else if (isPassValid()) {
+
+            if ((newPass2.getText().equals(oldPass.getText()) || newPass1.getText().equals(oldPass.getText()))) {
+                tray.setTitle("New password same as old.");
+                tray.setMessage("New password can't be the same as old.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+
+                changeDetailsFailed();
+                return;
+            } else if (newPass1.getText().isEmpty() || newPass2.getText().isEmpty()) {
+                tray.setTitle("New password(s)");
+                tray.setMessage("New password(s) is empty.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+
+                changeDetailsFailed();
+                return;
+            } else if (!newPass1.getText().equals(newPass2.getText())) {
+                tray.setTitle("New Password");
+                tray.setMessage("New passwords don't match.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+
+                changeDetailsFailed();
+                return;
+            } else if ((newPass2.getLength() < 8 || newPass2.getLength() > 32) && (!newPass1.getText().isEmpty())) {
+                newPass1.setStyle("-jfx-unfocus-color: #ff0000;");
+                newPass2.setStyle("-jfx-unfocus-color: red;");
+                tray.setTitle("New password");
+                tray.setMessage("New Password must be between 8-32 characters.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
+
+                changeDetailsFailed();
+
+                return;
+            } else {
+                newPassword = h.hash(newPass2.getText());
+                currentUser.setPassword(newPassword);
+                currentUser.editPassword(currentUser);
+
+                tray.setTitle("Password");
+                tray.setMessage("Password changed successfully");
+                tray.setNotificationType(NotificationType.SUCCESS);
+                tray.showAndDismiss(Duration.millis(3000));
+            }
+        } else {
+            tray.setTitle("Password");
+            tray.setMessage("Old password is invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+        }
+    }
+
+
 }
