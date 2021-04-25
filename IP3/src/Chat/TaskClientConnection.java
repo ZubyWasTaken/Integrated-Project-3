@@ -9,10 +9,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
 import javafx.application.Platform;
 
 /**
- *
  * @author erino
  */
 public class TaskClientConnection implements Runnable {
@@ -49,7 +49,7 @@ public class TaskClientConnection implements Runnable {
 
                 //send message via server broadcast
                 server.broadcast(message);
-              
+
 
                 //append message of the Text Area of UI (GUI Thread)
                 Platform.runLater(() -> {

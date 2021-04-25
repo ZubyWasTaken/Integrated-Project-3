@@ -16,6 +16,7 @@ import ip3.Drawer;
 import ip3.Post;
 import ip3.SwitchWindow;
 import ip3.User;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,7 +45,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
- *
  * @author erino
  */
 public class ChatController implements Initializable {

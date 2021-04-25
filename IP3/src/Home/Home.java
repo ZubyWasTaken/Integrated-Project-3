@@ -23,16 +23,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Zuby
  */
-public class Home extends Application{
+public class Home extends Application {
 
     User currentUser;
 
     public void start(Stage stage) throws Exception {
-      
-            stage.getIcons().add(new Image("/Resources/icon.png"));
+
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("homeScreen.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
@@ -40,9 +39,9 @@ public class Home extends Application{
         controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Home");
-        stage.show();        
+        stage.show();
         stage.centerOnScreen();
-         root.requestFocus();
+        root.requestFocus();
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -57,10 +56,10 @@ public class Home extends Application{
             }
         });
     }
-  
- public Home(User user) {
-        currentUser=user;
+
+    public Home(User user) {
+        currentUser = user;
     }
 
-   
+
 }

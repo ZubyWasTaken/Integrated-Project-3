@@ -16,6 +16,7 @@ import ip3.Categories;
 import ip3.Shaker;
 import ip3.User;
 import ip3.SwitchWindow;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +29,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,7 +50,6 @@ import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
 /**
- *
  * @author erino
  */
 public class InterestController implements Initializable {
@@ -106,8 +107,8 @@ public class InterestController implements Initializable {
         username = currentUser.getUsername().trim();
         password = currentUser.getPassword().trim();
         email = getemail.getText().trim();
- imgPath = locImg.getText().trim();
- System.out.println(imgPath);
+        imgPath = locImg.getText().trim();
+        System.out.println(imgPath);
         dob = getdob.getValue();
         if (dob != null) {
             userDob = dob.toString();
@@ -179,7 +180,7 @@ public class InterestController implements Initializable {
 
             registerFailed();
             return;
-        }else if (imgPath.isEmpty()) {
+        } else if (imgPath.isEmpty()) {
             tray.setAnimationType(type);
             tray.setTitle("Register");
             tray.setMessage("Please select a profile picture");
@@ -242,7 +243,7 @@ public class InterestController implements Initializable {
         getfname.requestFocus();
     }
 
-//    private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
+    //    private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
 //        User user = new User(username);
 //        File image = new File("src/SQL/files/noPic.png");
 //        Path path = Paths.get("src/SQL/files/noPic.png");
@@ -270,14 +271,13 @@ public class InterestController implements Initializable {
     private void setImage(String username) throws FileNotFoundException, SQLException, IOException {
         User user = new User(username);
 
-             image = new File(locImg.getText());
-                 
+        image = new File(locImg.getText());
 
-        
+
         FileInputStream fis = new FileInputStream(image);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
-        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+        for (int readNum; (readNum = fis.read(buf)) != -1; ) {
             bos.write(buf, 0, readNum);
         }
         photo = bos.toByteArray();

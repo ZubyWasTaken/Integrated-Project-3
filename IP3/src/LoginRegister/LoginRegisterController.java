@@ -17,10 +17,12 @@ import ip3.Hash;
 import ip3.Shaker;
 import ip3.SwitchWindow;
 import ip3.User;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -34,7 +36,6 @@ import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
 /**
- *
  * @author erino
  */
 public class LoginRegisterController implements Initializable {

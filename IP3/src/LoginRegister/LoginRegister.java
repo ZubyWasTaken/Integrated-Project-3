@@ -13,24 +13,23 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- *
  * @author Patrick
  */
 public class LoginRegister extends Application {
-    
+
     public void start(Stage stage) throws Exception {
-          stage.getIcons().add(new Image("/Resources/icon.png"));
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         Parent root = FXMLLoader.load(getClass().getResource("LoginRegister.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.setTitle("Login");
-        stage.show();        
+        stage.show();
         stage.centerOnScreen();
     }
-    
-    public LoginRegister(){
-        
+
+    public LoginRegister() {
+
     }
 }

@@ -492,70 +492,70 @@ public class EditController implements Initializable {
         if ((oldPass.getText().isEmpty() & newPass1.getText().isEmpty() & newPass2.getText().isEmpty())) {
             return;
         } else if (oldPass.getText().isEmpty()) {
-                tray.setTitle("Old Password");
-                tray.setMessage("Old password is empty.");
+            tray.setTitle("Old Password");
+            tray.setMessage("Old password is empty.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
+        } else if (isPassValid()) {
+
+            if ((newPass2.getText().equals(oldPass.getText()) || newPass1.getText().equals(oldPass.getText()))) {
+                tray.setTitle("New password same as old.");
+                tray.setMessage("New password can't be the same as old.");
                 tray.setNotificationType(NotificationType.ERROR);
                 tray.showAndDismiss(Duration.millis(3000));
 
                 changeDetailsFailed();
                 return;
-            } else if (isPassValid()) {
+            } else if (newPass1.getText().isEmpty() || newPass2.getText().isEmpty()) {
+                tray.setTitle("New password(s)");
+                tray.setMessage("New password(s) is empty.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
 
-                if ((newPass2.getText().equals(oldPass.getText()) || newPass1.getText().equals(oldPass.getText()))) {
-                    tray.setTitle("New password same as old.");
-                    tray.setMessage("New password can't be the same as old.");
-                    tray.setNotificationType(NotificationType.ERROR);
-                    tray.showAndDismiss(Duration.millis(3000));
+                changeDetailsFailed();
+                return;
+            } else if (!newPass1.getText().equals(newPass2.getText())) {
+                tray.setTitle("New Password");
+                tray.setMessage("New passwords don't match.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
 
-                    changeDetailsFailed();
-                    return;
-                } else if (newPass1.getText().isEmpty() || newPass2.getText().isEmpty()) {
-                    tray.setTitle("New password(s)");
-                    tray.setMessage("New password(s) is empty.");
-                    tray.setNotificationType(NotificationType.ERROR);
-                    tray.showAndDismiss(Duration.millis(3000));
+                changeDetailsFailed();
+                return;
+            } else if ((newPass2.getLength() < 8 || newPass2.getLength() > 32) && (!newPass1.getText().isEmpty())) {
+                newPass1.setStyle("-jfx-unfocus-color: #ff0000;");
+                newPass2.setStyle("-jfx-unfocus-color: red;");
+                tray.setTitle("New password");
+                tray.setMessage("New Password must be between 8-32 characters.");
+                tray.setNotificationType(NotificationType.ERROR);
+                tray.showAndDismiss(Duration.millis(3000));
 
-                    changeDetailsFailed();
-                    return;
-                } else if (!newPass1.getText().equals(newPass2.getText())) {
-                    tray.setTitle("New Password");
-                    tray.setMessage("New passwords don't match.");
-                    tray.setNotificationType(NotificationType.ERROR);
-                    tray.showAndDismiss(Duration.millis(3000));
+                changeDetailsFailed();
 
-                    changeDetailsFailed();
-                    return;
-                } else if ((newPass2.getLength() < 8 || newPass2.getLength() > 32) && (!newPass1.getText().isEmpty())) {
-                    newPass1.setStyle("-jfx-unfocus-color: #ff0000;");
-                    newPass2.setStyle("-jfx-unfocus-color: red;");
-                    tray.setTitle("New password");
-                    tray.setMessage("New Password must be between 8-32 characters.");
-                    tray.setNotificationType(NotificationType.ERROR);
-                    tray.showAndDismiss(Duration.millis(3000));
+                return;
+            } else {
+                newPassword = h.hash(newPass2.getText());
+                currentUser.setPassword(newPassword);
+                currentUser.editPassword(currentUser);
 
-                    changeDetailsFailed();
-
-                    return;
-                } else {
-                    newPassword = h.hash(newPass2.getText());
-                    currentUser.setPassword(newPassword);
-                    currentUser.editPassword(currentUser);
-
-                    tray.setTitle("Password");
-                    tray.setMessage("Password changed successfully");
-                    tray.setNotificationType(NotificationType.SUCCESS);
-                    tray.showAndDismiss(Duration.millis(3000));
-                }
-            }else{
                 tray.setTitle("Password");
-                tray.setMessage("Old password is invalid.");
-                tray.setNotificationType(NotificationType.ERROR);
+                tray.setMessage("Password changed successfully");
+                tray.setNotificationType(NotificationType.SUCCESS);
                 tray.showAndDismiss(Duration.millis(3000));
-
-                changeDetailsFailed();
-                return;
             }
+        } else {
+            tray.setTitle("Password");
+            tray.setMessage("Old password is invalid.");
+            tray.setNotificationType(NotificationType.ERROR);
+            tray.showAndDismiss(Duration.millis(3000));
+
+            changeDetailsFailed();
+            return;
         }
-
-
     }
+
+
+}
