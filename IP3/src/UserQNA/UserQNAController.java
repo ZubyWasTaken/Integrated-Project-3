@@ -479,7 +479,7 @@ public class UserQNAController implements Initializable {
         loadReplies(btn);
     }
 
-//retrieving replies from database//
+    //retrieving replies from database//
     private void loadR(int questId) throws SQLException {
         sql.updateLastSeenQ(currentUser.getUserID(), now);
         repliesQ.getChildren().clear();
@@ -563,7 +563,7 @@ public class UserQNAController implements Initializable {
         FXCollections.reverse(data);
         data.forEach((_item) -> {
             User tempUser = _item.getSender();
-          
+
 
             try {
 

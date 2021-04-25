@@ -6,8 +6,8 @@ import org.mindrot.jbcrypt.BCrypt;
 public class Hash {
 
     private final int logRounds = 11;
-    
-    public Hash(){
+
+    public Hash() {
     }
 
     public String hash(String password) {

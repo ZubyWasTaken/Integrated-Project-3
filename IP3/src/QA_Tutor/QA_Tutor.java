@@ -22,18 +22,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author stani
  */
-public class QA_Tutor extends Application{
+public class QA_Tutor extends Application {
 
     User currentUser;
 
-    
-  
-    
+
     public void start(Stage stage) throws Exception {
-          stage.getIcons().add(new Image("/Resources/icon.png"));
+        stage.getIcons().add(new Image("/Resources/icon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("QA_Tutor.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
@@ -41,7 +38,7 @@ public class QA_Tutor extends Application{
         controller.setData(currentUser);
         stage.setScene(scene);
         stage.setTitle("Q & A");
-        stage.show();        
+        stage.show();
         stage.centerOnScreen();
         root.requestFocus();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -57,10 +54,10 @@ public class QA_Tutor extends Application{
             }
         });
     }
-  
- public QA_Tutor(User user) {
-        currentUser=user;
+
+    public QA_Tutor(User user) {
+        currentUser = user;
     }
 
-   
+
 }

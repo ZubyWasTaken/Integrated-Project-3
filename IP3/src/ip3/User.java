@@ -104,12 +104,12 @@ public class User {
     public static int fetchUniId(String email) {
         int uniID;
         String emailGcu = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@caledonian.ac.uk";
-  
+
         Pattern pat = Pattern.compile(emailGcu);
-       // Pattern pat2 = Pattern.compile(emailStrath);
+        // Pattern pat2 = Pattern.compile(emailStrath);
         if (pat.matcher(email).matches()) {
             uniID = 1;
-       
+
         } else {
             uniID = 0;
         }
@@ -213,13 +213,13 @@ public class User {
         sql.updateLogin(userid, login);
     }
 
-    public InputStream getImage() throws SQLException{
+    public InputStream getImage() throws SQLException {
         InputStream blob = sql.getImage(userid);
         return blob;
     }
 
-    public String fetchTitle(int titleId) throws SQLException{
-        String category=sql.getTitle(catId);
+    public String fetchTitle(int titleId) throws SQLException {
+        String category = sql.getTitle(catId);
         return category;
     }
 }

@@ -6,12 +6,12 @@
 package ip3;
 
 import SQL.SQLHandler;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
  * @author erino
  */
 public class Message {
