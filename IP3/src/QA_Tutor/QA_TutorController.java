@@ -303,6 +303,7 @@ public class QA_TutorController implements Initializable {
         try {
             Question currentQuestion = Question.search(questionid);
             Text text = new Text(currentQuestion.getText());
+            text.setStyle("-fx-font: 16 arial;");
             repliesQ.getChildren().add(text);
 
         } catch (SQLException | IOException ex) {
